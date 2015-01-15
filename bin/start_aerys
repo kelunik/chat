@@ -1,0 +1,7 @@
+#!/bin/bash
+hardpath=`readlink $0`
+if [ -z "$hardpath" ]; then
+	hardpath="$0"
+fi
+# specify -D option if you don't want to attach...
+sudo screen -m -c `dirname $hardpath`/../config/screenrc.txt init_aerys

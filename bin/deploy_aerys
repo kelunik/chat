@@ -1,0 +1,9 @@
+#!/bin/bash
+hardpath=`readlink $0`
+if [ -z "$hardpath" ]; then
+	hardpath="$0"
+fi
+cd `dirname $hardpath`/..
+sudo git pull --ff --rebase
+sudo composer.phar install
+sudo php deploy/deploy.php

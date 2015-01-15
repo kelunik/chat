@@ -1,0 +1,57 @@
+#!/bin/bash
+hardpath=`readlink $0`
+if [ -z "$hardpath" ]; then
+	hardpath="$0"
+fi
+hardpath=`dirname $hardpath`
+
+if [ -f "/var/run/aerys.pid" ]; then
+	pid=`cat /var/run/aerys.pid`
+else
+	pid=100000 # higher than valid
+fi
+
+case "${1:-''}" in
+	'stop')
+		if ps -p $pid >/dev/null
+		then
+			sudo kill -SIGTERM $pid
+			sleep 2
+			if ps -p $pid >/dev/null
+			then
+				sudo kill -SIGKILL $pid
+			fi
+		else
+			echo "Aerys is not running"
+		fi
+		;;
+	'restart')
+		if ps -p $pid >/dev/null
+		then
+			sudo kill -SIGTERM $pid
+			sleep 2
+			if ps -p $pid >/dev/null
+			then
+				sudo kill -SIGKILL $pid
+			fi
+			$hardpath/start_aerys
+		else
+			$hardpath/start_aerys
+		fi
+		;;
+	'deploy')
+		$hardpath/deploy_aerys
+		$0 restart
+		;;
+	'log')
+		tail -Fn 10 /var/log/aerys.log
+		;;
+	*)
+		if ps -p $pid >/dev/null
+		then
+			$hardpath/attach_aerys
+		else
+			$hardpath/start_aerys
+		fi
+		;;
+esac
