@@ -1,0 +1,12 @@
+<?php
+
+require __DIR__ . "/config/config.php";
+
+const UI_CSS_FILES = "font-awesome.min.css:common.css:settings.css:layout.css:room.css:chat_message.css:starred_messages.css:user.css";
+const UI_JS_FILES = "handlebars.js:highlight.pack.js:keymaster.js:autocomplete.js:moment.js:remarkable.min.js:issue-linker.js:helpers.js:DataHandler.js:Formatter.js:MessageHandler.js:NotificationCenter.js:RoomHandler.js:TemplateManager.js:TimeUpdater.js:User.js:chat.js";
+
+define("DEPLOY_AUTHORITY", DEPLOY_DOMAIN . (DEPLOY_PORT == 80 ? "" : ":" . DEPLOY_PORT));
+define("DEPLOY_URL", (DEPLOY_HTTPS ? "https" : "http") . "://" . DEPLOY_AUTHORITY);
+
+define("TEMPLATE_DIR", __DIR__ . DIRECTORY_SEPARATOR . "html" . DIRECTORY_SEPARATOR);
+define("PROJECT_ROOT", __DIR__ . DIRECTORY_SEPARATOR);

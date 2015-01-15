@@ -1,0 +1,240 @@
+.chat-message {
+	margin: 16px 0 8px 0;
+	padding: 4px 15px 0 15px;
+	border-top: 1px solid rgba(0, 0, 0, .05);
+	line-height: 20px;
+}
+
+.chat-message::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.chat-message-user {
+	float: left;
+}
+
+.chat-message-content {
+	margin-left: 35px;
+	padding-left: 10px;
+}
+
+.chat-message-meta {
+	padding: 5px 0;
+	font-size: .9em;
+	color: #666;
+}
+
+.chat-message-text {
+
+}
+
+.chat-message-text p {
+	margin: 5px 0;
+	line-height: 1.75em;
+}
+
+.chat-message-text p:first-of-type {
+	margin-top: 0;
+}
+
+.chat-message-text p:last-of-type {
+	margin-bottom: 0;
+}
+
+.chat-message-meta[data-edit]::after {
+	content: "\f040";
+	display: inline-block;
+	margin-left: 4px;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+}
+
+.chat-message-stars {
+	display: inline-block;
+}
+
+.chat-message-stars:hover {
+	cursor: pointer;
+}
+
+.chat-message-stars::before {
+	display: inline-block; /* Fixes onClick for WebKit */
+}
+
+.chat-message-stars[data-stars]::before {
+	content: attr(data-stars) " " "\f006";
+}
+
+.chat-message-stars[data-stars][data-starred="1"]::before {
+	content: attr(data-stars) " " "\f005";
+	color: rgb(0, 100, 200);
+}
+
+.chat-message-stars[data-stars="0"]::before {
+	content: "\f006";
+}
+
+.chat-message pre, code {
+	white-space: pre-wrap !important;
+	word-break: break-all;
+}
+
+.chat-message blockquote {
+	padding: 0 8px 0 16px;
+	margin: 4px 8px 4px 16px;
+	color: rgb(85, 85, 85);
+	border-left: 3px solid rgba(0, 100, 200, 0.85);
+}
+
+.chat-message-followup {
+	margin-top: -12px;
+	border-top: 0;
+}
+
+.chat-message-followup .chat-message-user,
+.chat-message-followup .chat-message-meta {
+	display: none;
+}
+
+.chat-message-pending {
+	animation: pending 2s;
+	opacity: .5;
+}
+
+.chat-message-pending .chat-message-icons {
+	display: none;
+}
+
+@keyframes pending {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: .5;
+	}
+}
+
+.chat-message-icons {
+	float: right;
+	font-size: .75em;
+	margin: 3px 0 4px 4px;
+	display: inline-block;
+	transform: translateY(-24px);
+}
+
+.chat-message-icons > i {
+	display: inline-block;
+	cursor: pointer;
+	visibility: hidden;
+}
+
+.chat-message-followup .chat-message-icons {
+	transform: translateY(0);
+}
+
+.chat-message:hover .chat-message-reply,
+.chat-message:hover .chat-message-stars,
+.chat-message-stars.chat-message-stars {
+	/* CSS is ugly */
+	visibility: visible;
+}
+
+.chat-message-stars[data-stars=""],
+.chat-message-stars[data-stars="0"] {
+	visibility: hidden;
+}
+
+.in-reply {
+	cursor: pointer;
+}
+
+.in-reply[data-id]::before {
+	content: "\f112";
+	display: inline-block;
+	margin-left: 4px;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	transform: rotate(90deg) scale(.75, -.75);
+	margin-right: 4px;
+}
+
+.chat-message:target {
+	background: #ff9;
+}
+
+pre code {
+	display: block !important;
+	margin-right: 20px;
+	background: #222 !important;
+	color: #f5f5f5 !important;
+	padding: 8px !important;
+}
+
+.chat-message code {
+	background: #222;
+	padding: 3px 5px;
+	border-radius: 3px;
+	border: 1px solid rgba(0, 0, 0, .1);
+	line-height: 14px;
+	color: #eee;
+	font-size: 14px;
+	font-family: "Source Code Pro", monospace;
+}
+
+.chat-message code:not([class]) {
+	display: inline-block;
+}
+
+.chat-message-text a[href^="https://github.com"]::before {
+	content: "\f09b";
+	display: inline-block;
+	margin-left: 4px;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	margin-right: 4px;
+}
+
+.chat-message-text a[href^="https://github.com"] {
+	display: inline-block;
+	border: 1px solid rgba(0, 0, 0, .1);
+	background: rgba(0, 0, 0, .05);
+	line-height: 16px;
+	padding: 3px 5px 2px 5px;
+	border-radius: 3px;
+}
+
+.reply {
+	background: rgba(0, 0, 0, .1);
+}
+
+.chat-message-me .chat-message-reply {
+	display: none;
+}
+
+.chat-message-cmd-me {
+	text-align: center;
+	padding: 10px;
+	margin: 3px 0;
+	background: rgba(0, 0, 0, .1);
+	border-top: 1px solid rgba(0, 0, 0, .1);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.chat-message-cmd-me .chat-message-user,
+.chat-message-cmd-me .chat-message-icons {
+	display: none;
+}
+
+.chat-message-cmd-me .chat-message-content {
+	margin: 6px 10px;
+	padding: 0;
+}
+
+.chat-message-content img {
+	max-width: 100%;
+}

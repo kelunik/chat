@@ -1,0 +1,25 @@
+#user {
+    display: flex;
+    color: #fafafa;
+    width: 100%;
+    background: rgba(0, 0, 0, .2);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 -8px 8px -8px rgba(0, 0, 0, .3) inset;
+}
+
+#current-user {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    flex-grow: 1;
+}
+
+#logout {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fafafa;
+}

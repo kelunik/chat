@@ -1,0 +1,133 @@
+#chat {
+	display: flex;
+	height: 100vh;
+}
+
+#left-col {
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: 180px;
+	background: #222228 url(/img/php7.png) center bottom no-repeat;
+	border-right: 1px solid rgba(0, 0, 0, .5);
+	position: relative;
+}
+
+#main-col {
+	flex-grow: 1;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+
+#right-col {
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: 280px;
+	position: relative;
+	background: #f6f6f6;
+	box-shadow: 3px 0 3px -3px rgba(0, 0, 0, .2) inset;
+}
+
+#transcript {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	height: 100vh;
+	overflow-y: scroll;
+}
+
+@media only screen and (max-width: 1023px) {
+	#right-col {
+		position: fixed;
+		top: 0;
+		left: 161px;
+		right: 0;
+		width: auto;
+		overflow: hidden;
+		background: rgba(255, 255, 255, .9);
+		z-index: 3;
+		border-bottom: 1px solid rgba(0, 0, 0, .2);
+		box-shadow: 0 3px 3px -3px rgba(0, 0, 0, .1);
+		height: 50px;
+	}
+
+	#left-col {
+		width: 160px;
+	}
+
+	#stars {
+		display: none;
+	}
+}
+
+#above_input {
+	position: relative;
+	height: 0;
+}
+
+#autocomplete {
+	position: absolute;
+	left: 10px;
+	bottom: -1px;
+	z-index: 3;
+	background: #fafafa;
+	border: 1px solid rgba(0, 0, 0, .1);
+	box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+}
+
+#autocomplete ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#autocomplete li {
+	padding: 2px 8px;
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+	margin: 0;
+}
+
+#autocomplete li:last-of-type {
+	border-bottom: 0;
+}
+
+.autocomplete-entry {
+	line-height: 26px;
+}
+
+.autocomplete-entry img {
+	line-height: 26px;
+	vertical-align: middle;
+}
+
+.autocomplete-entry span {
+	line-height: 26px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+#autocomplete-current {
+	background: rgba(0, 100, 200, .85);
+	color: #fafafa;
+}
+
+#new-messages-indicator {
+	width: 300px;
+	margin: 0 auto;
+	position: relative;
+}
+
+#new-messages {
+	z-index: 3;
+	position: absolute;
+	bottom: -1px;
+	background: rgba(250, 250, 250, .85);
+	box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+	color: #058;
+	padding: 6px 8px;
+	border: 1px solid rgba(0, 0, 0, .1);
+	text-align: center;
+	width: 100%;
+	display: none;
+}

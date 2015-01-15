@@ -1,0 +1,50 @@
+.starred-message {
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, .015);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.starred-message:nth-of-type(2n) {
+    background: rgba(0, 0, 0, .055);
+}
+
+.starred-message:first-of-type {
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.starred-message-text p {
+    padding: 0;
+    margin: 0;
+}
+
+.starred-message-meta {
+    color: #666;
+}
+
+.star-message {
+    cursor: pointer;
+    float: right;
+    font-size: .75em;
+    margin: 3px 0 3px 3px;
+}
+
+.star-message[data-stars]::before {
+    content: attr(data-stars) " " "\f006";
+}
+
+.star-message[data-stars][data-starred="1"]::before {
+    content: attr(data-stars) " " "\f005";
+    color: rgb(0, 100, 200);
+}
+
+.star-message[data-stars="0"]::before {
+    content: "\f006";
+}
+
+.stars {
+    display: none;
+}
+
+.stars-current {
+    display: block;
+}

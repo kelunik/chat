@@ -1,0 +1,41 @@
+<div id="chat">
+    <div id="left-col">
+        <div id="user">
+            <span id="current-user">{{name}}</span>
+            <a href="/logout" id="logout" onclick="return confirm('Do you really want to logout?')">
+                <i class="fa fa-power-off" title="logout"></i>
+            </a>
+        </div>
+        <div id="room-tabs"></div>
+    </div>
+
+    <div id="main-col">
+        <div id="rooms">
+
+        </div>
+
+        <div id="above_input">
+            <div id="autocomplete">
+
+            </div>
+
+            <div id="new-messages-indicator">
+                <div id="new-messages">
+                    <i class="fa fa-inbox"></i> scroll down to see new messages
+                </div>
+            </div>
+        </div>
+
+        <textarea id="input" autofocus="autofocus" autocomplete="off"
+                  placeholder="Enter your message here, you may use markdown to format your text..."></textarea>
+    </div>
+
+    <div id="right-col">
+        <div id="room-infos">
+
+        </div>
+        <div id="stars">
+
+        </div>
+    </div>
+</div>

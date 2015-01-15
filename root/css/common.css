@@ -1,0 +1,46 @@
+html, body {
+    margin: 0;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    overflow: hidden;
+    tab-size: 4;
+}
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(0, 100, 200);
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.left {
+    float: left;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.right {
+    float: right;
+}
+
+.timelink {
+    color: #666;
+    font-weight: normal;
+}
+
+.timelink:hover {
+    text-decoration: underline;
+}
