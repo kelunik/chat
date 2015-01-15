@@ -64,6 +64,11 @@ NotificationCenter.prototype.handleVisibilityChange = function () {
 
 		if (roomHandler.rooms[current].defaultScroll) {
 			roomNode.scrollTop += roomNode.clientHeight;
+
+			if (roomNode.scrollHeight === roomNode.clientHeight || roomNode.scrollTop === roomNode.scrollHeight - roomNode.clientHeight) {
+				roomHandler.rooms[current].defaultScroll = true;
+				notificationCenter.hideMessageIndicator();
+			}
 		} else if (newmessages > 0) {
 			notificationCenter.showMessageIndicator();
 		}

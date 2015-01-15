@@ -139,7 +139,7 @@ RoomHandler.prototype.add = function (data) {
 			roomNode.scrollTop += roomNode.clientHeight;
 		}
 
-		if ((newmessages || 0) === 0) {
+		if ((newmessages || 0) === 0 || roomNode.scrollHeight === roomNode.clientHeight) {
 			notificationCenter.hideMessageIndicator();
 		} else {
 			notificationCenter.showMessageIndicator();
@@ -214,6 +214,12 @@ RoomHandler.prototype.showMessage = function (id) {
 
 RoomHandler.prototype.focus = function (id) {
 	this.getTab(id).dispatchEvent(new Event('click'));
+	var roomNode = this.getRoom(id);
+
+	if (roomNode.scrollHeight === roomNode.clientHeight) {
+		this.rooms[id].defaultScroll = true;
+		notificationCenter.hideMessageIndicator();
+	}
 };
 
 RoomHandler.prototype.getTab = function (id) {

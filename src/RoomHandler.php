@@ -168,7 +168,7 @@ class RoomHandler {
 
 		$session = $this->getSession($clientId);
 		$user = new User($this->db, $session->id, $session->name, $session->avatar);
-		$result = yield $this->chatApi->editMessage($data->messageId, $user, $data->text, $data->tempId, time());
+		yield $this->chatApi->editMessage($data->messageId, $user, $data->text, $data->tempId, time());
 	}
 
 	private function handleMissedQuery ($clientId, $data) {

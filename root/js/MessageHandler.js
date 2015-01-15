@@ -92,7 +92,7 @@ MessageHandler.prototype.insertMessage = function (room, message, node, init) {
 		node.appendChild(messageNode);
 	}
 
-	if (message.messageId > room.lastMessage) {
+	else if (message.messageId > room.lastMessage) {
 		var prev = messageHandler.getDOM(room.lastMessage);
 
 		if (prev !== null && !prev.classList.contains("chat-message-cmd-me") && prev.getAttribute("data-author") == message.user.id
