@@ -129,7 +129,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/amp-mysql.git",
-                "reference": "e4e5cc1fd06d7ca9569c68e23cc305b495b96563"
+                "reference": "d91f1b16f93acc3e5bbf888d5c05cd9ec2d6b8ab"
             },
             "require": {
                 "amphp/amp": "~0.15",
@@ -148,7 +148,7 @@
                 }
             ],
             "description": "description_text",
-            "time": "2015-01-13 12:46:33"
+            "time": "2015-01-15 01:57:40"
         },
         {
             "name": "amphp/amp-redis",

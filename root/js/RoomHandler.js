@@ -79,6 +79,22 @@ RoomHandler.prototype.handlePing = function (type, data) {
 	notificationCenter.notifyMessage("Ping from " + data.user.name + " in " + room.name);
 };
 
+RoomHandler.prototype.handlePingClear = function (type, data) {
+	for(var x in this.rooms) {
+		var room = this.rooms[x];
+
+		for(var i = room.pings.length - 1; i >= 0; i--) {
+			if(room.pings[i] === data.messageId) {
+				var node = roomHandler.getTab(room.id).querySelector(".pings");
+				room.pings.splice(i, 1);
+
+				node.setAttribute("data-pings", room.pings.length);
+				notificationCenter.checkPings();
+			}
+		}
+	}
+};
+
 RoomHandler.prototype.add = function (data) {
 	var handler = this;
 

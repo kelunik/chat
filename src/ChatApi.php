@@ -77,7 +77,7 @@ class ChatApi {
 			$messageText, $reply->messageId ?? null, $time, $messageId
 		]);
 
-		yield $this->addPings($user, $roomId, $result->insertId, $pings);
+		yield $this->addPings($user, $roomId, $messageId, $pings);
 
 		yield $this->redis->publish("chat.room", json_encode([
 			"roomId" => $roomId,

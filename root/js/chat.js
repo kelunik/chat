@@ -14,6 +14,7 @@ dataHandler.on("star", messageHandler.handleStar.bind(messageHandler));
 dataHandler.on("stars", roomHandler.handleStars.bind(roomHandler));
 dataHandler.on("transcript", roomHandler.handleTranscript.bind(roomHandler));
 dataHandler.on("ping", roomHandler.handlePing.bind(roomHandler));
+dataHandler.on("ping-clear", roomHandler.handlePingClear.bind(roomHandler));
 dataHandler.on("whereami", roomHandler.handleWhereAmI.bind(roomHandler));
 
 Handlebars.registerHelper('datetime', function(time) {
