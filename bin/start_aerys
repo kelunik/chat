@@ -4,4 +4,4 @@ if [ -z "$hardpath" ]; then
 	hardpath="$0"
 fi
 # specify -D option if you don't want to attach...
-sudo screen -m -c `dirname $hardpath`/../config/screenrc.txt init_aerys
+sudo screen -m -c `dirname $hardpath`/../config/screenrc.txt `dirname $hardpath`/init_aerys

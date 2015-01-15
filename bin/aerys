@@ -44,7 +44,7 @@ case "${1:-''}" in
 		$0 restart
 		;;
 	'log')
-		tail -Fn 10 $hardpath/../log/aerys.log
+		tail -Fn 10 $hardpath/../logs/aerys.log
 		;;
 	*)
 		if ps -p $pid >/dev/null
