@@ -1,17 +1,19 @@
 <div id="{{#if tempId}}message-temp-{{tempId}}{{else}}message-{{messageId}}{{/if}}"
      class="chat-message {{#if tempId}}chat-message-pending{{/if}}"
      data-id="{{#if messageId}}{{messageId}}{{/if}}"
-     data-author="{{user.id}}">
+     data-author="{{user.id}}"
+	 {{#if reply}}data-reply="{{reply.messageId}}"{{/if}}>
     <div class="chat-message-user">
         <img src="{{user.avatar}}&s=30" width="30px" height="30px"
              draggable="true" ondragstart="event.dataTransfer.setData('text/plain', '@{{user.name}}')"
-                onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus();">
+             onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus();">
     </div>
 
     <div class="chat-message-content">
         <div class="chat-message-meta"
 			 {{#if edit-time}}data-edit="{{{datetime edit-time}}}"{{/if}}>
-            <a href="#" style="cursor: pointer;" onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus(); return false;">
+            <a href="#" style="cursor: pointer;"
+               onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus(); return false;">
 				{{user.name}}
             </a> –
             <a class="timelink" target="_blank">

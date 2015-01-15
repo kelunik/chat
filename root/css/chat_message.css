@@ -209,7 +209,7 @@ pre code {
 }
 
 .reply {
-	background: rgba(0, 0, 0, .1);
+	background: rgba(0, 100, 200, .05);
 }
 
 .chat-message-me .chat-message-reply {

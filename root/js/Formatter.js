@@ -49,29 +49,41 @@ Formatter.prototype.formatMessage = function (node, text, reply, user) {
 		node.innerHTML = node.innerHTML.replace("/me ", escapeHtml(user.name) + " ");
 	}
 
-	else if (reply !== null) {
+	else if (reply) {
 		node.innerHTML = node.innerHTML.replace(/:\d+/, templateManager.get("reply_to")(reply));
 
-		node.onmouseover = function (e) {
+		node.parentNode.parentNode.onmouseover = function (e) {
 			var m = messageHandler.getDOM(reply.messageId);
 
-			if (m !== null) {
+			if (m) {
 				m.classList.add("reply");
 			}
+
+			m = document.querySelectorAll(".chat-message[data-reply='" + node.parentNode.parentNode.getAttribute("data-id") + "']");
+
+			forEach(m, function (i) {
+				i.classList.add("reply");
+			});
 		};
 
-		node.onmouseout = function (e) {
+		node.parentNode.parentNode.onmouseout = function (e) {
 			var m = messageHandler.getDOM(reply.messageId);
 
-			if (m !== null) {
+			if (m) {
 				m.classList.remove("reply");
 			}
+
+			m = document.querySelectorAll(".chat-message[data-reply='" + node.parentNode.parentNode.getAttribute("data-id") + "']");
+
+			forEach(m, function (i) {
+				i.classList.remove("reply");
+			});
 		};
 
-		reply = node.querySelector(".in-reply");
+		var replyNode = node.querySelector(".in-reply");
 
-		if (reply !== null) {
-			reply.onclick = function () {
+		if (replyNode) {
+			replyNode.onclick = function () {
 				roomHandler.showMessage(this.getAttribute("data-id"));
 			};
 		}
