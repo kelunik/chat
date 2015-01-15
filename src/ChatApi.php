@@ -74,7 +74,7 @@ class ChatApi {
 		$pings = array_unique(array_merge($pings, yield $this->getPings($roomId, $messageText)));
 
 		$result = yield $this->db->prepare("UPDATE messages SET `text` = ?, `replyTo` = ?, `edited` = ? WHERE id = ?", [
-			$messageText, $reply["messageId"] ?? null, $time, $messageId
+			$messageText, $reply->messageId ?? null, $time, $messageId
 		]);
 
 		yield $this->addPings($user, $roomId, $result->insertId, $pings);
