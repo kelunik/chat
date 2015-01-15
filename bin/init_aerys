@@ -4,6 +4,6 @@ if [ -z "$hardpath" ]; then
         hardpath="$0"
 fi
 cd `dirname $hardpath`/..
-echo $PPID >/var/run/aerys.pid
-chmod 777 /var/run/aerys.pid
-sudo -u cembon ./vendor/amphp/aerys/bin/aerys -c app.php > >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("/var/log/aerys.log", "OUT ".date("M d H:i:s")." $in", FILE_APPEND); }' >&1) 2> >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("/var/log/aerys.log", "ERR ".date("M d H:i:s")." $in", FILE_APPEND); }' >&2)
+sudo echo $PPID >/var/run/aerys.pid
+sudo chmod 777 /var/run/aerys.pid
+./vendor/amphp/aerys/bin/aerys -c app.php > >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("log/aerys.log", "OUT ".date("M d H:i:s")." $in", FILE_APPEND); }' >&1) 2> >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("log/aerys.log", "ERR ".date("M d H:i:s")." $in", FILE_APPEND); }' >&2)
