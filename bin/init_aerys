@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 hardpath=`readlink $0`
 if [ -z "$hardpath" ]; then
         hardpath="$0"
