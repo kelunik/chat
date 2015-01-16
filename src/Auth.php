@@ -129,7 +129,7 @@ class Auth {
 			yield "body" => "";
 		}
 
-		yield $this->db->prepare("DELETE FROM sessions WHERE id = ?", [$sessionId]);
+		yield $this->redis->del("session.{$sessionId}");
 
 		yield "status" => 302;
 		yield "header" => "Location: /auth";
