@@ -198,7 +198,7 @@ DataHandler.prototype.onMessage = function (e) {
 				return false;
 			}
 
-			else if (e.which == 38) {
+			else if (e.which == 38 && !e.shiftKey) {
 				if (input.getAttribute("data-compose")) {
 					return;
 				}
@@ -242,7 +242,7 @@ DataHandler.prototype.onMessage = function (e) {
 				return false;
 			}
 
-			else if (e.which == 40) {
+			else if (e.which == 40 && !e.shiftKey) {
 				if (input.hasAttribute("data-compose")) {
 					return;
 				}
