@@ -41,11 +41,7 @@ MessageHandler.prototype.handleMessage = function (type, data) {
 
 		for (var i = room.pings.length - 1; i >= 0; i--) {
 			if (room.pings[i] === data.reply.messageId) {
-				node = roomHandler.getTab(data.roomId).querySelector(".pings");
-				room.pings.splice(i, 1);
-
-				node.setAttribute("data-pings", room.pings.length);
-				notificationCenter.checkPings();
+				dataHandler.send("ping", {messageId: data.reply.messageId});
 			}
 		}
 	}
@@ -81,6 +77,16 @@ MessageHandler.prototype.handleMessageEdit = function (type, data) {
 	}
 
 	message.querySelector(".chat-message-meta").setAttribute("data-edit", data.time);
+
+	if (data.user.id === user.id && data.reply) {
+		var room = roomHandler.rooms[+message.parentNode.getAttribute("data-id")];
+
+		for (var i = room.pings.length - 1; i >= 0; i--) {
+			if (room.pings[i] === data.reply.messageId) {
+				dataHandler.send("ping", {messageId: data.reply.messageId});
+			}
+		}
+	}
 };
 
 MessageHandler.prototype.insertMessage = function (room, message, node, init) {

@@ -232,7 +232,6 @@ DataHandler.prototype.onMessage = function (e) {
 							}
 						}
 					} else {
-						// FIXME: toastr.info('Previous message is older than 5 minutes and cannot be edited!');
 						alert('Previous message is older than 5 minutes and cannot be edited!');
 					}
 				}
