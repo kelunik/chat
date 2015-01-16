@@ -4,6 +4,7 @@ if [ -z "$hardpath" ]; then
 	hardpath="$0"
 fi
 cd `dirname $hardpath`/..
-sudo git pull --ff --rebase
+sudo git reset --hard
+sudo git pull
 sudo composer.phar install
 sudo php deploy/deploy.php
