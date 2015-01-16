@@ -176,13 +176,14 @@ DataHandler.prototype.onMessage = function (e) {
 					message.classList.add("chat-message-me");
 					message.setAttribute("data-text", text);
 
-					var prev = messageHandler.getDOM(roomHandler.rooms[+room].lastMessage);
+					node.appendChild(message);
 
-					if (prev && moment(prev.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 60) {
+					var prevNode = prev(node);
+
+					if (prevNode && +prevNode.getAttribute("data-author") === user.id && moment(prevNode.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 60) {
 						message.classList.add("chat-message-followup");
 					}
 
-					node.appendChild(message);
 					node.scrollTop = node.scrollHeight;
 				}
 
