@@ -165,7 +165,7 @@ DataHandler.prototype.onMessage = function (e) {
 						},
 						stars: 0,
 						starred: false,
-						time: +moment() / 1000
+						time: moment().unix()
 					}));
 
 					formatter.formatMessage(message.querySelector(".chat-message-text"), text, null, user);
@@ -176,10 +176,9 @@ DataHandler.prototype.onMessage = function (e) {
 					message.classList.add("chat-message-me");
 					message.setAttribute("data-text", text);
 
-					var prev = messageHandler.getDOM(roomHandler.rooms[room].lastMessage);
+					var prev = messageHandler.getDOM(roomHandler.rooms[+room].lastMessage);
 
-					if (prev && prev.getAttribute("data-author") == user.id
-						&& +moment(prev.querySelector("time").getAttribute("datetime")) / 1000 > message.time - 60) {
+					if (prev && moment(prev.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 60) {
 						message.classList.add("chat-message-followup");
 					}
 
@@ -217,7 +216,7 @@ DataHandler.prototype.onMessage = function (e) {
 				}
 
 				if (message !== null) {
-					if (+moment(message.querySelector("time").getAttribute("datetime")) / 1000 > +moment() / 1000 - 5 * 60) {
+					if (moment(message.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 5 * 60) {
 						input.value = message.getAttribute("data-text");
 						input.setAttribute("data-message", message.getAttribute("data-id"));
 

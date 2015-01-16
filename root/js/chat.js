@@ -21,6 +21,10 @@ Handlebars.registerHelper('datetime', function(time) {
 	return moment.unix(time).toISOString();
 });
 
+Handlebars.registerHelper('dateformat', function(time) {
+	return moment.unix(time).format("LLL");
+});
+
 dataHandler.on("open", function () {
 	var path = window.location.pathname;
 

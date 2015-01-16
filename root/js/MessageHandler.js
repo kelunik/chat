@@ -123,7 +123,7 @@ MessageHandler.prototype.insertMessage = function (room, message, node, init) {
 		var prev = messageHandler.getDOM(room.lastMessage);
 
 		if (prev !== null && !prev.classList.contains("chat-message-cmd-me") && prev.getAttribute("data-author") == message.user.id
-			&& +moment(prev.querySelector("time").getAttribute("datetime")) / 1000 > message.time - 60) {
+			&& moment(prev.querySelector("time").getAttribute("datetime")).unix() > message.time - 60) {
 			messageNode.classList.add("chat-message-followup");
 		}
 
