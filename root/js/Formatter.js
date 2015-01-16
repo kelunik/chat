@@ -52,34 +52,6 @@ Formatter.prototype.formatMessage = function (node, text, reply, user) {
 	else if (reply) {
 		node.innerHTML = node.innerHTML.replace(/:\d+/, templateManager.get("reply_to")(reply));
 
-		node.parentNode.parentNode.onmouseover = function (e) {
-			var m = messageHandler.getDOM(reply.messageId);
-
-			if (m) {
-				m.classList.add("reply");
-			}
-
-			m = document.querySelectorAll(".chat-message[data-reply='" + node.parentNode.parentNode.getAttribute("data-id") + "']");
-
-			forEach(m, function (i) {
-				i.classList.add("reply");
-			});
-		};
-
-		node.parentNode.parentNode.onmouseout = function (e) {
-			var m = messageHandler.getDOM(reply.messageId);
-
-			if (m) {
-				m.classList.remove("reply");
-			}
-
-			m = document.querySelectorAll(".chat-message[data-reply='" + node.parentNode.parentNode.getAttribute("data-id") + "']");
-
-			forEach(m, function (i) {
-				i.classList.remove("reply");
-			});
-		};
-
 		var replyNode = node.querySelector(".in-reply");
 
 		if (replyNode) {
@@ -88,6 +60,34 @@ Formatter.prototype.formatMessage = function (node, text, reply, user) {
 			};
 		}
 	}
+
+	node.parentNode.parentNode.onmouseover = function (e) {
+		var m = reply ? messageHandler.getDOM(reply.messageId) : null;
+
+		if (m) {
+			m.classList.add("reply");
+		}
+
+		m = document.querySelectorAll(".chat-message[data-reply='" + node.parentNode.parentNode.getAttribute("data-id") + "']");
+
+		forEach(m, function (i) {
+			i.classList.add("reply");
+		});
+	};
+
+	node.parentNode.parentNode.onmouseout = function (e) {
+		var m = reply ? messageHandler.getDOM(reply.messageId) : null;
+
+		if (m) {
+			m.classList.remove("reply");
+		}
+
+		m = document.querySelectorAll(".chat-message[data-reply='" + node.parentNode.parentNode.getAttribute("data-id") + "']");
+
+		forEach(m, function (i) {
+			i.classList.remove("reply");
+		});
+	};
 
 	forEach(node.getElementsByTagName("a"), function (o) {
 		o.setAttribute("target", "_blank");
