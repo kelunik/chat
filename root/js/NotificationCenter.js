@@ -44,6 +44,7 @@ NotificationCenter.prototype.handleVisibilityChange = function () {
 	if (document[this.hidden]) {
 		this.userActive = false;
 		timeUpdater.stop(); // don't update contents while user is somewhere else
+		dataHandler.send("activity", {state: "inactive"});
 	} else {
 		document.title = "t@lkZone";
 		this.userActive = true;
@@ -72,6 +73,8 @@ NotificationCenter.prototype.handleVisibilityChange = function () {
 		} else if (newmessages > 0) {
 			notificationCenter.showMessageIndicator();
 		}
+
+		dataHandler.send("activity", {state: "active"});
 	}
 };
 
