@@ -35,6 +35,20 @@ MessageHandler.prototype.handleMessage = function (type, data) {
 	} else {
 		this.insertMessage(roomHandler.rooms[data.roomId], data);
 	}
+
+	if (data.user.id === user.id && data.reply) {
+		var room = roomHandler.rooms[data.roomId];
+
+		for (var i = room.pings.length - 1; i >= 0; i--) {
+			if (room.pings[i] === data.reply.messageId) {
+				node = roomHandler.getTab(data.roomId).querySelector(".pings");
+				room.pings.splice(i, 1);
+
+				node.setAttribute("data-pings", room.pings.length);
+				notificationCenter.checkPings();
+			}
+		}
+	}
 };
 
 MessageHandler.prototype.handleMissedQuery = function (type, data) {
