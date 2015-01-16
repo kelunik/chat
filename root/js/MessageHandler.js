@@ -87,6 +87,13 @@ MessageHandler.prototype.handleMessageEdit = function (type, data) {
 			}
 		}
 	}
+
+	var starredMessage = document.getElementById("message-starred-" + data.messageId);
+
+	if (starredMessage) {
+		var textNode = starredMessage.parentNode.parentNode.querySelector(".starred-message-text");
+		formatter.formatMessage(textNode, data.text.replace(/^:\d+ /, ""), null, data.user);
+	}
 };
 
 MessageHandler.prototype.insertMessage = function (room, message, node, init) {
