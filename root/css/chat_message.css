@@ -2,6 +2,7 @@
 	margin: 16px 0 8px 0;
 	padding: 4px 15px 0 15px;
 	border-top: 1px solid rgba(0, 0, 0, .05);
+	border-bottom: 1px solid transparent;
 	line-height: 20px;
 }
 
@@ -90,7 +91,7 @@
 
 .chat-message-followup {
 	margin-top: -12px;
-	border-top: 0;
+	border-top: 1px solid transparent;
 }
 
 .chat-message-followup .chat-message-user,
@@ -165,6 +166,8 @@
 
 .chat-message:target {
 	background: #ff9;
+	border-top: 1px solid rgba(0, 0, 0, .1);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 pre code {
@@ -210,6 +213,8 @@ pre code {
 
 .reply {
 	background: rgba(0, 100, 200, .05);
+	border-top: 1px solid rgba(0, 0, 0, .1);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 .chat-message-me .chat-message-reply {
@@ -220,7 +225,7 @@ pre code {
 	text-align: center;
 	padding: 10px;
 	margin: 3px 0;
-	background: rgba(0, 0, 0, .1);
+	background: rgba(0, 0, 0, .025);
 	border-top: 1px solid rgba(0, 0, 0, .1);
 	border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
