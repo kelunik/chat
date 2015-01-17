@@ -170,9 +170,8 @@ DataHandler.prototype.onMessage = function (e) {
 					message.classList.add("chat-message-me");
 					message.setAttribute("data-text", text);
 
-					node.appendChild(message);
-
 					var prevNode = node.querySelector(".chat-message:last-of-type");
+					node.appendChild(message);
 
 					if (prevNode && +prevNode.getAttribute("data-author") === user.id && moment(prevNode.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 60) {
 						message.classList.add("chat-message-followup");

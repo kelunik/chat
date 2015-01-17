@@ -127,6 +127,12 @@ class RoomHandler {
 
 		if (empty($this->users[$userId])) {
 			unset($this->users[$userId]);
+
+			foreach($this->rooms as $id => $room) {
+				if(in_array($clientId, $room)) {
+					$this->setActivity($userId, $id, "offline");
+				}
+			}
 		}
 	}
 
@@ -266,6 +272,7 @@ class RoomHandler {
 			];
 
 			$this->rooms[(int) $roomId][$clientId] = $clientId;
+			$this->setActivity($session->id, $roomId, "active");
 		}
 
 		yield "send" => json_encode([
@@ -336,6 +343,29 @@ class RoomHandler {
 
 		$session = $this->getSession($clientId);
 		yield $this->chatApi->clearPing($session->id, $data->messageId);
+	}
+
+	public function handleActivity($clientId, $data) {
+		$session = $this->getSession($clientId);
+
+		if(isset($data->state) && in_array($data->state, ["active", "inactive"])) {
+			foreach($this->rooms as $id => $room) {
+				if(in_array($clientId, $room)) {
+					$this->setActivity($session->id, $id, $data->state);
+				}
+			}
+		}
+	}
+
+	public function setActivity($userId, $roomId, $state) {
+		yield $this->redis->publish("chat.room", json_encode([
+			"roomId" => $roomId,
+			"type" => "activity",
+			"payload" => [
+				"userId" => $userId,
+				"state" => $state
+			]
+		]));
 	}
 
 	private function createMessage ($message, $seen = false) {
