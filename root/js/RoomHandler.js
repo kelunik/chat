@@ -24,6 +24,14 @@ RoomHandler.prototype.handleWhereAmI = function (type, data) {
 	notificationCenter.checkPings();
 };
 
+RoomHandler.prototype.handleActivity = function (type, data) {
+	var elements = document.getElementsByClassName("user-activity-" + data.userId);
+
+	forEach(elements, function(element) {
+		element.setAttribute("data-state", data.state);
+	});
+};
+
 RoomHandler.prototype.handleTranscript = function (type, data) {
 	var room = this.rooms[data.roomId];
 	room.infiniteScroll = false;

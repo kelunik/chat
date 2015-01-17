@@ -5,9 +5,11 @@
 		{{#each users}}
             <a href="https://github.com/{{name}}" target="_blank" draggable="true"
                ondragstart="event.dataTransfer.setData('text/plain', '@{{name}}')">
-                <img id="room-info-{{this.id}}-person-{{id}}"
-                     src="{{avatar}}&s=30" alt="{{name}}"
+                <div id="room-info-{{this.id}}-person-{{id}}"
+                     class="user-avatar user-activity user-activity-{{id}}"
+                     style="background-image: url({{avatar}}&s=30);"
                      title="{{name}}">
+                </div>
             </a>
 		{{/each}}
     </div>

@@ -170,3 +170,27 @@
     line-height: 30px;
     vertical-align: middle;
 }
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin: 2px;
+    padding: 1px;
+    border-radius: 50%;
+    background: no-repeat center;
+    background-size: 30px;
+    box-shadow: 0 0 3px #ccc;
+}
+
+.user-avatar[data-state="active"] {
+    box-shadow: 0 0 3px #2ecc71;
+}
+
+.user-avatar[data-state="inactive"] {
+    box-shadow: 0 0 3px #ccc568;
+}
+
+.user-avatar[data-state="offline"] {
+    box-shadow: 0 0 3px #ccc;
+}

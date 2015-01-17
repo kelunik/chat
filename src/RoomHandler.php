@@ -43,7 +43,8 @@ class RoomHandler {
 			"star" => "handleStar",
 			"unstar" => "handleUnstar",
 			"stars" => "handleStars",
-			"ping" => "handlePing"
+			"ping" => "handlePing",
+			"activity" => "handleActivity"
 		];
 
 		$this->clients = $this->users = $this->sessions = [];
@@ -130,7 +131,7 @@ class RoomHandler {
 
 			foreach($this->rooms as $id => $room) {
 				if(in_array($clientId, $room)) {
-					$this->setActivity($userId, $id, "offline");
+					yield $this->setActivity($userId, $id, "offline");
 				}
 			}
 		}
@@ -272,7 +273,7 @@ class RoomHandler {
 			];
 
 			$this->rooms[(int) $roomId][$clientId] = $clientId;
-			$this->setActivity($session->id, $roomId, "active");
+			yield $this->setActivity($session->id, $roomId, "active");
 		}
 
 		yield "send" => json_encode([
@@ -351,7 +352,7 @@ class RoomHandler {
 		if(isset($data->state) && in_array($data->state, ["active", "inactive"])) {
 			foreach($this->rooms as $id => $room) {
 				if(in_array($clientId, $room)) {
-					$this->setActivity($session->id, $id, $data->state);
+					yield $this->setActivity($session->id, $id, $data->state);
 				}
 			}
 		}
