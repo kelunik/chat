@@ -1,196 +1,222 @@
 #rooms {
-    flex-grow: 1;
-    flex-shrink: 1;
-    overflow: hidden;
-    position: relative;
+	flex-grow: 1;
+	flex-shrink: 1;
+	overflow: hidden;
+	position: relative;
 }
 
 #input {
-    flex-grow: 0;
-    flex-shrink: 0;
-    max-height: 50vh;
-    height: 40px;
-    padding: 10px;
-    line-height: 20px;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, .1);
-    background: #fff;
-    margin: 0;
-    resize: none;
-    z-index: 5;
-    font-size: 14px;
-    font-family: "Source Code Pro", monospace;
+	flex-grow: 0;
+	flex-shrink: 0;
+	max-height: 50vh;
+	height: 40px;
+	padding: 10px;
+	line-height: 20px;
+	border: 0;
+	border-top: 1px solid rgba(0, 0, 0, .1);
+	background: #fff;
+	margin: 0;
+	resize: none;
+	z-index: 5;
+	font-size: 14px;
+	font-family: "Source Code Pro", monospace;
 }
 
 #input[data-message]:not([data-message="0"]) {
-    background: #ff9;
+	background: #ff9;
 }
 
 .room {
-    visibility: hidden;
-    overflow-y: scroll;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: #fff;
+	visibility: hidden;
+	overflow-y: scroll;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: #fff;
 }
 
 .room-current {
-    visibility: visible;
-    z-index: 1;
+	visibility: visible;
+	z-index: 1;
 }
 
 .room-tab {
-    line-height: 20px;
-    padding: 6px 10px;
-    color: rgba(255, 255, 255, .7);
-    font-weight: bold;
-    font-size: 13px;
-    cursor: pointer;
-    user-select: none;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    border-left: 2px solid transparent;
-    position: relative;
+	line-height: 20px;
+	padding: 6px 10px;
+	color: rgba(255, 255, 255, .7);
+	font-weight: bold;
+	font-size: 13px;
+	cursor: pointer;
+	user-select: none;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-left: 2px solid transparent;
+	position: relative;
 }
 
 .room-tab[data-new-messages]:not([data-new-messages="0"])::after {
-    content: attr(data-new-messages);
-    display: inline-block;
-    background: rgb(0, 100, 200);
-    width: 16px;
-    height: 16px;
-    text-align: center;
-    line-height: 16px;
-    font-size: 12px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, .1);
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    margin-top: -9px;
-    color: rgba(255, 255, 255, .8);
-    font-weight: bold;
-    animation-duration: 500ms;
-    animation-name: newmessages;
+	content: attr(data-new-messages);
+	display: inline-block;
+	background: rgb(0, 100, 200);
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	line-height: 16px;
+	font-size: 12px;
+	border-radius: 50%;
+	border: 1px solid rgba(0, 0, 0, .1);
+	position: absolute;
+	right: 15px;
+	top: 50%;
+	margin-top: -9px;
+	color: rgba(255, 255, 255, .8);
+	font-weight: bold;
+	animation-duration: 500ms;
+	animation-name: newmessages;
 }
 
 @keyframes newmessages {
-    from {
-        transform: scale(1);
-        font-size: 20px;
-        color: rgba(255, 255, 255, .1);
-    }
+	from {
+		transform: scale(1);
+		font-size: 20px;
+		color: rgba(255, 255, 255, .1);
+	}
 
-    30% {
-        transform: scale(1.2);
-    }
-    50% {
-        transform: scale(.9);
-    }
+	30% {
+		transform: scale(1.2);
+	}
+	50% {
+		transform: scale(.9);
+	}
 
-    70% {
-        transform: scale(1.2);
-    }
+	70% {
+		transform: scale(1.2);
+	}
 
-    to {
-        transform: scale(1);
-        font-size: 12px;
-        color: rgba(255, 255, 255, .8);
-    }
+	to {
+		transform: scale(1);
+		font-size: 12px;
+		color: rgba(255, 255, 255, .8);
+	}
 }
 
 .room-tab[data-new-messages="0"]::after {
-    display: none !important;
+	display: none !important;
 }
 
 .pings[data-pings]:not([data-pings="0"])::after {
-    content: attr(data-pings);
-    cursor: pointer;
-    display: inline-block;
-    background: rgb(200, 0, 100);
-    width: 16px;
-    height: 16px;
-    text-align: center;
-    line-height: 16px;
-    font-size: 12px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, .1);
-    position: absolute;
-    right: 35px;
-    top: 50%;
-    margin-top: -9px;
-    color: rgba(255, 255, 255, .8);
-    font-weight: bold;
-    animation-duration: 500ms;
-    animation-name: newmessages;
+	content: attr(data-pings);
+	cursor: pointer;
+	display: inline-block;
+	background: rgb(200, 0, 100);
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	line-height: 16px;
+	font-size: 12px;
+	border-radius: 50%;
+	border: 1px solid rgba(0, 0, 0, .1);
+	position: absolute;
+	right: 35px;
+	top: 50%;
+	margin-top: -9px;
+	color: rgba(255, 255, 255, .8);
+	font-weight: bold;
+	animation-duration: 500ms;
+	animation-name: newmessages;
 }
 
 .room-tab-current {
-    color: rgba(255, 255, 255, .95);
-    background: rgba(0, 0, 0, .25);
-    cursor: default;
-    border-top: 1px solid rgba(0, 0, 0, .1);
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-    border-left: 2px solid rgba(0, 100, 200, .85);
+	color: rgba(255, 255, 255, .95);
+	background: rgba(0, 0, 0, .25);
+	cursor: default;
+	border-top: 1px solid rgba(0, 0, 0, .1);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+	border-left: 2px solid rgba(0, 100, 200, .85);
 }
 
 .room-tab-current::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    left: -2px;
-    top: -1px;
-    bottom: -1px;
-    width: 3px;
-    background: rgba(0, 100, 200, .85);
+	content: "";
+	display: inline-block;
+	position: absolute;
+	left: -2px;
+	top: -1px;
+	bottom: -1px;
+	width: 3px;
+	background: rgba(0, 100, 200, .85);
 }
 
 .room-info {
-    display: none;
-    padding: 10px;
+	display: none;
+	padding: 10px;
 }
 
 .room-info-current {
-    display: block;
+	display: block;
 }
 
 .room-info h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0 0 8px 0;
-    padding: 0 0 4px 0;
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0 0 8px 0;
+	padding: 0 0 4px 0;
 }
 
 .room-info-people img {
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    vertical-align: middle;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
 }
 
 .user-avatar {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    margin: 2px;
-    padding: 1px;
-    border-radius: 50%;
-    background: no-repeat center;
-    background-size: 30px;
-    box-shadow: 0 0 3px #ccc;
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	padding: 0;
+	margin: 2px;
+	border-radius: 50%;
+	background: no-repeat center;
+	background-size: 30px;
+	box-shadow: 0 0 3px #ccc;
+	position: relative;
+}
+
+.user-avatar::before {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	border: 2px solid #eee;
 }
 
 .user-avatar[data-state="active"] {
-    box-shadow: 0 0 3px #2ecc71;
+	box-shadow: 0 0 3px #2ecc71;
+}
+
+.user-avatar[data-state="active"]::before {
+	background-color: #2ecc71;
+	content: "";
 }
 
 .user-avatar[data-state="inactive"] {
-    box-shadow: 0 0 3px #ccc568;
+	box-shadow: 0 0 3px #ccc568;
+}
+
+.user-avatar[data-state="inactive"]::before {
+	background-color: #ccc568;
+	content: "";
 }
 
 .user-avatar[data-state="offline"] {
-    box-shadow: 0 0 3px #ccc;
+	box-shadow: 0 0 3px #ccc;
+}
+
+.user-avatar[data-state="offline"]::before {
+	background-color: #ccc;
+	content: "";
 }
