@@ -11,7 +11,7 @@ $connect = sprintf("host=%s;user=%s;pass=%s;db=%s", DB_HOST, DB_USER, DB_PASS, D
 $db = new Pool($connect);
 
 $run = function () use ($db) {
-	$q = yield $db->prepare("SELECT u.mail, u.id FROM users AS u, pings AS p, messages AS m WHERE p.userId = u.id && m.id = p.messageId && m.time < ? && p.seen = 0 && p.mailed = 0 GROUP BY u.id LIMIT 10", [time() - 3600 * 3]);
+	$q = yield $db->prepare("SELECT u.mail, u.id FROM users AS u, pings AS p, messages AS m WHERE p.userId = u.id && m.id = p.messageId && m.time < ? && p.seen = 0 && p.mailed = 0 GROUP BY u.id LIMIT 10", [time() - 3600 * 24]);
 	$users = yield $q->fetchObjects();
 
 	$settingsQuery = yield $db->prepare("SELECT `value` FROM user_settings WHERE `key` = 'MAIL_NOTIFICATIONS' && `userId` = ?");
