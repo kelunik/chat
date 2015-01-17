@@ -48,7 +48,7 @@ class Chat implements Websocket {
 			return;
 		}
 
-		$this->roomHandler->addClient($clientId, $sessionId, $session);
+		yield $this->roomHandler->addClient($clientId, $sessionId, $session);
 	}
 
 	public function onData ($clientId, $payload) {
@@ -60,6 +60,6 @@ class Chat implements Websocket {
 	}
 
 	public function onClose ($clientId, $code, $reason) {
-		$this->roomHandler->removeClient($clientId);
+		yield $this->roomHandler->removeClient($clientId);
 	}
 }

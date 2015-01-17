@@ -15,8 +15,8 @@
   },
   "require": {
     "amphp/aerys": "dev-master",
-    "amphp/amp-mysql": "dev-master",
-    "amphp/amp-redis": "dev-master",
+    "amphp/mysql": "dev-master",
+    "amphp/redis": "dev-master",
     "amphp/artax": "dev-master",
     "vladkens/autoprefixer": "dev-master",
     "tubalmartin/cssmin": "dev-master",
@@ -26,20 +26,16 @@
     {
       "type": "git",
       "no-api": true,
-      "url": "git@github.com:rdlowrey/Aerys.git",
+      "url": "git@github.com:rdlowrey/aerys.git",
       "vendor-alias": "amphp"
     },
     {
       "type": "git",
-      "no-api": true,
-      "url": "git@github.com:rdlowrey/amp-mysql.git",
-      "vendor-alias": "amphp"
+      "url": "git@github.com:amphp/mysql.git"
     },
     {
       "type": "git",
-      "no-api": true,
-      "url": "git@github.com:kelunik/amp-redis.git",
-      "vendor-alias": "amphp"
+      "url": "git@github.com:amphp/redis.git"
     }
   ],
   "minimum-stability": "dev",

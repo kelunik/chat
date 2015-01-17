@@ -18,6 +18,7 @@ class RoomHandler {
 	private $users;
 	private $sessionHandler;
 	private $chatApi;
+	private $active;
 
 	public function __construct (Pool $db, Reactor $reactor) {
 		$this->db = $db;
@@ -50,6 +51,7 @@ class RoomHandler {
 		$this->clients = $this->users = $this->sessions = [];
 		$this->sessionHandler = new SessionManager($this->db);
 		$this->chatApi = new ChatApi($this->db, $this->redis);
+		$this->active = [];
 	}
 
 	public function init () {
@@ -114,26 +116,66 @@ class RoomHandler {
 		$this->clients[$clientId] = $sessionId;
 		$this->sessions[$sessionId] = $session;
 		$this->users[$session->id][$clientId] = $sessionId;
+		$this->active[$clientId] = true;
+
+		$result = yield $this->db->prepare("SELECT r.id, r.name, r.description FROM `rooms` AS r, `room_users` AS ru WHERE r.id = ru.roomId && ru.userId = ? ORDER BY r.name ASC", [
+			$session->id
+		]);
+
+		foreach (yield $result->fetchAll() as $room) {
+			list($roomId, $roomName, $roomDescription) = $room;
+			$this->rooms[(int) $roomId][$clientId] = $clientId;
+		}
+
+		yield $this->redis->incr("user.{$session->id}.clients-active");
+		yield $this->redis->incr("user.{$session->id}.clients");
+
+		foreach ($this->rooms as $id => $room) {
+			if (in_array($clientId, $room)) {
+				$success = yield $this->redis->smove("room.{$id}.users.inactive", "room.{$id}.users.active", $session->id);
+
+				if (!$success) {
+					yield $this->redis->sadd("room.{$id}.users.active", $session->id);
+				}
+
+				yield $this->setActivity($session->id, $id, "active");
+			}
+		}
 	}
 
 	public function removeClient ($clientId) {
 		$sessionId = $this->clients[$clientId];
 		$userId = $this->sessions[$sessionId]->id;
 
+		if ($this->active[$clientId]) {
+			$active = yield $this->redis->decr("user.{$userId}.clients-active");
+
+			if ($active === 0) {
+				yield $this->redis->del("user.{$userId}.clients-active");
+			}
+		}
+
+		$clients = yield $this->redis->decr("user.{$userId}.clients");
+
+		if ($clients === 0) {
+			yield $this->redis->del("user.{$userId}.clients", "user.{$userId}.clients-active");
+
+			foreach ($this->rooms as $id => $room) {
+				if (in_array($clientId, $room)) {
+					yield $this->redis->srem("room.{$id}.users.active", $userId);
+					yield $this->redis->srem("room.{$id}.users.inactive", $userId);
+					yield $this->setActivity($userId, $id, "offline");
+				}
+			}
+		}
+
 		unset(
 			$this->clients[$clientId],
-			$this->sessions[$sessionId],
 			$this->users[$userId][$clientId]
 		);
 
 		if (empty($this->users[$userId])) {
-			unset($this->users[$userId]);
-
-			foreach($this->rooms as $id => $room) {
-				if(in_array($clientId, $room)) {
-					yield $this->setActivity($userId, $id, "offline");
-				}
-			}
+			unset($this->users[$userId], $this->sessions[$sessionId]);
 		}
 	}
 
@@ -247,13 +289,25 @@ class RoomHandler {
 			$queryResult = yield $query->execute([$roomId]);
 			$users = [];
 
+			$usersActive = yield $this->redis->smembers("room.{$roomId}.users.active");
+			$usersInactive = yield $this->redis->smembers("room.{$roomId}.users.inactive");
+
 			foreach (yield $queryResult->fetchAll() as $user) {
 				list($userId, $userName, $userAvatar) = $user;
+
+				if (in_array($userId, $usersActive)) {
+					$state = "active";
+				} else if (in_array($userId, $usersInactive)) {
+					$state = "inactive";
+				} else {
+					$state = "offline";
+				}
 
 				$users[] = [
 					"id" => $userId,
 					"name" => $userName,
-					"avatar" => $userAvatar
+					"avatar" => $userAvatar,
+					"state" => $state
 				];
 			}
 
@@ -273,7 +327,6 @@ class RoomHandler {
 			];
 
 			$this->rooms[(int) $roomId][$clientId] = $clientId;
-			yield $this->setActivity($session->id, $roomId, "active");
 		}
 
 		yield "send" => json_encode([
@@ -346,19 +399,53 @@ class RoomHandler {
 		yield $this->chatApi->clearPing($session->id, $data->messageId);
 	}
 
-	public function handleActivity($clientId, $data) {
+	public function handleActivity ($clientId, $data) {
 		$session = $this->getSession($clientId);
 
-		if(isset($data->state) && in_array($data->state, ["active", "inactive"])) {
-			foreach($this->rooms as $id => $room) {
-				if(in_array($clientId, $room)) {
-					yield $this->setActivity($session->id, $id, $data->state);
+		if (isset($data->state) && in_array($data->state, ["active", "inactive"])) {
+			$oldState = $this->active[$clientId];
+
+			if ($oldState && $data->state === "inactive") {
+				$this->active[$clientId] = false;
+			} else if (!$oldState && $data->state === "active") {
+				$this->active[$clientId] = true;
+			} else {
+				return;
+			}
+
+			$active = yield $data->state === "active"
+				? $this->redis->incr("user.{$session->id}.clients-active")
+				: $this->redis->decr("user.{$session->id}.clients-active");
+
+			if ($active === 0) {
+				foreach ($this->rooms as $id => $room) {
+					if (in_array($clientId, $room)) {
+						$success = yield $this->redis->smove("room.{$id}.users.active", "room.{$id}.users.inactive", $session->id);
+
+						if (!$success) {
+							yield $this->redis->sadd("room.{$id}.users.inactive", $session->id);
+						}
+
+						yield $this->setActivity($session->id, $id, $data->state);
+					}
+				}
+			} else if ($active === 1 && $data->state === "active") {
+				foreach ($this->rooms as $id => $room) {
+					if (in_array($clientId, $room)) {
+						$success = yield $this->redis->smove("room.{$id}.users.inactive", "room.{$id}.users.active", $session->id);
+
+						if (!$success) {
+							yield $this->redis->sadd("room.{$id}.users.active", $session->id);
+						}
+
+						yield $this->setActivity($session->id, $id, $data->state);
+					}
 				}
 			}
 		}
 	}
 
-	public function setActivity($userId, $roomId, $state) {
+	public function setActivity ($userId, $roomId, $state) {
 		yield $this->redis->publish("chat.room", json_encode([
 			"roomId" => $roomId,
 			"type" => "activity",
