@@ -148,12 +148,6 @@ DataHandler.prototype.onMessage = function (e) {
 						node.scrollTop = node.scrollHeight;
 					}
 				} else {
-					dataHandler.send("message", {
-						roomId: +room,
-						text: text,
-						tempId: tempId
-					});
-
 					var message = nodeFromHTML(templateManager.get("chat_message")({
 						tempId: tempId,
 						roomId: +room,
@@ -178,13 +172,19 @@ DataHandler.prototype.onMessage = function (e) {
 
 					node.appendChild(message);
 
-					var prevNode = prev(node);
+					var prevNode = node.querySelector(".chat-message:last-of-type");
 
 					if (prevNode && +prevNode.getAttribute("data-author") === user.id && moment(prevNode.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 60) {
 						message.classList.add("chat-message-followup");
 					}
 
 					node.scrollTop = node.scrollHeight;
+
+					dataHandler.send("message", {
+						roomId: +room,
+						text: text,
+						tempId: tempId
+					});
 				}
 
 				input.removeAttribute("data-compose");
