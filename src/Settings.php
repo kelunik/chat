@@ -8,9 +8,11 @@ use Tpl;
 
 class Settings {
 	private $db;
+	private $sessionManager;
 
 	public function __construct (Pool $db) {
 		$this->db = $db;
+		$this->sessionManager = new SessionManager;
 	}
 
 	public function showSettings ($request) {
@@ -20,7 +22,7 @@ class Settings {
 		$sessionId = SessionManager::getSessionId($request);
 
 		if ($sessionId !== null) {
-			$session = yield SessionManager::getSessionData($sessionId, $this->db);
+			$session = yield $this->sessionManager->getSession($sessionId, $this->db);
 		}
 
 		if ($sessionId === null || !isset($session)) {
@@ -41,6 +43,7 @@ class Settings {
 		}
 
 		$tpl->set('settings', $settings);
+		$tpl->set('session', $session);
 		yield "body" => $tpl->page();
 	}
 
@@ -51,13 +54,27 @@ class Settings {
 		$sessionId = SessionManager::getSessionId($request);
 
 		if ($sessionId !== null) {
-			$session = yield SessionManager::getSessionData($sessionId, $this->db);
+			$session = yield $this->sessionManager->getSession($sessionId, $this->db);
 		}
 
 		if ($sessionId === null || !isset($session)) {
 			yield "status" => 401;
 			yield "body" => "Please sign in and reload page afterwards.";
 
+			return;
+		}
+
+		if (!isset($request["FORM"]["csrf-token"])) {
+			yield "status" => 401;
+			yield "body" => "";
+			return;
+		}
+
+		$token = $request["FORM"]["csrf-token"];
+
+		if (!is_string($token) || !safe_compare($session->csrfToken, $token)) {
+			yield "status" => 401;
+			yield "body" => "";
 			return;
 		}
 
@@ -81,6 +98,7 @@ class Settings {
 		}
 
 		$tpl->set('settings', $settings);
+		$tpl->set('session', $session);
 		yield "body" => $tpl->page();
 	}
 }
