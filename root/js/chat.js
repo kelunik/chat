@@ -12,6 +12,10 @@ if (window.top != window.self) {
 	var user = new User();
 	var lightBox = new LightBox();
 
+	var isTouchDevice = function() {
+		return "ontouchstart" in window;
+	};
+
 	dataHandler.on("message", messageHandler.handleMessage.bind(messageHandler));
 	dataHandler.on("message-edit", messageHandler.handleMessageEdit.bind(messageHandler));
 	dataHandler.on("missed-query", messageHandler.handleMissedQuery.bind(messageHandler));

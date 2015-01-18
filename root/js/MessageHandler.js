@@ -193,7 +193,31 @@ MessageHandler.prototype.insertMessage = function (room, message, node, init) {
 
 		node.focus();
 		node.selectionStart = node.selectionEnd = node.value.length;
-	})
+	});
+
+	messageNode.addEventListener("longpress", function (e) {
+		var input = document.getElementById("input");
+
+		if (moment(messageNode.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 5 * 60) {
+			input.value = messageNode.getAttribute("data-text");
+			input.setAttribute("data-message", messageNode.getAttribute("data-id"));
+
+			var caretPos = messageNode.getAttribute("data-text").length;
+			if (input.createTextRange) {
+				var range = input.createTextRange();
+				range.move('character', caretPos);
+				range.select();
+			} else {
+				if (input.selectionStart) {
+					input.setSelectionRange(caretPos, caretPos);
+				}
+			}
+		} else {
+			alert('Previous message is older than 5 minutes and cannot be edited!');
+		}
+
+		adjustInput(input);
+	});
 };
 
 MessageHandler.prototype.handleStar = function (type, data) {

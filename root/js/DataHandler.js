@@ -186,6 +186,30 @@ DataHandler.prototype.onMessage = function (e) {
 						text: text,
 						tempId: tempId
 					});
+
+					message.addEventListener("longpress", function (e) {
+						var input = document.getElementById("input");
+
+						if (moment(message.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 5 * 60) {
+							input.value = message.getAttribute("data-text");
+							input.setAttribute("data-message", message.getAttribute("data-id"));
+
+							var caretPos = message.getAttribute("data-text").length;
+							if (input.createTextRange) {
+								var range = input.createTextRange();
+								range.move('character', caretPos);
+								range.select();
+							} else {
+								if (input.selectionStart) {
+									input.setSelectionRange(caretPos, caretPos);
+								}
+							}
+						} else {
+							alert('Previous message is older than 5 minutes and cannot be edited!');
+						}
+
+						adjustInput(input);
+					});
 				}
 
 				input.removeAttribute("data-compose");
