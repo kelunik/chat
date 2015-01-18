@@ -80,6 +80,12 @@ RoomHandler.prototype.handlePing = function (type, data) {
 	var node = this.getTab(data.roomId).querySelector(".pings");
 	var room = this.rooms[data.roomId];
 
+	for(var i = room.pings.length - 1; i >= 0; i--) {
+		if(room.pings[i] === data.messageId) {
+			return;
+		}
+	}
+
 	room.pings.push(data.messageId);
 	node.setAttribute("data-pings", room.pings.length);
 	notificationCenter.checkPings();
