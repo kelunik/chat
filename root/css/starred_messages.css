@@ -14,6 +14,22 @@
     display: inline;
 }
 
+.starred-message pre > code {
+    display: none !important;
+}
+
+.starred-message pre::after {
+    content: "<!-- code -->";
+    background: #222;
+    padding: 3px 5px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    line-height: 14px;
+    color: #eee;
+    font-size: 14px;
+    font-family: "Source Code Pro", monospace;
+}
+
 .starred-message:nth-of-type(2n) {
     background: rgba(0, 0, 0, .055);
 }
