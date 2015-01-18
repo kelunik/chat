@@ -27,6 +27,20 @@ Handlebars.registerHelper('dateformat', function (time) {
 	return moment.unix(time).format("LLL");
 });
 
+var markdown = new Remarkable('full', {
+	html: false,
+	xhtmlOut: false,
+	breaks: true,
+	langPrefix: 'language-',
+	linkify: true,
+	typographer: true,
+	quotes: '“”‘’'
+});
+
+Handlebars.registerHelper('markdown', function (text) {
+	return new Handlebars.SafeString(markdown.render(text));
+});
+
 dataHandler.on("open", function () {
 	var path = window.location.pathname;
 

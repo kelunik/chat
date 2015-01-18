@@ -1,6 +1,6 @@
 <div id="room-info-{{id}}" class="room-info" data-id="{{id}}">
     <h2>{{name}}</h2>
-	{{#if description}}<p>{{description}}</p>{{/if}}
+	{{#if description}}{{{markdown description}}}{{/if}}
     <div id="room-info-people-{{id}}" class="room-info-people">
 		{{#each users}}
             <a href="https://github.com/{{name}}" target="_blank" draggable="true"
