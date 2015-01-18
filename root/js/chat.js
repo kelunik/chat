@@ -17,6 +17,7 @@ dataHandler.on("ping", roomHandler.handlePing.bind(roomHandler));
 dataHandler.on("ping-clear", roomHandler.handlePingClear.bind(roomHandler));
 dataHandler.on("whereami", roomHandler.handleWhereAmI.bind(roomHandler));
 dataHandler.on("activity", roomHandler.handleActivity.bind(roomHandler));
+dataHandler.on("user-join", roomHandler.handleUserJoin.bind(roomHandler));
 
 Handlebars.registerHelper('datetime', function(time) {
 	return moment.unix(time).toISOString();

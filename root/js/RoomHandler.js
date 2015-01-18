@@ -27,7 +27,7 @@ RoomHandler.prototype.handleWhereAmI = function (type, data) {
 RoomHandler.prototype.handleActivity = function (type, data) {
 	var elements = document.getElementsByClassName("user-activity-" + data.userId);
 
-	forEach(elements, function(element) {
+	forEach(elements, function (element) {
 		element.setAttribute("data-state", data.state);
 	});
 };
@@ -80,8 +80,8 @@ RoomHandler.prototype.handlePing = function (type, data) {
 	var node = this.getTab(data.roomId).querySelector(".pings");
 	var room = this.rooms[data.roomId];
 
-	for(var i = room.pings.length - 1; i >= 0; i--) {
-		if(room.pings[i] === data.messageId) {
+	for (var i = room.pings.length - 1; i >= 0; i--) {
+		if (room.pings[i] === data.messageId) {
 			return;
 		}
 	}
@@ -94,11 +94,11 @@ RoomHandler.prototype.handlePing = function (type, data) {
 };
 
 RoomHandler.prototype.handlePingClear = function (type, data) {
-	for(var x in this.rooms) {
+	for (var x in this.rooms) {
 		var room = this.rooms[x];
 
-		for(var i = room.pings.length - 1; i >= 0; i--) {
-			if(room.pings[i] === data.messageId) {
+		for (var i = room.pings.length - 1; i >= 0; i--) {
+			if (room.pings[i] === data.messageId) {
 				var node = roomHandler.getTab(room.id).querySelector(".pings");
 				room.pings.splice(i, 1);
 
@@ -106,6 +106,17 @@ RoomHandler.prototype.handlePingClear = function (type, data) {
 				notificationCenter.checkPings();
 			}
 		}
+	}
+};
+
+RoomHandler.prototype.handleUserJoin = function (type, data) {
+	var room = this.rooms[data.roomId];
+
+	if (room) {
+		room.users.push(data.user);
+
+		var node = nodeFromHTML(templateManager.get("room_info")(room));
+		document.getElementById("room-info-" + data.roomId).innerHTML = node.innerHTML;
 	}
 };
 

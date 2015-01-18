@@ -270,9 +270,25 @@ class RoomHandler {
 		}
 
 		$session = $this->getSession($clientId);
-		$this->db->prepare("INSERT IGNORE INTO room_users (roomId, userId, role, joinedTime) VALUES (?, ?, ?, ?)", [
+		$result = yield $this->db->prepare("INSERT IGNORE INTO room_users (roomId, userId, role, joinedTime) VALUES (?, ?, ?, ?)", [
 			$data->join, $session->id, "WRITER", time()
 		]);
+
+		if($result->affectedRows === 1) {
+			yield $this->redis->publish("chat.room", json_encode([
+				"roomId" => $data->join,
+				"type" => "user-join",
+				"payload" => [
+					"roomId" => $data->join,
+					"user" => [
+						"id" => $session->id,
+						"name" => $session->name,
+						"avatar" => $session->avatar,
+						"state" => "active"
+					]
+				]
+			]));
+		}
 
 		$result = yield $this->db->prepare("SELECT r.id, r.name, r.description FROM `rooms` AS r, `room_users` AS ru WHERE r.id = ru.roomId && ru.userId = ? ORDER BY r.name ASC", [
 			$session->id
