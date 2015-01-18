@@ -57,7 +57,7 @@ RoomHandler.prototype.handleStars = function (type, data) {
 
 	forEach(stars.children, function (o, i) {
 		var node = o.querySelector(".starred-message-text");
-		formatter.formatMessage(node, data.messages[i].messageText.replace(/^:\d+ /, ""), null, data.user);
+		formatter.formatMessage(-1, node, data.messages[i].messageText.replace(/^:\d+ /, ""), null, data.user);
 
 		node = o.querySelector(".starred-message-meta time");
 		node.textContent = moment.unix(data.messages[i].time).fromNow();

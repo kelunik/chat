@@ -17,7 +17,7 @@ MessageHandler.prototype.handleMessage = function (type, data) {
 			node.setAttribute("id", "message-" + data.messageId);
 			node.setAttribute("data-id", data.messageId);
 
-			formatter.formatMessage(node.querySelector(".chat-message-text"), node.getAttribute("data-text"), data.reply, user);
+			formatter.formatMessage(data.roomId, node.querySelector(".chat-message-text"), node.getAttribute("data-text"), data.reply, user);
 			roomHandler.rooms[data.roomId].lastMessage = data.messageId;
 
 			node.querySelector("time").parentNode.href = "/message/" + data.messageId + "#" + data.messageId;
@@ -68,7 +68,9 @@ MessageHandler.prototype.handleMessageEdit = function (type, data) {
 	message.setAttribute("data-edit-id", "");
 	message.setAttribute("data-text", text);
 
-	formatter.formatMessage(message.querySelector(".chat-message-text"), text, data.reply, data.user);
+	var roomId = +message.parentNode.getAttribute("data-id");
+
+	formatter.formatMessage(roomId, message.querySelector(".chat-message-text"), text, data.reply, data.user);
 
 	if (data.error) {
 		alert(data.error);
@@ -79,7 +81,7 @@ MessageHandler.prototype.handleMessageEdit = function (type, data) {
 	message.querySelector(".chat-message-meta").setAttribute("data-edit", data.time);
 
 	if (data.user.id === user.id && data.reply) {
-		var room = roomHandler.rooms[+message.parentNode.getAttribute("data-id")];
+		var room = roomHandler.rooms[roomId];
 
 		for (var i = room.pings.length - 1; i >= 0; i--) {
 			if (room.pings[i] === data.reply.messageId) {
@@ -92,7 +94,7 @@ MessageHandler.prototype.handleMessageEdit = function (type, data) {
 
 	if (starredMessage) {
 		var textNode = starredMessage.parentNode.parentNode.querySelector(".starred-message-text");
-		formatter.formatMessage(textNode, data.text.replace(/^:\d+ /, ""), null, data.user);
+		formatter.formatMessage(-1, textNode, data.text.replace(/^:\d+ /, ""), null, data.user);
 	}
 };
 
@@ -108,7 +110,7 @@ MessageHandler.prototype.insertMessage = function (room, message, node, init) {
 		messageNode.classList.add("chat-message-me");
 	}
 
-	formatter.formatMessage(messageNode.querySelector(".chat-message-text"), message.messageText, message.reply, message.user);
+	formatter.formatMessage(room.id, messageNode.querySelector(".chat-message-text"), message.messageText, message.reply, message.user);
 	messageNode.querySelector("time").textContent = moment.unix(message.time).fromNow();
 	messageNode.querySelector("time").setAttribute("title", moment.unix(message.time).format("LLL"));
 	messageNode.querySelector("time").parentNode.href = "/message/" + message.messageId + "#" + message.messageId;

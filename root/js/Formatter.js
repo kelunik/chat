@@ -36,7 +36,7 @@ var Formatter = function () {
 	this.md.use(new IssueLinker());
 };
 
-Formatter.prototype.formatMessage = function (node, text, reply, user) {
+Formatter.prototype.formatMessage = function (roomId, node, text, reply, user) {
 	node.innerHTML = this.md.render(text);
 
 	forEach(node.querySelectorAll("code:not([class])"), function (o) {
@@ -91,6 +91,23 @@ Formatter.prototype.formatMessage = function (node, text, reply, user) {
 
 	forEach(node.getElementsByTagName("a"), function (o) {
 		o.setAttribute("target", "_blank");
+	});
+
+	forEach(node.getElementsByTagName("img"), function (img) {
+		img.addEventListener("load", function () {
+			if (roomId !== -1) {
+				if (roomHandler.rooms[roomId].defaultScroll) {
+					setTimeout(function () { // we need that timeout, because node is added AFTER this method returns
+						var roomNode = roomHandler.getRoom(roomId);
+						roomNode.scrollTop = roomNode.scrollHeight;
+					}, 100);
+				}
+			}
+		});
+
+		if (img.complete) {
+			img.dispatchEvent(new Event('load'));
+		}
 	});
 
 	return node;

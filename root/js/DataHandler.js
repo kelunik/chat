@@ -113,7 +113,7 @@ DataHandler.prototype.onMessage = function (e) {
 				e.preventDefault();
 
 				var text = input.value;
-				var room = document.getElementsByClassName("room-current")[0].getAttribute("data-id");
+				var room = +document.getElementsByClassName("room-current")[0].getAttribute("data-id");
 
 				if (text === "") {
 					return;
@@ -137,7 +137,7 @@ DataHandler.prototype.onMessage = function (e) {
 					messageNode.classList.add("chat-message-pending");
 					messageNode.setAttribute("data-edit-id", tempId.toString());
 
-					formatter.formatMessage(messageNode.querySelector(".chat-message-text"), text, null, user);
+					formatter.formatMessage(room, messageNode.querySelector(".chat-message-text"), text, null, user);
 					this.removeAttribute("data-compose");
 
 					dataHandler.send("message-edit", {
@@ -152,7 +152,7 @@ DataHandler.prototype.onMessage = function (e) {
 				} else {
 					var message = nodeFromHTML(templateManager.get("chat_message")({
 						tempId: tempId,
-						roomId: +room,
+						roomId: room,
 						messageText: text,
 						user: {
 							id: user.id,
@@ -164,7 +164,7 @@ DataHandler.prototype.onMessage = function (e) {
 						time: moment().unix()
 					}));
 
-					formatter.formatMessage(message.querySelector(".chat-message-text"), text, null, user);
+					formatter.formatMessage(room, message.querySelector(".chat-message-text"), text, null, user);
 
 					message.querySelector("time").textContent = moment().fromNow();
 					message.querySelector("time").setAttribute("title", moment().format("LLL"));
@@ -182,7 +182,7 @@ DataHandler.prototype.onMessage = function (e) {
 					node.scrollTop = node.scrollHeight;
 
 					dataHandler.send("message", {
-						roomId: +room,
+						roomId: room,
 						text: text,
 						tempId: tempId
 					});
