@@ -59,7 +59,10 @@ DataHandler.prototype.onMessage = function (e) {
 		document.getElementById("page").innerHTML = templateManager.get("chat")(user);
 
 		var input = document.getElementById("input");
-		input.focus();
+
+		if (!isTouchDevice()) {
+			input.focus();
+		}
 
 		autocomplete(input);
 
