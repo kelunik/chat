@@ -4,6 +4,12 @@
 	<title>t@lkZone</title>
 	<meta charset="utf-8">
 
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="icon" sizes="192x192" href="/img/icon_192x192.png">
+	<link rel="icon" sizes="128x128" href="/img/icon_128x128.png">
+	<link rel="apple-touch-icon" sizes="128x128" href="/img/icon_128x128.png">
+	<link rel="apple-touch-icon-precomposed" sizes="128x128" href="/img/icon_128x128.png">
+
 	<script>
 		var url = "<?=DEPLOY_HTTPS ? "wss" : "ws"?>://<?=DEPLOY_AUTHORITY?>/chat";
 	</script>
