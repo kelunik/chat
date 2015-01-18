@@ -11,6 +11,7 @@ use Tpl;
 class Auth {
 	private $db;
 	private $redis;
+	private $sessionManager;
 
 	public function __construct (Pool $db) {
 		$this->db = $db;
@@ -18,6 +19,7 @@ class Auth {
 			"host" => "127.0.0.1:6380",
 			"password" => REDIS_PASSWORD
 		]);
+		$this->sessionManager = new SessionManager;
 	}
 
 	public function handleRequest () {
@@ -62,12 +64,14 @@ class Auth {
 			list($id, $username, $mail, $avatar_url) = $login;
 
 			$sessionId = Security::generateSession();
+			$token = Security::generateToken();
 
 			$sessionData = json_encode([
 				"id" => $id,
 				"name" => $username,
 				"mail" => $mail,
-				"avatar" => $avatar_url
+				"avatar" => $avatar_url,
+				"csrfToken" => $token
 			]);
 
 			yield $this->redis->set("session.{$sessionId['server']}", $sessionData);
@@ -76,14 +80,10 @@ class Auth {
 			yield "header" => "Location: /rooms/1";
 			yield "header" => ("Set-Cookie: sess=" . $sessionId["client"] . "; PATH=/");
 			yield "body" => "";
-
-			return;
 		} else {
 			yield "status" => 302;
 			yield "header" => "Location: /auth";
 			yield "body" => "";
-
-			return;
 		}
 	}
 
@@ -129,11 +129,22 @@ class Auth {
 			yield "body" => "";
 		}
 
-		yield $this->redis->del("session.{$sessionId}");
+		$session = yield $this->sessionManager->getSession($sessionId);
 
-		yield "status" => 302;
-		yield "header" => "Location: /auth";
-		yield "header" => "Set-Cookie: sess=; PATH=/"; // TODO: Add negative expire
+		if ($session && isset($request["FORM"]["csrf-token"])) {
+			$token = $request["FORM"]["csrf-token"];
+
+			if (is_string($token) && safe_compare($session->csrfToken, $token)) {
+				yield $this->redis->del("session.{$sessionId}");
+				yield "header" => "Set-Cookie: sess=; PATH=/"; // TODO: Add negative expire
+				yield "status" => 302;
+				yield "header" => "Location: /auth";
+				yield "body" => "";
+				return;
+			}
+		}
+
+		yield "status" => 401;
 		yield "body" => "";
 	}
 }

@@ -14,9 +14,13 @@
 	<script type="text/javascript" src="/js/all.min.js?v=<?= JS_VERSION ?>"></script>
 
 	<script>
-		user.id = <?= (int) $session->id ?>;
-		user.name = "<?= htmlspecialchars($session->name) ?>";
-		user.imageUrl = "<?= htmlspecialchars($session->avatar) ?>";
+		user = {
+			id: <?= (int) $session->id ?>,
+			name: "<?= htmlspecialchars($session->name) ?>",
+			imageUrl: "<?= htmlspecialchars($session->avatar) ?>"
+		};
+
+		window.csrfToken = "<?=htmlspecialchars($session->csrfToken)?>";
 	</script>
 </head>
 <body>

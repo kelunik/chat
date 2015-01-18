@@ -2,9 +2,10 @@
     <div id="left-col">
         <div id="user">
             <span id="current-user">{{name}}</span>
-            <a href="/logout" id="logout" onclick="return confirm('Do you really want to logout?')">
-                <i class="fa fa-power-off" title="logout"></i>
-            </a>
+
+            <form id="logout" action="/logout" method="post">
+                <button type="submit" class="button-no-style"><i class="fa fa-power-off" title="logout"></i></button>
+            </form>
         </div>
         <div id="room-tabs"></div>
     </div>

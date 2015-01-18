@@ -44,3 +44,13 @@ a {
 .timelink:hover {
     text-decoration: underline;
 }
+
+.button-no-style {
+    border: 0;
+    background: transparent;
+    font-size: inherit;
+    font-style: inherit;
+    color: inherit;
+    display: inline;
+    cursor: pointer;
+}

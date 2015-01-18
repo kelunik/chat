@@ -4,15 +4,15 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4f1fab157c97c399ed39ee845f717468",
+    "hash": "f2b2ff30f721d633c85a2c257f82e7e1",
     "packages": [
         {
             "name": "amphp/aerys",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:rdlowrey/Aerys.git",
-                "reference": "df325dd30f57bc5c6543e3acd352cc6945ba4011"
+                "url": "git@github.com:rdlowrey/aerys.git",
+                "reference": "df074a6138c81e26193409e0bd1e97259b5684a3"
             },
             "require": {
                 "amphp/amp": "~0.15.0",
@@ -66,7 +66,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-01-17 18:55:14"
+            "time": "2015-01-18 03:12:59"
         },
         {
             "name": "amphp/amp",
@@ -490,12 +490,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "e29c7b692bae6610b137670d6749151fd6e41608"
+                "reference": "4b192145c623d667afa86c088e9c81e307380641"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/e29c7b692bae6610b137670d6749151fd6e41608",
-                "reference": "e29c7b692bae6610b137670d6749151fd6e41608",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/4b192145c623d667afa86c088e9c81e307380641",
+                "reference": "4b192145c623d667afa86c088e9c81e307380641",
                 "shasum": ""
             },
             "require": {
@@ -534,7 +534,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-12-05 14:17:46"
+            "time": "2015-01-18 13:39:53"
         },
         {
             "name": "tubalmartin/cssmin",

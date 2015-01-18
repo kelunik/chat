@@ -12,14 +12,14 @@ class Page {
 
 	public function __construct (Pool $db) {
 		$this->db = $db;
-		$this->sessionManager = new SessionManager($db);
+		$this->sessionManager = new SessionManager;
 	}
 
 	public function handleRequest ($request) {
 		$sessionId = SessionManager::getSessionId($request);
 
 		if ($sessionId === null) {
-			yield "status" => 303;
+			yield "status" => 302;
 			yield "header" => "Location: /auth";
 			yield "body" => "";
 			return;
@@ -28,7 +28,7 @@ class Page {
 		$session = yield $this->sessionManager->getSession($sessionId);
 
 		if ($session === null) {
-			yield "status" => 303;
+			yield "status" => 302;
 			yield "header" => "Location: /auth";
 			yield "body" => "";
 			return;
