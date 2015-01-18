@@ -13,6 +13,8 @@ DataHandler.prototype.connect = function () {
 
 		this.websocket.onopen = function () {
 			handler.onOpen();
+
+			dataHandler.send("activity", {state: notificationCenter.userActive ? "active" : "inactive"});
 		};
 
 		this.websocket.onmessage = function (e) {
