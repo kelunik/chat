@@ -12,6 +12,12 @@
 	clear: both;
 }
 
+.chat-message-text img {
+	max-height: 130px;
+	max-width: 100%;
+	cursor: pointer;
+}
+
 .chat-message-user {
 	float: left;
 }
@@ -238,8 +244,4 @@ pre code {
 .chat-message-cmd-me .chat-message-content {
 	margin: 6px 10px;
 	padding: 0;
-}
-
-.chat-message-content img {
-	max-width: 100%;
 }

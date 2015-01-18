@@ -10,6 +10,7 @@ if (window.top != window.self) {
 	var messageHandler = new MessageHandler();
 	var roomHandler = new RoomHandler();
 	var user = new User();
+	var lightBox = new LightBox();
 
 	dataHandler.on("message", messageHandler.handleMessage.bind(messageHandler));
 	dataHandler.on("message-edit", messageHandler.handleMessageEdit.bind(messageHandler));
@@ -151,6 +152,10 @@ if (window.top != window.self) {
 	key("pagedown", function () {
 		var node = document.getElementsByClassName("room-current")[0];
 		node.scrollTop += node.clientHeight * .2;
+	});
+
+	key("escape", function () {
+		lightBox.close();
 	});
 
 	var sessionCheck = setInterval(function () {

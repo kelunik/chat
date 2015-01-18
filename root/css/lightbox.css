@@ -1,0 +1,25 @@
+#lightbox {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, .75);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+}
+
+#lightbox-dialog {
+	background: rgba(255, 255, 255, .95);
+	box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+	border-radius: 5px;
+	padding: 5px;
+	font-size: 0;
+}
+
+#lightbox-dialog img {
+	max-height: 90vh;
+	max-width: 90vw;
+}

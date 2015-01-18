@@ -108,6 +108,21 @@ Formatter.prototype.formatMessage = function (roomId, node, text, reply, user) {
 		if (img.complete) {
 			img.dispatchEvent(new Event('load'));
 		}
+
+		img.addEventListener("click", function() {
+			var e = img;
+
+			// don't enlarge linked images
+			while(e.parentNode !== null) {
+				if(e.parentNode.hasAttribute("href")) {
+					return;
+				}
+
+				e = e.parentNode;
+			}
+
+			lightBox.showImage(img.src);
+		});
 	});
 
 	return node;
