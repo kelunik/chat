@@ -55,6 +55,18 @@ class RoomHandler {
 	}
 
 	public function init () {
+		$keys = yield $this->redis->keys("user.*");
+
+		foreach ($keys as $key) {
+			yield $this->redis->del($key);
+		}
+
+		$keys = yield $this->redis->keys("room.*");
+
+		foreach ($keys as $key) {
+			yield $this->redis->del($key);
+		}
+
 		$this->listener->subscribe("chat.room", yield "bind" => function ($payload) {
 			$payload = json_decode($payload);
 
@@ -274,7 +286,7 @@ class RoomHandler {
 			$data->join, $session->id, "WRITER", time()
 		]);
 
-		if($result->affectedRows === 1) {
+		if ($result->affectedRows === 1) {
 			yield $this->redis->publish("chat.room", json_encode([
 				"roomId" => $data->join,
 				"type" => "user-join",
