@@ -98,6 +98,7 @@ class GithubApi {
 				foreach ($data as $entry) {
 					if ($entry->primary) {
 						$future->succeed($entry->email);
+						return;
 					}
 				}
 
