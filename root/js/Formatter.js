@@ -113,7 +113,7 @@ Formatter.prototype.formatMessage = function (roomId, node, text, reply, user) {
 			var e = img;
 
 			// don't enlarge linked images
-			while(e.parentNode !== null) {
+			while("hasAttribute" in e.parentNode) {
 				if(e.parentNode.hasAttribute("href")) {
 					return;
 				}
