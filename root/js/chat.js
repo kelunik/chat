@@ -141,12 +141,12 @@ key("end", function () {
 
 key("pageup", function () {
 	var node = document.getElementsByClassName("room-current")[0];
-	node.scrollTop -= node.clientHeight * .5;
+	node.scrollTop -= node.clientHeight * .2;
 });
 
 key("pagedown", function () {
 	var node = document.getElementsByClassName("room-current")[0];
-	node.scrollTop += node.clientHeight * .5;
+	node.scrollTop += node.clientHeight * .2;
 });
 
 var sessionCheck = setInterval(function () {

@@ -331,6 +331,21 @@ DataHandler.prototype.onMessage = function (e) {
 					this.selectionEnd = this.value.length - after.length;
 				}
 			}
+
+			else if (e.which == 33) {
+				var roomNode = document.querySelector(".room-current");
+				roomNode.scrollTop -= roomNode.clientHeight * .2;
+			}
+
+			else if (e.which == 34) {
+				var roomNode = document.querySelector(".room-current");
+				roomNode.scrollTop += roomNode.clientHeight * .2;
+			}
+
+			else if (e.which === 35) {
+				var roomNode = document.querySelector(".room-current");
+				roomNode.scrollTop = roomNode.scrollHeight;
+			}
 		});
 	}
 
