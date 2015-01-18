@@ -19,11 +19,11 @@ dataHandler.on("whereami", roomHandler.handleWhereAmI.bind(roomHandler));
 dataHandler.on("activity", roomHandler.handleActivity.bind(roomHandler));
 dataHandler.on("user-join", roomHandler.handleUserJoin.bind(roomHandler));
 
-Handlebars.registerHelper('datetime', function(time) {
+Handlebars.registerHelper('datetime', function (time) {
 	return moment.unix(time).toISOString();
 });
 
-Handlebars.registerHelper('dateformat', function(time) {
+Handlebars.registerHelper('dateformat', function (time) {
 	return moment.unix(time).format("LLL");
 });
 
@@ -153,6 +153,15 @@ var sessionCheck = setInterval(function () {
 
 	http.send(null);
 }, 60 * 1000);
+
+window.addEventListener("resize", function () {
+	for (var id in roomHandler.rooms) {
+		if (roomHandler.rooms.hasOwnProperty(id) && roomHandler.rooms[id].defaultScroll) {
+			var node = roomHandler.getRoom(id);
+			node.scrollTop = node.scrollHeight;
+		}
+	}
+});
 
 // "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 // ^ smallest valid gif, set when GitHub images is not available or in dev mode without internet connection
