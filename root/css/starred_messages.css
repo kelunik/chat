@@ -1,7 +1,7 @@
 .starred-message {
-    padding: 10px 12px;
-    background: rgba(0, 0, 0, .015);
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
+	padding: 10px 12px;
+	background: rgba(0, 0, 0, .015);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 .starred-message h1,
@@ -10,63 +10,82 @@
 .starred-message h4,
 .starred-message h5,
 .starred-message h6 {
-    font-size: 13px;
-    display: inline;
+	font-size: 13px;
+	display: inline;
 }
 
 .starred-message pre > code {
-    display: none !important;
+	display: none !important;
+}
+
+.starred-message img {
+	display: block;
+	margin: 6px 10px 6px 0;
+	max-height: 40px;
+	width: 100%;
+	box-shadow: 0 0 3px rgba(0, 0, 0, .1);
 }
 
 .starred-message pre::after {
-    content: "<!-- code -->";
-    background: #222;
-    padding: 3px 5px;
-    border-radius: 3px;
-    border: 1px solid rgba(0, 0, 0, .1);
-    line-height: 14px;
-    color: #eee;
-    font-size: 14px;
-    font-family: "Source Code Pro", monospace;
+	content: "<!-- code -->";
+	background: #222;
+	padding: 3px 5px;
+	border-radius: 3px;
+	border: 1px solid rgba(0, 0, 0, .1);
+	line-height: 14px;
+	color: #eee;
+	font-size: 14px;
+	font-family: "Source Code Pro", monospace;
 }
 
 .starred-message:nth-of-type(2n) {
-    background: rgba(0, 0, 0, .055);
+	background: rgba(0, 0, 0, .055);
 }
 
 .starred-message-text p {
-    padding: 0;
-    margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 .starred-message-meta {
-    color: #666;
+	color: #666;
 }
 
 .star-message {
-    cursor: pointer;
-    float: right;
-    font-size: .75em;
-    margin: 3px 0 3px 3px;
+	cursor: pointer;
+	float: right;
+	font-size: .75em;
+	margin: 3px 0 3px 3px;
 }
 
 .star-message[data-stars]::before {
-    content: attr(data-stars) " " "\f006";
+	content: attr(data-stars) " " "\f006";
+	z-index: 3;
+	position: relative;
+	background: #fff;
+	padding: 0 8px;
+	border: 1px solid rgba(0, 0, 0, .2);
+	box-shadow: 1px 0 2px rgba(0, 0, 0, .15), 0 0 8px rgba(0, 0, 0, .05);
+	border-radius: 10px;
+	line-height: 20px;
+	height: 20px;
+	display: inline-block;
+	transform: translate(5px, -5px);
 }
 
 .star-message[data-stars][data-starred="1"]::before {
-    content: attr(data-stars) " " "\f005";
-    color: rgb(0, 100, 200);
+	content: attr(data-stars) " " "\f005";
+	color: rgb(0, 100, 200);
 }
 
 .star-message[data-stars="0"]::before {
-    content: "\f006";
+	content: "\f006";
 }
 
 .stars {
-    display: none;
+	display: none;
 }
 
 .stars-current {
-    display: block;
+	display: block;
 }
