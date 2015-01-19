@@ -17,6 +17,12 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+	border: 1px solid rgba(0, 0, 0, .15);
+	border-bottom: 0;
+	border-top: 0;
+	background: #fefefe;
+	margin-left: 5px;
 }
 
 #right-col {
@@ -25,7 +31,36 @@
 	width: 280px;
 	position: relative;
 	background: #f6f6f6;
-	box-shadow: 3px 0 3px -3px rgba(0, 0, 0, .2) inset;
+	display: flex;
+	flex-flow: column;
+	padding-left: 5px;
+}
+
+#room-infos, #stars {
+	box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+	border: 1px solid rgba(0, 0, 0, .15);
+	border-right: 0;
+	background: #fefefe;
+}
+
+.room-info-people {
+	border-top: 1px solid rgba(0, 0, 0, .1);
+	margin: 0 -10px -10px -10px;
+	padding: 10px 10px 6px 10px;
+	background: rgba(0, 0, 0, .03);
+	box-shadow: 0 3px 3px -3px rgba(0, 0, 0, .1) inset;
+}
+
+#room-infos {
+	border-top: 0;
+}
+
+#stars {
+	border-bottom: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin-top: 5px;
+	flex: 2;
 }
 
 #transcript {
