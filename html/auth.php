@@ -9,7 +9,7 @@
 	<link rel="icon" sizes="128x128" href="/img/icon_128x128.png">
 	<link rel="apple-touch-icon" sizes="128x128" href="/img/icon_128x128.png">
 	<link rel="apple-touch-icon-precomposed" sizes="128x128" href="/img/icon_128x128.png">
-	<link rel="manifest" href="manifest.json">
+	<link rel="manifest" href="/manifest.json">
 
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Pacifico|Lato">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
