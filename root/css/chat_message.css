@@ -1,15 +1,24 @@
 .chat-message {
-	margin: 16px 0 8px 0;
-	padding: 4px 15px 0 15px;
+	margin: 3px 0 0 0;
+	padding: 0 15px;
 	border-top: 1px solid rgba(0, 0, 0, .05);
 	border-bottom: 1px solid transparent;
 	line-height: 20px;
+}
+
+.chat-message:last-child {
+	margin-bottom: 8px;
 }
 
 .chat-message::after {
 	content: "";
 	display: table;
 	clear: both;
+}
+
+.chat-message-followup {
+	border-top: 1px solid transparent;
+	margin-top: 0;
 }
 
 .chat-message-text img {
@@ -20,6 +29,12 @@
 
 .chat-message-user {
 	float: left;
+	margin-top: 8px;
+}
+
+.chat-message-user img {
+	border-radius: 50%;
+	box-shadow: 0 0 3px rgba(0, 0, 0, .2);
 }
 
 .chat-message-content {
@@ -28,7 +43,7 @@
 }
 
 .chat-message-meta {
-	padding: 5px 0;
+	padding: 8px 0 4px 0;
 	font-size: .9em;
 	color: #666;
 }
@@ -39,7 +54,8 @@
 
 .chat-message-text p {
 	margin: 5px 0;
-	line-height: 1.75em;
+	padding: 0;
+	line-height: 25px;
 }
 
 .chat-message-text p:first-of-type {
@@ -95,11 +111,6 @@
 	border-left: 3px solid rgba(0, 100, 200, 0.85);
 }
 
-.chat-message-followup {
-	margin-top: -12px;
-	border-top: 1px solid transparent;
-}
-
 .chat-message-followup .chat-message-user,
 .chat-message-followup .chat-message-meta {
 	display: none;
@@ -129,7 +140,7 @@
 .chat-message-icons {
 	float: right;
 	font-size: .75em;
-	margin: 3px 0 4px 4px;
+	margin: 3px 0 0 4px;
 	display: inline-block;
 	transform: translateY(-24px);
 }
