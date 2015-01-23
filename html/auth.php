@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>t@lkZone</title>
 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta name="mobile-web-app-capable" content="yes">
 	<link rel="icon" sizes="192x192" href="/img/icon_192x192.png">
 	<link rel="icon" sizes="128x128" href="/img/icon_128x128.png">
@@ -15,89 +16,134 @@
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 	<style>
+		* {
+			text-size-adjust: none;
+		}
+
 		html, body {
-			font-size: 14px;
+			font-size: 15px;
 			font-family: Lato, sans-serif;
 			margin: 0;
 			min-height: 100vh;
+			background: #fafafa;
 		}
 
-		body {
-			background: #222228 no-repeat center fixed;
-			background-size: cover;
+		#page {
+			min-height: 100vh;
+			display: flex;
+			flex-flow: column;
 		}
 
-		#welcome {
-			margin: 0 auto 50px 0;
-			padding-top: 50px;
-			padding-bottom: 30px;
-			font-size: 20px;
+		a {
+			font-weight: bold;
+			text-decoration: none;
+			color: rgba(0, 100, 200, .85);
+		}
+
+		a:hover {
+			text-decoration: underline;
+			color: rgb(0, 100, 200);
+		}
+
+		#nav {
+			height: 54px;
+			background: #111;
 			text-align: center;
-			color: white;
-			background: rgba(0, 0, 0, .2);
-			border-bottom: 1px solid rgba(0, 0, 0, .1);
-			box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, .2) inset;
+			line-height: 52px;
+			border-bottom: 1px solid rgba(255, 255, 255, .1);
+			flex: 0 0 auto;
+		}
+
+		#nav img {
+			vertical-align: middle;
+			transform: translateY(-7px); /* FIXME: position without translate */
 		}
 
 		h1 {
 			font-family: 'Pacifico', cursive;
 			font-weight: normal;
-			font-size: 40px;
-			margin: 10px 0 -5px 0;
-			padding: 10px 0;
+			font-size: 26px;
+			line-height: 52px;
+			margin: 0 0 0 20px;
+			padding: 0;
+			display: inline-block;
+			color: #fafafa;
 		}
 
-		#login, #about {
-			font-size: 18px;
-			color: #eee;
+		#content {
+			display: flex;
+			padding: 20px 0;
+			flex: 2;
+		}
+
+		#about {
 			text-align: center;
-			margin-top: 50px;
-			line-height: 30px;
+			padding: 20px;
+			margin: auto;
+			box-shadow: 0 0 3px rgba(0, 0, 0, .1);
+			border-radius: 3px;
+			border: 1px solid rgba(0, 0, 0, .1);
+			border-bottom: 1px solid rgba(0, 0, 0, .175);
 		}
 
-		#login a {
+		h2 {
+			line-height: 40px;
+			font-size: 22px;
+			margin: 0 0 10px 0;
+		}
+
+		#login {
 			text-decoration: none;
 			font-weight: bold;
-			color: #222228;
+			color: #fff;
+			margin: 25px 0 5px 0;
 			padding: 20px;
 			display: inline-block;
 			background: #31a354;
 			border-radius: 30px;
 			line-height: 20px;
-			border: 1px solid rgba(255, 255, 255, .5);
-			box-shadow: 0 0 8px rgba(0, 0, 0, .3);
+			border: 1px solid rgba(0, 0, 0, .2);
+			box-shadow: 0 0 8px rgba(0, 0, 0, .1) inset;
 			position: relative;
 		}
 
-		h2 {
-			font-family: 'Pacifico', cursive;
-			margin: 10px 0;
-			font-weight: normal;
+		.fa-github {
+			font-size: 20px;
+			line-height: 14px;
+		}
+
+		#footer {
+			background: rgba(0, 0, 0, .05);
+			border-top: 1px solid rgba(0, 0, 0, .1);
+			padding: 10px;
+			font-size: 13px;
+			color: #666;
+			font-weight: bold;
+			text-align: center;
 		}
 	</style>
 </head>
 <body>
 <div id="page">
-	<div id="welcome">
+	<div id="nav">
+		<img src="/img/logo.png" width="40px" height="40px">
+
 		<h1>t@lkZone</h1>
-
-        <span>
-			That's what developers need.
-		</span>
 	</div>
 
-	<div id="login">
-		<a href="/auth/github">
-			<i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;Sign in with GitHub
-		</a>
+	<div id="content">
+		<div id="about">
+			<h2>What's t@lkZone?</h2>
+			t@lkZone is a new chat based on <a href="https://github.com/amphp" target="_blank">amp</a> software stack.
+			<br>
+			<a href="/auth/github" id="login">
+				<i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;Sign in with GitHub
+			</a>
+		</div>
 	</div>
 
-	<div id="about">
-		<h2>What's t@lkZone?</h2>
-
-		t@lkZone is a new chat based on aerys and amp-mysql.<br>
-		Its aim is to bring developers together and integrate GitHub<br>
-		and other services directly into the chat.
+	<div id="footer">
+		© <?= date('Y') ?> amphp and contributors
 	</div>
 </div>
 </body>
