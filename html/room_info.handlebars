@@ -7,7 +7,7 @@
                ondragstart="event.dataTransfer.setData('text/plain', '@{{name}}')">
                 <div id="room-info-{{this.id}}-person-{{id}}"
                      class="user-avatar user-activity user-activity-{{id}}"
-                     style="background-image: url({{avatar}}&s=30);"
+                     style="background-image: url('{{{avatar avatar}}}');"
                      title="{{name}}"
                      data-state="{{state}}">
                 </div>

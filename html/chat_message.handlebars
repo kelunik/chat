@@ -4,7 +4,7 @@
      data-author="{{user.id}}"
 	 {{#if reply}}data-reply="{{reply.messageId}}"{{/if}}>
     <div class="chat-message-user">
-        <img src="{{user.avatar}}&s=30" width="30px" height="30px"
+        <img src="{{{avatar user.avatar}}}" width="30px" height="30px"
              draggable="true" ondragstart="event.dataTransfer.setData('text/plain', '@{{user.name}}')"
              onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus();">
     </div>

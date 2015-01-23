@@ -36,6 +36,12 @@ if (window.top != window.self) {
 		return moment.unix(time).format("LLL");
 	});
 
+	window.devicePixelRatio = window.devicePixelRatio || 1;
+
+	Handlebars.registerHelper('avatar', function (url) {
+		return url + "&s=" + Math.round(window.devicePixelRatio * 30);
+	});
+
 	var markdown = new Remarkable('full', {
 		html: false,
 		xhtmlOut: false,
