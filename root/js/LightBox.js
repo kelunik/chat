@@ -28,6 +28,8 @@ LightBox.prototype.showImage = function (src) {
 	img.src = src;
 
 	box.innerHTML = img.outerHTML;
+
+	ga('send', 'event', 'chat', 'lightbox-image');
 };
 
 LightBox.prototype.close = function() {

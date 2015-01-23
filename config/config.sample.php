@@ -47,7 +47,11 @@ const DEPLOY_PORT = 8080;
 # specify SMTP settings for email notifications
 # currently, ssl is always used and there's no option to disable it
 # feel free to add some PR that introduces such an option
-const MAIL_SERVER = '';
+const MAIL_SERVER = "";
 const MAIL_PORT = 465;
-const MAIL_USER = '';
-const MAIL_PASS = '';
+const MAIL_USER = "";
+const MAIL_PASS = "";
+
+# Tracking
+# --------
+const GA_CODE = "";

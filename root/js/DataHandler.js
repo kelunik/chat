@@ -152,6 +152,8 @@ DataHandler.prototype.onMessage = function (e) {
 					if (shouldScroll) {
 						node.scrollTop = node.scrollHeight;
 					}
+
+					ga('send', 'event', 'chat', 'edit');
 				} else {
 					var message = nodeFromHTML(templateManager.get("chat_message")({
 						tempId: tempId,
@@ -213,6 +215,8 @@ DataHandler.prototype.onMessage = function (e) {
 
 						adjustInput(input);
 					});
+
+					ga('send', 'event', 'chat', 'create');
 				}
 
 				input.removeAttribute("data-compose");
