@@ -8,8 +8,8 @@
 }
 
 #current-user {
-    height: 40px;
-    line-height: 40px;
+    height: 50px;
+    line-height: 50px;
     padding: 0 10px;
     flex-grow: 1;
 }
@@ -18,9 +18,9 @@
 #mobile-menu-switch {
     flex-grow: 0;
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
     text-align: center;
     color: #fafafa;
 }
