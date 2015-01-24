@@ -26,7 +26,7 @@ class Chat implements Websocket {
 	}
 
 	public function onOpen ($clientId, array $request) {
-		$origin = empty($request["HTTP_ORIGIN"]) ? null : $request["HTTP_ORIGIN"];
+		$origin = $request["HTTP_ORIGIN"] ?? null;
 
 		if ($origin !== DEPLOY_URL) {
 			yield "status" => 400;
