@@ -29,7 +29,8 @@ class Chat implements Websocket {
 		$origin = $request["HTTP_ORIGIN"] ?? null;
 
 		if ($origin !== DEPLOY_URL) {
-			yield "status" => 400;
+			yield "status" => 403;
+			yield "reason" => "Forbidden";
 			yield "header" => "Access-Control-Allow-Origin: " . DEPLOY_URL;
 			return;
 		}
