@@ -22,6 +22,12 @@ class Auth {
 		$this->sessionManager = new SessionManager;
 	}
 
+	public function redirect () {
+		yield "status" => 302;
+		yield "header" => "Location: /auth";
+		yield "body" => "";
+	}
+
 	public function handleRequest () {
 		$tpl = new Tpl(new Parsedown);
 		$tpl->load(TEMPLATE_DIR . "auth.php", Tpl::LOAD_PHP);
