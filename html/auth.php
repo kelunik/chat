@@ -191,6 +191,16 @@
 
 	loadCSS("//fonts.googleapis.com/css?family=Pacifico|Lato");
 	loadCSS("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
+
+	window.addEventListener('load', function(e) {
+		window.applicationCache.addEventListener('updateready', function(e) {
+			if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+				if (confirm('A new version of this site is available. Load it?')) {
+					window.location.reload();
+				}
+			}
+		}, false);
+	}, false);
 </script>
 
 </body>
