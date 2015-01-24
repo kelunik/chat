@@ -14,7 +14,8 @@
     flex-grow: 1;
 }
 
-#logout {
+#logout,
+#mobile-menu-switch {
     flex-grow: 0;
     flex-shrink: 0;
     width: 40px;

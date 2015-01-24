@@ -1,6 +1,12 @@
 <div id="chat">
+    <input class="no-display" id="mobile-menu-switch-checkbox" type="checkbox">
+
     <div id="left-col">
         <div id="user">
+            <label class="mobile-only" id="mobile-menu-switch" for="mobile-menu-switch-checkbox">
+                <i class="fa fa-fw fa-navicon fa-lg"></i>
+            </label>
+
             <span id="current-user">{{name}}</span>
 
             <form id="logout" action="/logout" method="post">
