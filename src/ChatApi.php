@@ -28,7 +28,7 @@ class ChatApi {
 		$pings = array_unique(array_merge($pings, yield $this->getPings($roomId, $messageText)));
 
 		$result = yield $this->db->prepare("INSERT INTO messages (`roomId`, `userId`, `text`, `replyTo`, `time`) VALUES (?, ?, ?, ?, ?)", [
-			$roomId, yield $user->getId(), $messageText, $reply->messageId ?? null, $time
+			$roomId, $user->getId(), $messageText, $reply->messageId ?? null, $time
 		]);
 
 		yield $this->addPings($user, $roomId, $result->insertId, $pings);
