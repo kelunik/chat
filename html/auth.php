@@ -120,6 +120,10 @@
 			font-weight: bold;
 			text-align: center;
 		}
+
+		.pending {
+			opacity: 0.6;
+		}
 	</style>
 
 	<script>
@@ -153,8 +157,15 @@
 			t@lkZone is a new chat based on <a href="https://github.com/amphp" target="_blank">amp</a> software stack.
 			<br>
 			<a href="/auth/github" id="login">
-				<i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;Sign in with GitHub
+				<i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
 			</a>
+
+			<script>
+				document.getElementById("login").addEventListener("click", function(e) {
+					this.querySelector("span").textContent = "Signing in ...";
+					this.classList.add("pending");
+				});
+			</script>
 		</div>
 	</div>
 
