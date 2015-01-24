@@ -4,7 +4,7 @@ if [ -z "$hardpath" ]; then
 	hardpath="$0"
 fi
 cd `dirname $hardpath`/..
-sudo git reset --hard
-sudo git pull
-sudo composer install
-sudo php deploy/deploy.php
+git reset --hard
+git pull
+composer install
+php deploy/deploy.php
