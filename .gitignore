@@ -6,4 +6,6 @@
 /root/js/all.min.js
 /root/js/all.min.js.map
 
-root/all.min.js.map
+/root/all.min.js.map
+
+/root/manifest.appcache

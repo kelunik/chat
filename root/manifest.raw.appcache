@@ -1,0 +1,13 @@
+CACHE MANIFEST
+
+CACHE:
+/auth
+/css/all.min.css
+/js/all.min.js
+/img/logo_40x40.png
+/img/php7.png
+
+NETWORK:
+*
+
+FALLBACK:
