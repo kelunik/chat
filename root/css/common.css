@@ -88,6 +88,28 @@ a {
     #mobile-menu-switch-checkbox:not(:checked) + #left-col {
         overflow: hidden;
     }
+
+    .chat-message-user {
+        float: none !important;
+        position: absolute !important;
+        right: 10px !important;
+        margin-top: 0 !important;
+        top: 7px !important;
+    }
+
+    .chat-message-user img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .chat-message-content {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    .chat-message-icons {
+        display: none !important;
+    }
 }
 
 .button-no-style {
