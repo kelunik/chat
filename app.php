@@ -20,6 +20,20 @@ const KEEP_ALIVE_TIMEOUT = 30;
 
 /* --- http://localhost:8080/ or http://127.0.0.1:8080/  (all IPv4 interfaces) ------------------ */
 
+$manifest = file_get_contents(__DIR__ . "/root/manifest.appcache");
+$manifestResponder = function () use ($manifest) {
+	return [
+		"header" => [
+			"Content-Type: text/cache-manifest; charset=utf-8",
+			"Cache-Control: no-cache, no-store, must-revalidate",
+			"Pragma: no-cache",
+			"Expires: 0",
+		],
+		"body" => $manifest
+	];
+};
+
+
 $connect = sprintf("host=%s;user=%s;pass=%s;db=%s", DB_HOST, DB_USER, DB_PASS, DB_DB);
 $db = new Pool($connect);
 $tpl = new Tpl(new Parsedown);
@@ -45,4 +59,5 @@ $host = (new Aerys\Host)
 	->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
 	->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
 	->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
-	->addWebsocket("/chat", $chatHandler);
+	->addWebsocket("/chat", $chatHandler)
+	->addRoute('GET', '/manifest.appcache', $manifestResponder);

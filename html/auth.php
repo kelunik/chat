@@ -179,7 +179,7 @@
 			</a>
 
 			<script>
-				document.getElementById("login").addEventListener("click", function(e) {
+				document.getElementById("login").addEventListener("click", function (e) {
 					this.querySelector("span").textContent = "Signing in ...";
 					this.classList.add("pending");
 				});
@@ -210,15 +210,25 @@
 	loadCSS("//fonts.googleapis.com/css?family=Pacifico|Lato");
 	loadCSS("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
 
-	window.addEventListener('load', function(e) {
-		window.applicationCache.addEventListener('updateready', function(e) {
-			if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-				if (confirm('A new version of this site is available. Load it?')) {
-					window.location.reload();
+	(function() {
+		"use strict";
+
+		var interval = setInterval(function () {
+			window.applicationCache.update();
+		}, 300000);
+
+		window.addEventListener('load', function (e) {
+			window.applicationCache.addEventListener('updateready', function (e) {
+				if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+					if (confirm('A new version of this site is available. Load it?')) {
+						window.location.reload();
+					} else {
+						window.clearInterval(interval);
+					}
 				}
-			}
+			}, false);
 		}, false);
-	}, false);
+	})();
 </script>
 
 </body>
