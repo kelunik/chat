@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys.git",
-                "reference": "aa4303992e3393246aabf071acf56282d7e207d2"
+                "reference": "b5c67c6dff99495549e4e64469a6cfcd489d748d"
             },
             "require": {
                 "amphp/amp": "~0.15.0",
@@ -66,7 +66,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-01-22 06:15:16"
+            "time": "2015-01-24 03:39:53"
         },
         {
             "name": "amphp/amp",
@@ -133,12 +133,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/artax.git",
-                "reference": "3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe"
+                "reference": "6aecdad900213aed7fae4c77aef09608079ee364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/artax/zipball/3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe",
-                "reference": "3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe",
+                "url": "https://api.github.com/repos/amphp/artax/zipball/6aecdad900213aed7fae4c77aef09608079ee364",
+                "reference": "6aecdad900213aed7fae4c77aef09608079ee364",
                 "shasum": ""
             },
             "require": {
@@ -178,7 +178,7 @@
                 "parallel",
                 "rest"
             ],
-            "time": "2015-01-05 19:28:04"
+            "time": "2015-01-24 02:40:12"
         },
         {
             "name": "amphp/dns",

@@ -64,6 +64,12 @@ a {
         width: auto !important;
         position: relative;
         height: 40px;
+        border: 0 !important;
+    }
+
+    #main-col {
+        border: 0 !important;
+        margin: 0 !important;
     }
 
     #right-col {
