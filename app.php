@@ -30,7 +30,7 @@ $transcriptHandler = new Transcript($db);
 $sessionHandler = new Session($db, \Amp\getReactor());
 $settingsHandler = new Settings($db);
 
-$host = (new Aerys\Host(DEPLOY_DOMAIN))
+$host = (new Aerys\Host)
 	->setPort(DEPLOY_PORT)
 	->setName(DEPLOY_DOMAIN)
 	->setRoot(__DIR__ . "/root", ["mimeTypes" => ["js" => "text/javascript", "appcache" => "text/cache-manifest"]])
