@@ -23,9 +23,9 @@ $len = strlen($css);
 
 $compressor = new CSSmin();
 $compressor->set_memory_limit('256M');
-$css .= $compressor->run($css);
+$css = $compressor->run($css);
 
-print "compress css: " . $len / strlen($css) . "\n";
+print "compress css: " . strlen($css) / $len . "\n";
 
 $before = md5(@file_get_contents($output));
 $after = md5($css);
