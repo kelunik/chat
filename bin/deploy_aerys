@@ -6,5 +6,5 @@ fi
 cd `dirname $hardpath`/..
 sudo git reset --hard
 sudo git pull
-sudo composer.phar install
+sudo composer install
 sudo php deploy/deploy.php
