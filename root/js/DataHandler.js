@@ -378,6 +378,8 @@ DataHandler.prototype.onMessage = function (e) {
 				roomNode.scrollTop = roomNode.scrollHeight;
 			}
 		});
+
+		console.timeEnd("pageload");
 	}
 
 	var payload = null;

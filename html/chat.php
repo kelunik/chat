@@ -4,6 +4,10 @@
 	<title>t@lkZone</title>
 	<meta charset="utf-8">
 
+	<script>
+		console.time("pageload");
+	</script>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta name="mobile-web-app-capable" content="yes">
 	<link rel="icon" sizes="192x192" href="/img/icon_192x192.png">
