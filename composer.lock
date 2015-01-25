@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys.git",
-                "reference": "b5c67c6dff99495549e4e64469a6cfcd489d748d"
+                "reference": "fae1d516b1c9bbadea5ad80d7fe3e5ebb67b1a19"
             },
             "require": {
                 "amphp/amp": "~0.15.0",
@@ -66,7 +66,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-01-24 03:39:53"
+            "time": "2015-01-25 03:40:52"
         },
         {
             "name": "amphp/amp",
