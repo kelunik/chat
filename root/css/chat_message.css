@@ -51,7 +51,7 @@
 }
 
 .chat-message-text {
-	word-break: break-all;
+	word-wrap: break-word;
 }
 
 .chat-message-text p {
@@ -103,7 +103,7 @@
 
 .chat-message pre, code {
 	white-space: pre-wrap !important;
-	word-break: break-all;
+	word-wrap: break-word;
 }
 
 .chat-message blockquote {
