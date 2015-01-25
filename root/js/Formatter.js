@@ -39,10 +39,6 @@ var Formatter = function () {
 Formatter.prototype.formatMessage = function (roomId, node, text, reply, user) {
 	node.innerHTML = this.md.render(text);
 
-	forEach(node.querySelectorAll("code:not([class])"), function (o) {
-		o.innerHTML = hljs.highlightAuto(o.textContent).value;
-	});
-
 	if (text.indexOf("/me ") === 0) {
 		node.parentNode.parentNode.classList.remove("chat-message-followup");
 		node.parentNode.parentNode.classList.add("chat-message-cmd-me");

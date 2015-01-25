@@ -5,6 +5,7 @@
 	border-bottom: 1px solid transparent;
 	line-height: 20px;
 	position: relative;
+	max-width: 100%;
 }
 
 .chat-message:last-child {
@@ -50,7 +51,7 @@
 }
 
 .chat-message-text {
-
+	word-break: break-all;
 }
 
 .chat-message-text p {

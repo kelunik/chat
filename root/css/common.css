@@ -1,123 +1,129 @@
 html, body {
-    margin: 0;
-    font-size: 14px;
-    font-family: 'Lato', sans-serif;
-    overflow: hidden;
-    tab-size: 4;
+	margin: 0;
+	font-size: 14px;
+	font-family: 'Lato', sans-serif;
+	overflow: hidden;
+	tab-size: 4;
 }
 
 a {
-    font-weight: bold;
-    text-decoration: none;
-    color: rgb(0, 100, 200);
+	font-weight: bold;
+	text-decoration: none;
+	color: rgb(0, 100, 200);
 }
 
 .textLeft {
-    text-align: left;
+	text-align: left;
 }
 
 .textCenter {
-    text-align: center;
+	text-align: center;
 }
 
 .textRight {
-    text-align: right;
+	text-align: right;
 }
 
 .left {
-    float: left;
+	float: left;
 }
 
 .center {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 .right {
-    float: right;
+	float: right;
 }
 
 .timelink {
-    color: #666;
-    font-weight: normal;
+	color: #666;
+	font-weight: normal;
 }
 
 .timelink:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .no-display,
 .mobile-only {
-    display: none;
+	display: none;
 }
 
 /* smartphones */
-@media only screen and (max-width : 320px) {
-    .mobile-only {
-        display: block;
-    }
+@media only screen and (max-width: 320px) {
+	.mobile-only {
+		display: block;
+	}
 
-    #chat {
-        flex-flow: column;
-    }
+	#chat {
+		flex-flow: column;
+	}
 
-    #left-col {
-        width: auto !important;
-        position: relative;
-        height: 50px;
-        border: 0 !important;
-    }
+	#left-col {
+		width: auto !important;
+		position: relative;
+		height: 50px;
+		border: 0 !important;
+	}
 
-    #main-col {
-        border: 0 !important;
-        margin: 0 !important;
-    }
+	#main-col {
+		border: 0 !important;
+		margin: 0 !important;
+	}
 
-    #right-col {
-        display: none !important;
-    }
+	#right-col {
+		display: none !important;
+	}
 
-    #room-tabs {
-        position: absolute;
-        background: #222228;
-        z-index: 50;
-        top: 50px;
-        left: -1px;
-        right: -1px;
-    }
+	#room-tabs {
+		position: absolute;
+		background: #222228;
+		z-index: 50;
+		top: 50px;
+		left: -1px;
+		right: -1px;
+	}
 
-    #mobile-menu-switch-checkbox:not(:checked) + #left-col {
-        overflow: hidden;
-    }
+	#mobile-menu-switch-checkbox:not(:checked) + #left-col {
+		overflow: hidden;
+	}
 
-    .chat-message-user {
-        float: none !important;
-        position: absolute !important;
-        right: 10px !important;
-        margin-top: 0 !important;
-        top: 7px !important;
-    }
+	.chat-message-user {
+		float: none !important;
+		position: absolute !important;
+		right: 10px !important;
+		margin-top: 0 !important;
+		top: 7px !important;
+	}
 
-    .chat-message-user img {
-        width: 20px;
-        height: 20px;
-    }
+	.chat-message-user img {
+		width: 20px;
+		height: 20px;
+	}
 
-    .chat-message-content {
-        margin-left: 0 !important;
-        padding-left: 0 !important;
-    }
+	.chat-message-content {
+		margin-left: 0 !important;
+		padding-left: 0 !important;
+	}
 
-    .chat-message-icons {
-        display: none !important;
-    }
+	.chat-message-icons {
+		display: none !important;
+	}
 }
 
 .button-no-style {
-    border: 0;
-    background: transparent;
-    font-size: inherit;
-    font-style: inherit;
-    color: inherit;
-    display: inline;
-    cursor: pointer;
+	border: 0;
+	background: transparent;
+	font-size: inherit;
+	font-style: inherit;
+	color: inherit;
+	display: inline;
+	cursor: pointer;
+}
+
+textarea,
+input {
+	outline: none;
+	box-shadow: none;
 }
