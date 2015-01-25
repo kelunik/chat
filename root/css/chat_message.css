@@ -208,7 +208,7 @@ pre code {
 	font-family: "Source Code Pro", monospace;
 }
 
-.chat-message code:not([class]) {
+.chat-message .inline-code {
 	display: inline-block;
 	word-break: break-all;
 }
