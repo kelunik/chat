@@ -164,7 +164,10 @@
 <body>
 <div id="page">
 	<div id="nav">
-		<img src="/img/logo_40x40.png" width="40px" height="40px">
+		<picture>
+			<source srcset="img/logo_40x40.png, img/logo_40x40x2.png 2x">
+			<img src="img/logo_40x40.png" alt="logo">
+		</picture>
 
 		<h1>t@lkZone</h1>
 	</div>
