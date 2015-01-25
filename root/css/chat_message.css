@@ -210,6 +210,7 @@ pre code {
 
 .chat-message code:not([class]) {
 	display: inline-block;
+	word-break: break-all;
 }
 
 .chat-message-text a[href^="https://github.com"]::before {
@@ -223,8 +224,8 @@ pre code {
 
 .chat-message-text a[href^="https://github.com"] {
 	display: inline-block;
-	border: 1px solid rgba(0, 0, 0, .1);
-	background: rgba(0, 0, 0, .05);
+	word-break: break-all;
+	background: rgba(0, 0, 0, .03);
 	line-height: 16px;
 	padding: 3px 5px 2px 5px;
 	border-radius: 3px;
