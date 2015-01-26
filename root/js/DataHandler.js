@@ -184,8 +184,6 @@ DataHandler.prototype.onMessage = function (e) {
 						message.classList.add("chat-message-followup");
 					}
 
-					node.scrollTop = node.scrollHeight;
-
 					dataHandler.send("message", {
 						roomId: room,
 						text: text,
@@ -224,6 +222,8 @@ DataHandler.prototype.onMessage = function (e) {
 				input.value = "";
 
 				adjustInput(input);
+
+				node.scrollTop = node.scrollHeight;
 
 				input.focus();
 

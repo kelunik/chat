@@ -78,11 +78,9 @@ NotificationCenter.prototype.handleVisibilityChange = function () {
 	}
 };
 
-NotificationCenter.prototype.notifyMessage = function (message) {
-	changeFavicon("/img/icon_new.ico");
-
+NotificationCenter.prototype.notifyMessage = function (title, message) {
 	if (window.Notification && Notification.permission === "granted") {
-		new Notification(message, {tag: this.tags.message});
+		this.showNotification(title, message);
 	}
 
 	else if (window.Notification && Notification.permission !== "denied") {
@@ -91,13 +89,22 @@ NotificationCenter.prototype.notifyMessage = function (message) {
 				Notification.permission = status;
 			}
 
-			new Notification(message, {tag: this.tags.message});
-		});
+			this.showNotification(title, message);
+		}.bind(this));
 	}
+};
 
-	else {
-		alert(message);
-	}
+NotificationCenter.prototype.showNotification = function (title, message) {
+	var notification = new Notification(title, {
+		tag: this.tags.message,
+		icon: "/img/logo_40x40x2.png",
+		body: message
+	});
+
+	// firefox closes notifications after 4 seconds, let's do this in other browsers, too.
+	notification.onshow = function () {
+		setTimeout(this.close.bind(this), 5000);
+	}.bind(notification);
 };
 
 NotificationCenter.prototype.checkPings = function () {

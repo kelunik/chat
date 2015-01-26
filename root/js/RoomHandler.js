@@ -90,7 +90,7 @@ RoomHandler.prototype.handlePing = function (type, data) {
 	node.setAttribute("data-pings", room.pings.length);
 	notificationCenter.checkPings();
 
-	notificationCenter.notifyMessage("Ping from " + data.user.name + " in " + room.name);
+	notificationCenter.notifyMessage("Ping from " + data.user.name + " in " + room.name, data.text);
 };
 
 RoomHandler.prototype.handlePingClear = function (type, data) {
