@@ -116,7 +116,7 @@ DataHandler.prototype.onMessage = function (e) {
 				e.preventDefault();
 
 				var text = input.value;
-				var room = +document.getElementsByClassName("room-current")[0].getAttribute("data-id");
+				var roomId = +document.getElementsByClassName("room-current")[0].getAttribute("data-id");
 
 				if (text === "") {
 					return;
@@ -124,7 +124,7 @@ DataHandler.prototype.onMessage = function (e) {
 
 				var tempId = generateToken(20);
 				var editMessage = parseInt(input.getAttribute("data-message"));
-				var node = roomHandler.getRoom(room);
+				var node = roomHandler.getRoom(roomId);
 
 				if (editMessage > 0) {
 					var shouldScroll = node.scrollTop === node.scrollHeight - node.clientHeight;
@@ -140,7 +140,7 @@ DataHandler.prototype.onMessage = function (e) {
 					messageNode.classList.add("chat-message-pending");
 					messageNode.setAttribute("data-edit-id", tempId.toString());
 
-					formatter.formatMessage(room, messageNode.querySelector(".chat-message-text"), text, null, user);
+					formatter.formatMessage(roomId, messageNode.querySelector(".chat-message-text"), text, null, user);
 					this.removeAttribute("data-compose");
 
 					dataHandler.send("message-edit", {
@@ -157,7 +157,7 @@ DataHandler.prototype.onMessage = function (e) {
 				} else {
 					var message = nodeFromHTML(templateManager.get("chat_message")({
 						tempId: tempId,
-						roomId: room,
+						roomId: roomId,
 						messageText: text,
 						user: {
 							id: user.id,
@@ -169,7 +169,7 @@ DataHandler.prototype.onMessage = function (e) {
 						time: moment().unix()
 					}));
 
-					formatter.formatMessage(room, message.querySelector(".chat-message-text"), text, null, user);
+					formatter.formatMessage(roomId, message.querySelector(".chat-message-text"), text, null, user);
 
 					message.querySelector("time").textContent = moment().fromNow();
 					message.querySelector("time").setAttribute("title", moment().format("LLL"));
@@ -185,10 +185,30 @@ DataHandler.prototype.onMessage = function (e) {
 					}
 
 					dataHandler.send("message", {
-						roomId: room,
+						roomId: roomId,
 						text: text,
 						tempId: tempId
 					});
+
+					var room = roomHandler.rooms[roomId];
+					var msg;
+					var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+					for (var i = room.pings.length - 1; i >= 0; i--) {
+						msg = messageHandler.getDOM(room.pings[i]);
+
+						if (msg === null) {
+							continue;
+						}
+
+						var rec = msg.getBoundingClientRect();
+						var top = rec.top >= 0 && rec.top < h;
+						var bottom = rec.bottom > 0 && rec.bottom <= h;
+
+						if (top || bottom) {
+							dataHandler.send("ping", {messageId: room.pings[i]});
+						}
+					}
 
 					message.addEventListener("longpress", function (e) {
 						var input = document.getElementById("input");
