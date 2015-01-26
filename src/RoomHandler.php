@@ -70,7 +70,7 @@ class RoomHandler {
 		$this->listener->subscribe("chat.room", yield "bind" => function ($payload) {
 			$payload = json_decode($payload);
 
-			if (!isset($this->rooms[$payload->roomId]) || empty($this->rooms[$payload->roomId])) {
+			if (empty($this->rooms[$payload->roomId])) {
 				return;
 			}
 
@@ -87,7 +87,7 @@ class RoomHandler {
 		$this->listener->subscribe("chat.user", yield "bind" => function ($payload) {
 			$payload = json_decode($payload);
 
-			if (!isset($this->users[$payload->userId]) || empty($this->users[$payload->userId])) {
+			if (empty($this->users[$payload->userId])) {
 				return;
 			}
 
