@@ -213,8 +213,7 @@ pre code {
 	word-break: break-all;
 }
 
-.chat-message-text a[href^="https://github.com"]::before {
-	content: "\f09b";
+.chat-message-text a::before {
 	display: inline-block;
 	margin-left: 4px;
 	font: normal normal normal 14px/1 FontAwesome;
@@ -222,8 +221,39 @@ pre code {
 	margin-right: 4px;
 }
 
+.chat-message-text a[href^="https://twitter.com"]::before {
+	content: "\f099";
+	color: #55acee;
+}
+
+.chat-message-text a[href^="http://jsfiddle.net"]::before {
+	content: "\f1cc";
+	color: #000;
+}
+
+.chat-message-text a[href^="http://stackoverflow.com"]::before,
+.chat-message-text a[href^="http://chat.stackoverflow.com"]::before {
+	content: "\f16c";
+	color: #f37a20;
+}
+
+.chat-message-text a[href^="https://trello.com"]::before {
+	content: "\f181";
+	color: #216883;
+}
+
+.chat-message-text a[href^="https://github.com"]::before {
+	content: "\f09b";
+	color: #000;
+}
+
+.chat-message-text a[href^="https://twitter.com"],
+.chat-message-text a[href^="http://jsfiddle.net"],
+.chat-message-text a[href^="http://stackoverflow.com"],
+.chat-message-text a[href^="http://chat.stackoverflow.com"],
+.chat-message-text a[href^="https://trello.com"],
 .chat-message-text a[href^="https://github.com"] {
-	display: inline-block;
+	display: inline;
 	word-break: break-all;
 	background: rgba(0, 0, 0, .03);
 	line-height: 16px;
