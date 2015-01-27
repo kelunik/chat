@@ -12,6 +12,11 @@ a {
 	color: rgb(0, 100, 200);
 }
 
+a, button, input {
+	touch-action: manipulation; /* IE11+ */
+	-ms-touch-action: manipulation; /* IE10 */
+}
+
 .textLeft {
 	text-align: left;
 }

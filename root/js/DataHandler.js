@@ -58,12 +58,6 @@ DataHandler.prototype.onMessage = function (e) {
 	if (document.getElementById("rooms") === null) { // TODO: Cache this, move away from here...
 		document.getElementById("page").innerHTML = templateManager.get("chat")(user);
 
-		// Safari sucks, really!
-		if (/iPhone/i.test(navigator.userAgent)) {
-			document.setAttribute("style", "height: " + window.innerHeight + "px; margin-top: 1px;");
-			document.scrollTo(0, 1);
-		}
-
 		var input = document.getElementById("input");
 
 		if (!isTouchDevice()) {
