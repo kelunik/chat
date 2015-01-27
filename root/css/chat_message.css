@@ -218,7 +218,7 @@ pre code {
 	margin-left: 4px;
 	font: normal normal normal 14px/1 FontAwesome;
 	font-size: inherit;
-	margin-right: 4px;
+	margin-right: 7px;
 }
 
 .chat-message-text a[href^="https://twitter.com"]::before {
