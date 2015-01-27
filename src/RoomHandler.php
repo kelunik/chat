@@ -49,7 +49,7 @@ class RoomHandler {
 		];
 
 		$this->clients = $this->users = $this->sessions = [];
-		$this->sessionHandler = new SessionManager($this->db);
+		$this->sessionHandler = new SessionManager();
 		$this->chatApi = new ChatApi($this->db, $this->redis);
 		$this->active = [];
 	}
