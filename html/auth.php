@@ -175,7 +175,7 @@
 
 			<script>
 				document.getElementById("login").addEventListener("click", function (e) {
-					this.querySelector("span").textContent = "Signing in ...";
+					this.querySelector("span").innerHTML = "Signing in&hellip;";
 					this.classList.add("pending");
 				});
 			</script>
