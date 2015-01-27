@@ -170,7 +170,7 @@
 	</div>
 
 	<div id="footer">
-		© <?= date('Y') ?> amphp and contributors
+		© <?= date('Y') ?> <a href="https://github.com/amphp">amphp</a> and <a href="https://github.com/rdlowrey/amp-chat/graphs/contributors">contributors</a>
 	</div>
 </div>
 
