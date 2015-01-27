@@ -12,7 +12,7 @@ if (window.top != window.self) {
 	var user = new User();
 	var lightBox = new LightBox();
 
-	var isTouchDevice = function() {
+	var isTouchDevice = function () {
 		return "ontouchstart" in window;
 	};
 
@@ -27,6 +27,14 @@ if (window.top != window.self) {
 	dataHandler.on("whereami", roomHandler.handleWhereAmI.bind(roomHandler));
 	dataHandler.on("activity", roomHandler.handleActivity.bind(roomHandler));
 	dataHandler.on("user-join", roomHandler.handleUserJoin.bind(roomHandler));
+
+	dataHandler.on("error", function (e) {
+		if (document.getElementById("error") === null) {
+			document.body.appendChild(nodeFromHTML(templateManager.get('error')("We couldn't establish any WebSocket connection, sorry about that!")));
+		}
+
+		console.log(e);
+	});
 
 	Handlebars.registerHelper('datetime', function (time) {
 		return moment.unix(time).toISOString();
@@ -57,6 +65,12 @@ if (window.top != window.self) {
 	});
 
 	dataHandler.on("open", function () {
+		var e = document.getElementById("error-overlay");
+
+		if (e !== null) {
+			e.parentNode.removeChild(e);
+		}
+
 		var path = window.location.pathname;
 
 		if (path.substring(0, 7) === "/rooms/") {
@@ -196,7 +210,7 @@ if (window.top != window.self) {
 		}
 	});
 
-	document.addEventListener("submit", function(e) {
+	document.addEventListener("submit", function (e) {
 		var form = e.target;
 		var input = document.createElement('input');
 		input.type = "hidden";

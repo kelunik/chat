@@ -42,15 +42,15 @@ DataHandler.prototype.onError = function (e) {
 DataHandler.prototype.onOpen = function () {
 	console.debug("DataHandler::onOpen");
 
+	if ("open" in this.handlers) {
+		this.handlers["open"]();
+	}
+
 	var queue = this.queue;
 	this.queue = [];
 
 	if (queue.length !== 0) {
 		this.send("lost-push", queue);
-	}
-
-	if ("open" in this.handlers) {
-		this.handlers["open"]();
 	}
 };
 
