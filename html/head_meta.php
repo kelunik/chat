@@ -1,5 +1,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="16x16" href="/img/icon.ico">
 <link rel="icon" sizes="40x40" href="/img/logo_40x40.png">
 <link rel="icon" sizes="128x128" href="/img/icon_128x128.png">

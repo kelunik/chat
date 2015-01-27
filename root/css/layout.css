@@ -1,7 +1,3 @@
-html, body {
-	height: 100vh;
-}
-
 #chat {
 	display: flex;
 	height: 100vh;

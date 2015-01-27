@@ -29,6 +29,8 @@
 .room {
 	visibility: hidden;
 	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	-webkit-touch-callout: none;
 	position: absolute;
 	left: 0;
 	top: 0;
