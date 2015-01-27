@@ -9,9 +9,11 @@ use Tpl;
 
 class Transcript {
 	private $db;
-
+	private $sessionManager;
+	
 	public function __construct (Pool $db) {
 		$this->db = $db;
+		$this->sessionManager = new SessionManager;
 	}
 
 	public function handleRequest ($request) {
@@ -29,7 +31,7 @@ class Transcript {
 		$sessionId = SessionManager::getSessionId($request);
 
 		if ($sessionId !== null) {
-			$session = SessionManager::getSessionData($sessionId, $this->db);
+			$session = yield $this->sessionManager->getSession($sessionId);
 		}
 
 		$q = (yield $this->db->prepare(MessageHandler::buildQuery("time >= ? && time < ?")));
