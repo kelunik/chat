@@ -55,68 +55,6 @@ a, button, input {
 	display: none;
 }
 
-/* smartphones */
-@media only screen and (max-width: 320px) {
-	.mobile-only {
-		display: block;
-	}
-
-	#chat {
-		flex-flow: column;
-	}
-
-	#left-col {
-		width: auto !important;
-		position: relative;
-		height: 50px;
-		border: 0 !important;
-	}
-
-	#main-col {
-		border: 0 !important;
-		margin: 0 !important;
-	}
-
-	#right-col {
-		display: none !important;
-	}
-
-	#room-tabs {
-		position: absolute;
-		background: #222228;
-		z-index: 50;
-		top: 50px;
-		left: -1px;
-		right: -1px;
-	}
-
-	#mobile-menu-switch-checkbox:not(:checked) + #left-col {
-		overflow: hidden;
-	}
-
-	.chat-message-user {
-		float: none !important;
-		position: absolute !important;
-		right: 10px !important;
-		margin-top: 0 !important;
-		top: 7px !important;
-	}
-
-	.chat-message-user img {
-		width: 20px;
-		height: 20px;
-	}
-
-	.chat-message-content {
-		margin-left: 0 !important;
-		padding-left: 0 !important;
-	}
-
-	.chat-message-icons {
-		display: none !important;
-	}
-}
-
 .button-no-style {
 	border: 0;
 	background: transparent;
