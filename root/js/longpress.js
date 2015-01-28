@@ -10,10 +10,12 @@
 		longPress = false;
 		e.target.classList.add("longpress");
 
-		pressTimer = setTimeout(function () {
-			e.target.dispatchEvent(new Event("longpress", {bubbles: true}));
-			longPress = true;
-		}, 1000);
+		if (pressTimer === null) {
+			pressTimer = setTimeout(function () {
+				e.target.dispatchEvent(new Event("longpress", {bubbles: true}));
+				longPress = true;
+			}, 1000);
+		}
 
 		return false;
 	};
@@ -21,6 +23,7 @@
 	var cancel = function (e) {
 		if (pressTimer !== null) {
 			clearTimeout(pressTimer);
+			pressTimer = null;
 		}
 
 		e.target.classList.remove("longpress");
@@ -29,6 +32,7 @@
 	var click = function (e) {
 		if (pressTimer !== null) {
 			clearTimeout(pressTimer);
+			pressTimer = null;
 		}
 
 		e.target.classList.remove("longpress");
