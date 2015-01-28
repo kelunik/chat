@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys.git",
-                "reference": "fae1d516b1c9bbadea5ad80d7fe3e5ebb67b1a19"
+                "reference": "990d6728001b0d6dc34f78d75d4a81e1bd9e61cc"
             },
             "require": {
                 "amphp/amp": "~0.15.0",
@@ -34,7 +34,8 @@
                     "Aerys\\": "lib/"
                 },
                 "files": [
-                    "lib/functions.php"
+                    "lib/functions.php",
+                    "lib/constants.php"
                 ]
             },
             "autoload-dev": {
@@ -66,7 +67,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-01-25 03:40:52"
+            "time": "2015-01-28 13:13:45"
         },
         {
             "name": "amphp/amp",
@@ -266,7 +267,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:amphp/redis.git",
-                "reference": "a495189735412c8962b219b6633685ddca84040c"
+                "reference": "f22174989f71800a58704463f8b61858ebcd239a"
             },
             "require": {
                 "amphp/amp": "~0.15",
@@ -300,7 +301,7 @@
             "support": {
                 "issues": "https://github.com/amphp/redis/issues"
             },
-            "time": "2015-01-25 19:35:24"
+            "time": "2015-01-26 14:42:33"
         },
         {
             "name": "daverandom/libdns",

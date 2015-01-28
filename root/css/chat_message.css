@@ -221,6 +221,16 @@ pre code {
 	margin-right: 7px;
 }
 
+.chat-message-text a[href^="https://"]::after {
+	content: "\f023";
+	display: inline-block;
+	margin-left: 7px;
+	margin-right: 4px;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	color: #333;
+}
+
 .chat-message-text a[href^="https://twitter.com"]::before {
 	content: "\f099";
 	color: #55acee;
