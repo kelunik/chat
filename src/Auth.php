@@ -84,7 +84,7 @@ class Auth {
 
 			yield "status" => 302;
 			yield "header" => "Location: /rooms/1";
-			yield "header" => ("Set-Cookie: sess=" . $sessionId["client"] . "; PATH=/");
+			yield "header" => ("Set-Cookie: aerys_sess=" . $sessionId["client"] . "; PATH=/; httpOnly");
 			yield "body" => "";
 		} else {
 			yield "status" => 302;

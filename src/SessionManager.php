@@ -23,7 +23,7 @@ class SessionManager {
 			return null;
 		}
 
-		if (preg_match("~sess=([a-z0-9/+]+)~i", $request["HTTP_COOKIE"], $match)) {
+		if (preg_match("~aerys_sess=([a-z0-9/+]+)~i", $request["HTTP_COOKIE"], $match)) {
 			return Security::decodeSessionId($match[1]);
 		} else {
 			return null;
