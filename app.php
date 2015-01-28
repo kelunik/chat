@@ -14,12 +14,6 @@ require __DIR__ . "/gen/version_css.php";
 require __DIR__ . "/gen/version_js.php";
 require __DIR__ . "/check_requirements.php";
 
-/* --- Global server options here --------------------------------------------------------------- */
-
-const KEEP_ALIVE_TIMEOUT = 30;
-
-/* --- http://localhost:8080/ or http://127.0.0.1:8080/  (all IPv4 interfaces) ------------------ */
-
 $manifest = file_get_contents(__DIR__ . "/root/manifest.appcache");
 $manifestResponder = function () use ($manifest) {
 	return [
@@ -59,5 +53,12 @@ $host = (new Aerys\Host)
 	->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
 	->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
 	->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
-	->addWebsocket("/chat", $chatHandler)
-	->addRoute('GET', '/manifest.appcache', $manifestResponder);
+	->addRoute('GET', '/manifest.appcache', $manifestResponder)
+	->addWebsocket("/chat", $chatHandler);
+
+if (DEPLOY_HTTPS && is_readable(DEPLOY_HTTPS_CERT)) {
+	$host->setCrypto(DEPLOY_HTTPS_CERT, [
+		"auto_redirect" => true,
+		"ciphers" => DEPLOY_HTTPS_SUITES
+	]);
+}
