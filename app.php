@@ -56,7 +56,7 @@ $host = (new Aerys\Host)
 	->addRoute('GET', '/manifest.appcache', $manifestResponder)
 	->addWebsocket("/chat", $chatHandler);
 
-if (DEPLOY_HTTPS && is_readable(DEPLOY_HTTPS_CERT)) {
+if (DEPLOY_HTTPS) {
 	$host->setCrypto(DEPLOY_HTTPS_CERT, [
 		"auto_redirect" => true,
 		"ciphers" => DEPLOY_HTTPS_SUITES
