@@ -116,6 +116,13 @@
 			position: relative;
 		}
 
+		#logoutNotice {
+			padding: 5px;
+			margin-top: 15px;
+			background-color: #FFF8F8;
+			border: 1px solid #FFF3F3;
+		}
+
 		.fa-github {
 			font-size: 20px;
 			line-height: 14px;
@@ -169,6 +176,7 @@
 			<h2>What's t@lkZone?</h2>
 			t@lkZone is a new chat based on <a href="https://github.com/amphp" target="_blank">amp</a> software stack.
 			<br>
+			<div id="logoutNotice" style="display: none;">You were redirected here as your session was terminated.</div>
 			<a href="/auth/github" id="login">
 				<i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
 			</a>
@@ -185,6 +193,7 @@
 	<div id="footer">
 		© <?= date('Y') ?> <a href="https://github.com/amphp">amphp</a> and <a href="https://github.com/rdlowrey/amp-chat/graphs/contributors">contributors</a>
 	</div>
+
 </div>
 
 <script>
@@ -224,6 +233,14 @@
 			}, false);
 		}, false);
 	})();
+
+	if (window.sessionStorage) {
+		var logout = window.sessionStorage.getItem("logoutCounter");
+		if (logout) {
+			window.sessionStorage.setItem("logoutCounter", logout - 1);
+			document.getElementById("logoutNotice").style.display = "block";
+		}
+	}
 </script>
 
 </body>

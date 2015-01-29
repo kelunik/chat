@@ -141,6 +141,11 @@ class Auth {
 			$token = $request["FORM"]["csrf-token"];
 
 			if (is_string($token) && safe_compare($session->csrfToken, $token)) {
+				yield $this->redis->publish("chat.session", json_encode([
+					"sessionId" => $sessionId,
+					"type" => "logout",
+					"payload" => "",
+				]));
 				yield $this->redis->del("session.{$sessionId}");
 				yield "header" => "Set-Cookie: sess=; PATH=/"; // TODO: Add negative expire
 				yield "status" => 302;

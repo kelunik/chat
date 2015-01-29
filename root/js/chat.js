@@ -28,6 +28,14 @@ if (window.top != window.self) {
 	dataHandler.on("activity", roomHandler.handleActivity.bind(roomHandler));
 	dataHandler.on("user-join", roomHandler.handleUserJoin.bind(roomHandler));
 
+	dataHandler.on("logout", function () {
+		if (window.sessionStorage) {
+			var counter = window.sessionStorage.getItem("logoutCounter");
+			window.sessionStorage.setItem("logoutCounter", counter != null ? counter + 1 : 1);
+		}
+		window.location.href = "/auth";
+	});
+
 	dataHandler.on("error", function (e) {
 		if (document.getElementById("error") === null) {
 			document.body.appendChild(nodeFromHTML(templateManager.get('error')("We couldn't establish any WebSocket connection, sorry about that!")));
