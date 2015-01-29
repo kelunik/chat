@@ -247,7 +247,9 @@ DataHandler.prototype.onMessage = function (e) {
 
 				adjustInput(input);
 
-				node.scrollTop = node.scrollHeight;
+				if (roomHandler.rooms[roomId].defaultScroll) {
+					node.scrollTop = node.scrollHeight;
+				}
 
 				input.focus();
 
