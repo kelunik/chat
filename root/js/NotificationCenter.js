@@ -11,6 +11,16 @@ var NotificationCenter = function () {
 				}
 			});
 		}
+        
+		var newMessage;
+		document.addEventListener("click", function (e) {
+			newMessage = newMessage || document.getElementById("new-messages");
+			if (e.target === newMessage) {
+				notificationCenter.hideMessageIndicator();
+				var node = roomHandler.getRoom(roomHandler.getCurrentRoom().id);
+				node.scrollTop = node.scrollHeight;
+			}
+		});         
 	});
 
 	var hidden, visibilityChange;
