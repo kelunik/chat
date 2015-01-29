@@ -34,7 +34,7 @@ LongPress.prototype.onTouchStart = function (event) {
 
 	this.timer = setInterval(function () {
 		this.longpress = true;
-		this.handleEvent(new Event("touchend", {
+		this.onTouchEnd(new Event("touchend", {
 			bubbles: true
 		}));
 	}.bind(this), 1000);
