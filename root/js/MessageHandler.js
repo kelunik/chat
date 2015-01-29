@@ -195,8 +195,12 @@ MessageHandler.prototype.insertMessage = function (room, message, node, init) {
 		node.selectionStart = node.selectionEnd = node.value.length;
 	});
 
+	if (isTouchDevice()) {
+		messageNode.classList.add("unselectable");
+	}
+
 	if (message.user.id === user.id) {
-		messageNode.addEventListener("longpress", function (e) {
+		messageNode.addEventListener("longpress", function () {
 			var input = document.getElementById("input");
 
 			if (moment(messageNode.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 5 * 60) {

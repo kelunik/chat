@@ -210,7 +210,11 @@ DataHandler.prototype.onMessage = function (e) {
 						}
 					}
 
-					message.addEventListener("longpress", function (e) {
+					if (isTouchDevice()) {
+						message.classList.add("unselectable");
+					}
+
+					message.addEventListener("longpress", function () {
 						var input = document.getElementById("input");
 
 						if (moment(message.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 5 * 60) {

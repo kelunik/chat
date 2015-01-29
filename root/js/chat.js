@@ -96,6 +96,8 @@ if (window.top != window.self) {
 				return false;
 			}
 		});
+
+		new LongPress(document);
 	});
 
 	console.log("App::addDOMContentLoader...done");
