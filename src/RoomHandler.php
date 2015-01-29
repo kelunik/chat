@@ -100,10 +100,32 @@ class RoomHandler {
 				[]
 			];
 		});
+
+		$this->listener->subscribe("chat.session", yield "bind" => function ($payload) {
+			$payload = json_decode($payload);
+			$sessionId = $payload->sessionId;
+
+			if (empty($this->sessions[$sessionId])) {
+				return;
+			}
+
+			$sessionClientPairs = $this->users[$this->sessions[$sessionId]->id];
+
+			yield "broadcast" => [
+				json_encode([
+					"type" => $payload->type,
+					"data" => $payload->payload
+				]),
+				array_keys(array_filter($sessionClientPairs, function ($id) use ($sessionId) { return $id === $sessionId; })),
+				[]
+			];
+		});
 	}
 
 	public function stop () {
 		yield $this->listener->unsubscribe("room.broadcast");
+		yield $this->listener->unsubscribe("chat.user");
+		yield $this->listener->unsubscribe("chat.session");
 		yield $this->listener->close();
 		yield $this->redis->close();
 	}
