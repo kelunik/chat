@@ -11,7 +11,7 @@ var NotificationCenter = function () {
 				}
 			});
 		}
-        
+
 		var newMessage;
 		document.addEventListener("click", function (e) {
 			newMessage = newMessage || document.getElementById("new-messages");
@@ -20,7 +20,7 @@ var NotificationCenter = function () {
 				var node = roomHandler.getRoom(roomHandler.getCurrentRoom().id);
 				node.scrollTop = node.scrollHeight;
 			}
-		});         
+		});
 	});
 
 	var hidden, visibilityChange;
@@ -46,6 +46,7 @@ var NotificationCenter = function () {
 	document.addEventListener(visibilityChange, this.handleVisibilityChange.bind(this), false);
 
 	window.addEventListener("beforeunload", function () {
+		dataHandler.close();
 		changeFavicon("/img/icon.ico");
 	}, false);
 };

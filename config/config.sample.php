@@ -8,6 +8,7 @@
 # Debug
 # -----
 
+const DEVELOPMENT = true;
 # const DEBUG = false;
 # const MYSQL_DEBUG = true;
 

@@ -17,13 +17,14 @@ require __DIR__ . "/check_requirements.php";
 $manifest = file_get_contents(__DIR__ . "/root/manifest.appcache");
 $manifestResponder = function () use ($manifest) {
 	return [
-		"header" => [
+		"header" => DEVELOPMENT ? ["Expires: 0"] : [
 			"Content-Type: text/cache-manifest; charset=utf-8",
 			"Cache-Control: no-cache, no-store, must-revalidate",
 			"Pragma: no-cache",
 			"Expires: 0",
 		],
-		"body" => $manifest
+		"status" => DEVELOPMENT ? 410 : 200,
+		"body" => DEVELOPMENT ? "" : $manifest
 	];
 };
 

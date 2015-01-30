@@ -5,6 +5,9 @@ NETWORK:
 
 FALLBACK:
 
+SETTINGS:
+prefer-online
+
 CACHE:
 /auth
 /img/logo_40x40.png

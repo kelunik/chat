@@ -28,12 +28,24 @@ if (window.top != window.self) {
 	dataHandler.on("activity", roomHandler.handleActivity.bind(roomHandler));
 	dataHandler.on("user-join", roomHandler.handleUserJoin.bind(roomHandler));
 
+	window.sessionStorage.setItem("autologout", "");
+
 	dataHandler.on("logout", function () {
 		if (window.sessionStorage) {
-			var counter = window.sessionStorage.getItem("logoutCounter");
-			window.sessionStorage.setItem("logoutCounter", counter != null ? counter + 1 : 1);
+			window.sessionStorage.setItem("autologout", "1");
 		}
+
 		window.location.href = "/auth";
+	});
+
+	var logout;
+
+	document.addEventListener("click", function(e) {
+		logout = logout || document.getElementById("logout");
+
+		if(e.target === logout) {
+			dataHandler.close();
+		}
 	});
 
 	dataHandler.on("error", function (e) {

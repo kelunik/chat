@@ -116,11 +116,14 @@
 			position: relative;
 		}
 
-		#logoutNotice {
-			padding: 5px;
-			margin-top: 15px;
-			background-color: #FFF8F8;
-			border: 1px solid #FFF3F3;
+		#logout-notice {
+			padding: 15px 20px;
+			margin: 15px -20px 0 -20px;
+			background-color: #ff9;
+			border: 1px solid rgba(0, 0, 0, .1);
+			border-left: 0;
+			border-right: 0;
+			display: none;
 		}
 
 		.fa-github {
@@ -175,11 +178,14 @@
 		<div id="about">
 			<h2>What's t@lkZone?</h2>
 			t@lkZone is a new chat based on <a href="https://github.com/amphp" target="_blank">amp</a> software stack.
-			<br>
-			<div id="logoutNotice" style="display: none;">You were redirected here as your session was terminated.</div>
-			<a href="/auth/github" id="login">
-				<i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
-			</a>
+
+			<div id="logout-notice">You were redirected here as your session was terminated.</div>
+
+			<div>
+				<a href="/auth/github" id="login">
+					<i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
+				</a>
+			</div>
 
 			<script>
 				document.getElementById("login").addEventListener("click", function (e) {
@@ -191,7 +197,8 @@
 	</div>
 
 	<div id="footer">
-		© <?= date('Y') ?> <a href="https://github.com/amphp">amphp</a> and <a href="https://github.com/rdlowrey/amp-chat/graphs/contributors">contributors</a>
+		© <?= date('Y') ?> <a href="https://github.com/amphp">amphp</a> and <a
+			href="https://github.com/rdlowrey/amp-chat/graphs/contributors">contributors</a>
 	</div>
 
 </div>
@@ -214,7 +221,7 @@
 	loadCSS("//fonts.googleapis.com/css?family=Pacifico|Lato");
 	loadCSS("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
 
-	(function() {
+	(function () {
 		"use strict";
 
 		var interval = setInterval(function () {
@@ -235,10 +242,11 @@
 	})();
 
 	if (window.sessionStorage) {
-		var logout = window.sessionStorage.getItem("logoutCounter");
+		var logout = window.sessionStorage.getItem("autologout");
+
 		if (logout) {
-			window.sessionStorage.setItem("logoutCounter", logout - 1);
-			document.getElementById("logoutNotice").style.display = "block";
+			window.sessionStorage.setItem("autologout", "1");
+			document.getElementById("logout-notice").style.display = "block";
 		}
 	}
 </script>

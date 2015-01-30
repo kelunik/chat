@@ -3,6 +3,7 @@ var DataHandler = function (url) {
 	this.websocket = null;
 	this.handlers = {};
 	this.queue = [];
+	this.explicitClose = false;
 };
 
 DataHandler.prototype.connect = function () {
@@ -55,6 +56,10 @@ DataHandler.prototype.onOpen = function () {
 };
 
 DataHandler.prototype.onMessage = function (e) {
+	if (this.explicitClose) {
+		return;
+	}
+
 	if (document.getElementById("rooms") === null) { // TODO: Cache this, move away from here...
 		document.getElementById("page").innerHTML = templateManager.get("chat")(user);
 
@@ -437,11 +442,11 @@ DataHandler.prototype.onClose = function () {
 		this.handlers["close"]();
 	}
 
-	var handler = this;
-
-	setTimeout(function () {
-		handler.connect();
-	}, 3000);
+	if (!this.explicitClose) {
+		setTimeout(function () {
+			this.connect();
+		}.bind(this), 3000);
+	}
 };
 
 DataHandler.prototype.on = function (type, callback) {
@@ -463,4 +468,12 @@ DataHandler.prototype.send = function (type, data) {
 			handler.queue.push({type: type, data: data});
 		}
 	}
+};
+
+DataHandler.prototype.close = function () {
+	if (this.websocket) {
+		this.websocket.close();
+	}
+
+	this.explicitClose = true;
 };
