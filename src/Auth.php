@@ -147,7 +147,7 @@ class Auth {
 					"payload" => "",
 				]));
 				yield $this->redis->del("session.{$sessionId}");
-				yield "header" => "Set-Cookie: sess=; PATH=/"; // TODO: Add negative expire
+				yield "header" => "Set-Cookie: aerys_session=; PATH=/"; // TODO: Add negative expire
 				yield "status" => 302;
 				yield "header" => "Location: /auth";
 				yield "body" => "";
