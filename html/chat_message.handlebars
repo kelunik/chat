@@ -15,8 +15,9 @@
             <a href="#" style="cursor: pointer;"
                onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus(); return false;">
 				{{user.name}}
-            </a> –
-            <a class="timelink" target="_blank">
+            </a>
+            &nbsp;&nbsp;—&nbsp;&nbsp;
+            <a class="chat-message-time timelink" target="_blank">
                 <time class="chat-message-time" datetime="{{{datetime time}}}" title="{{{dateformat time}}}"></time>
             </a>
         </div>
