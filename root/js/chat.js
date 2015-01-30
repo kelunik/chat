@@ -139,14 +139,14 @@ if (window.top != window.self) {
 		var heightBefore = node.clientHeight;
 		var toScroll = [];
 
-		forEach(document.querySelectorAll(".room"), function (o) {
+		forEach(document.querySelectorAll(".room-tab-current"), function (o) {
 			toScroll.push(o.scrollHeight - o.scrollTop - o.clientHeight);
 		});
 
 		node.style.height = 0;
 		node.style.height = Math.max(40, node.scrollHeight - 20) + "px";
 
-		forEach(document.querySelectorAll(".room"), function (o) {
+		forEach(document.querySelectorAll(".room-tab-current"), function (o) {
 			var scroll = toScroll.shift();
 			o.scrollTop = o.scrollHeight - o.clientHeight - scroll;
 		});
