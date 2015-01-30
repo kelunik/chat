@@ -20,6 +20,7 @@
 		"amphp/artax": "dev-master",
 		"vladkens/autoprefixer": "dev-master",
 		"tubalmartin/cssmin": "dev-master",
+		"linkorb/jsmin-php": "dev-master",
 		"swiftmailer/swiftmailer": "5.3.*"
 	},
 	"repositories": [

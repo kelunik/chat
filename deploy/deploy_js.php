@@ -20,6 +20,10 @@ foreach (glob("../gen/*.handlebars.js") as $input) {
 	$js .= file_get_contents($input) . "\n";
 }
 
+if (!DEVELOPMENT) {
+    $js = JSMin::minify($js);
+}
+
 //$js = shell_exec("java -jar ../deploy/compiler.jar --create_source_map {$source_map_path} --source_map_format=V3 --warning_level QUIET --charset UTF-8 --language_in ECMASCRIPT5 {$cmd}");
 //$js = "//# sourceMappingURL=/all.min.js.map\n{$js}";
 
