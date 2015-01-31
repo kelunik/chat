@@ -151,7 +151,7 @@ var Room = (function (window, document, activityObserver, dataHandler, messages,
 		this.scrollToBottom = function () {
 			contentNode.scrollTop = contentNode.scrollHeight;
 
-			if(rooms.getCurrent() === this) {
+			if(roomsObj.getCurrent() === this) {
 				notificationCenter.hideMessageIndicator();
 			}
 		};
