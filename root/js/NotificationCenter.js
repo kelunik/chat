@@ -1,7 +1,7 @@
 var NotificationCenter = (function (window, document, dataHandler, rooms) {
 	"use strict";
 
-	var displayNotification, favicon, icons, messageIndicator = null, appIcon, userImages;
+	var displayNotification, icons, messageIndicator = null, appIcon, userImages;
 
 	userImages = {};
 
@@ -15,17 +15,17 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 
 		// TODO: Enable again when GitHub allows access to image data
 		/* if (customIcon in userImages) {
-			icon = userImages[customIcon];
-		} else if (image.complete) {
-			var canvas = document.createElement("canvas");
-			canvas.width = canvas.height = 80;
-			var ctx = canvas.getContext("2d");
-			ctx.drawImage(image, 0, 0, 80, 80);
-			ctx.drawImage(appIcon, 50, 50, 30, 30);
-			icon = userImages[customIcon] = canvas.toDataURL();
-		} else {
-			icon = "/img/logo_40x40x2.png";
-		} */
+		 icon = userImages[customIcon];
+		 } else if (image.complete) {
+		 var canvas = document.createElement("canvas");
+		 canvas.width = canvas.height = 80;
+		 var ctx = canvas.getContext("2d");
+		 ctx.drawImage(image, 0, 0, 80, 80);
+		 ctx.drawImage(appIcon, 50, 50, 30, 30);
+		 icon = userImages[customIcon] = canvas.toDataURL();
+		 } else {
+		 icon = "/img/logo_40x40x2.png";
+		 } */
 
 		icon = "/img/logo_40x40x2.png";
 
@@ -43,7 +43,7 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 	}.bind(this);
 
 	icons = {
-		default: "/favicon.ico",
+		default: "/img/icon.ico",
 		ping: "/img/icon_new.ico"
 	};
 
@@ -60,15 +60,13 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 
 	var exports = {
 		setIcon: function (url) {
-			if (favicon === null) {
-				favicon = document.getElementById("favicon");
-			}
-
-			if (!favicon) {
-				return;
-			}
-
-			favicon.href = url;
+			var icon = document.createElement('link');
+			icon.id = "icon";
+			icon.rel = "icon";
+			icon.href = url;
+			var curr = document.getElementById("icon");
+			document.head.removeChild(curr);
+			document.head.insertBefore(icon, document.getElementsByTagName("link")[0]);
 		},
 
 		showMessageIndicator: function () {
@@ -125,10 +123,10 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 					if (ping === id) {
 						dataHandler.send("ping", {
 							messageId: id
-						})
+						});
 					}
-				})
-			});
+				}.bind(this))
+			}.bind(this));
 		}
 	};
 
