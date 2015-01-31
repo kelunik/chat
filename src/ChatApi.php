@@ -190,7 +190,8 @@ class ChatApi {
 						"roomId" => $roomId,
 						"user" => [
 							"id" => $user->getId(),
-							"name" => $user->getName()
+							"name" => $user->getName(),
+							"avatar" => $user->getAvatar()
 						],
 						"messageId" => $messageId
 					]

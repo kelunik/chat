@@ -16,7 +16,7 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 		// TODO: Enable again when GitHub allows access to image data
 		/* if (customIcon in userImages) {
 		 icon = userImages[customIcon];
-		 } else if (image.complete) {
+		 } else if (image.complete || image.readyState === 4 || image.readyState === "complete") {
 		 var canvas = document.createElement("canvas");
 		 canvas.width = canvas.height = 80;
 		 var ctx = canvas.getContext("2d");
@@ -32,6 +32,8 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 		var notification = new Notification(title, {
 			tag: "message",
 			icon: icon,
+			lang: "en_US",
+			dir: "ltr",
 			body: message
 		});
 
@@ -60,13 +62,17 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 
 	var exports = {
 		setIcon: function (url) {
-			var icon = document.createElement('link');
-			icon.id = "icon";
-			icon.rel = "icon";
-			icon.href = url;
-			var curr = document.getElementById("icon");
-			document.head.removeChild(curr);
-			document.head.insertBefore(icon, document.getElementsByTagName("link")[0]);
+			try {
+				var icon = document.createElement('link');
+				icon.id = "icon";
+				icon.rel = "icon";
+				icon.href = url;
+				var curr = document.getElementById("icon");
+				document.head.removeChild(curr);
+				document.head.insertBefore(icon, document.getElementsByTagName("link")[0]);
+			} catch (e) {
+				// you suck, js!
+			}
 		},
 
 		showMessageIndicator: function () {
