@@ -2,7 +2,7 @@ var ga = ga || function () {
 		console.log("ga not yet loaded");
 	}, user = user || {};
 
-var Input = (function (window, document, dataHandler, formatter, messages, rooms, templateManager, user, util, ga) {
+var Input = (function (window, document, dataHandler, formatter, messages, moment, rooms, templateManager, user, util, ga) {
 	"use strict";
 
 	var compose, edit, input;
@@ -197,6 +197,12 @@ var Input = (function (window, document, dataHandler, formatter, messages, rooms
 
 		edit: function (id) {
 			var message = messages.get(id);
+
+			if (moment(message.querySelector("time").getAttribute("datetime")).unix() < moment().unix() - 300) {
+				alert("You can't edit messages older than 5 minutes!");
+				return;
+			}
+
 			input.value = message.getAttribute("data-text");
 			edit = id;
 
@@ -328,4 +334,4 @@ var Input = (function (window, document, dataHandler, formatter, messages, rooms
 			}
 		}
 	}
-})(window, document, DataHandler, Formatter, Messages, Rooms, TemplateManager, user, Util, ga);
+})(window, document, DataHandler, Formatter, Messages, moment, Rooms, TemplateManager, user, Util, ga);
