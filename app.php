@@ -54,7 +54,7 @@ $host = (new Aerys\Host)
 	->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
 	->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
 	->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
-	->addRoute('GET', "/manifest.appcache", $manifestResponder)
+	->addRoute("GET", "/manifest.appcache", $manifestResponder)
 	->addWebsocket("/chat", $chatHandler);
 
 if (DEPLOY_HTTPS) {
@@ -63,6 +63,6 @@ if (DEPLOY_HTTPS) {
 	]);
 	$port = defined("DEPLOY_HTTPS_REDIRECT_PORT") ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
 	$redirect = "https://" . DEPLOY_DOMAIN;
-	$redirect .= $port === 443 ? "" : ":{$port}";
+	$redirect .= $port === 80 ? "" : ":{$port}";
 	(new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
 }
