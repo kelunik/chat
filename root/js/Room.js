@@ -150,7 +150,10 @@ var Room = (function (window, document, activityObserver, dataHandler, messages,
 
 		this.scrollToBottom = function () {
 			contentNode.scrollTop = contentNode.scrollHeight;
-			notificationCenter.hideMessageIndicator();
+
+			if(rooms.getCurrent() === this) {
+				notificationCenter.hideMessageIndicator();
+			}
 		};
 
 		this.onComeBack = function () {
