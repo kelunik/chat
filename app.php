@@ -63,6 +63,6 @@ if (DEPLOY_HTTPS) {
 	]);
 	$port = defined("DEPLOY_HTTPS_REDIRECT_PORT") ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
 	$redirect = "https://" . DEPLOY_DOMAIN;
-	$redirect .= DEPLOY_PORT === 433 ? "" : ":" . DEPLOY_PORT;
+	$redirect .= DEPLOY_PORT === 443 ? "" : ":" . DEPLOY_PORT;
 	(new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
 }
