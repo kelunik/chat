@@ -28,14 +28,13 @@ var Messages = (function (document, rooms) {
 				return;
 			}
 
-			var messageNode = message.getNode();
-			var room = message.getRoom();
-			var roomNode = room.getNode();
+			var room = rooms.get(message.parentNode.getAttribute("data-id") * 1);
+			var roomNode = message.parentNode;
 			var roomId = room.getId();
 			rooms.focus(roomId);
 
-			var pos = messageNode.offsetTop;
-			var height = messageNode.clientHeight;
+			var pos = message.offsetTop;
+			var height = message.clientHeight;
 
 			if (pos < roomNode.scrollTop) {
 				roomNode.scrollTop = pos;
@@ -47,10 +46,10 @@ var Messages = (function (document, rooms) {
 				room.setDefaultScroll(false);
 			}
 
-			messageNode.style.background = "#ff9";
+			message.style.background = "#ff9";
 
 			setTimeout(function () {
-				messageNode.style.background = "";
+				message.style.background = "";
 			}, 1000);
 		}
 	}
