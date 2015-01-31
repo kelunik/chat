@@ -364,6 +364,10 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 		form.appendChild(input);
 	}, true);
 
+	document.getElementById("new-messages").addEventListener("click", function () {
+		rooms.getCurrent().scrollToBottom();
+	});
+
 // "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 // ^ smallest valid gif, set when GitHub images is not available or in dev mode without internet connection
 }
