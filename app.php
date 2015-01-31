@@ -17,7 +17,7 @@ require __DIR__ . "/check_requirements.php";
 $manifest = file_get_contents(__DIR__ . "/root/manifest.appcache");
 $manifestResponder = function () use ($manifest) {
 	return [
-		"header" => DEVELOPMENT ? ["Expires: 0"] : [
+		"header" => DEVELOPMENT ? [] : [
 			"Content-Type: text/cache-manifest; charset=utf-8",
 			"Cache-Control: no-cache, no-store, must-revalidate",
 			"Pragma: no-cache",
@@ -54,15 +54,15 @@ $host = (new Aerys\Host)
 	->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
 	->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
 	->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
-	->addRoute('GET', '/manifest.appcache', $manifestResponder)
+	->addRoute('GET', "/manifest.appcache", $manifestResponder)
 	->addWebsocket("/chat", $chatHandler);
 
 if (DEPLOY_HTTPS) {
 	$host->setCrypto(DEPLOY_HTTPS_CERT, [
 		"ciphers" => DEPLOY_HTTPS_SUITES
 	]);
-	$port = defined('DEPLOY_HTTPS_REDIRECT_PORT') ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
+	$port = defined("DEPLOY_HTTPS_REDIRECT_PORT") ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
 	$redirect = "https://" . DEPLOY_DOMAIN;
-	$redirect.= ($port === 80) ? '' : ":{$port}";
+	$redirect .= $port === 443 ? "" : ":{$port}";
 	(new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
 }
