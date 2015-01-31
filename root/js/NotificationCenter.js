@@ -1,12 +1,37 @@
 var NotificationCenter = (function (window, document, dataHandler, rooms) {
 	"use strict";
 
-	var displayNotification, favicon, icons, messageIndicator = null;
+	var displayNotification, favicon, icons, messageIndicator = null, appIcon, userImages;
 
-	displayNotification = function (title, message) {
+	userImages = {};
+
+	appIcon = new Image(80, 80);
+	appIcon.src = "/img/logo_40x40x2.png";
+
+	displayNotification = function (title, message, customIcon) {
+		var image = new Image(80, 80);
+		image.src = customIcon;
+		var icon;
+
+		// TODO: Enable again when GitHub allows access to image data
+		/* if (customIcon in userImages) {
+			icon = userImages[customIcon];
+		} else if (image.complete) {
+			var canvas = document.createElement("canvas");
+			canvas.width = canvas.height = 80;
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(image, 0, 0, 80, 80);
+			ctx.drawImage(appIcon, 50, 50, 30, 30);
+			icon = userImages[customIcon] = canvas.toDataURL();
+		} else {
+			icon = "/img/logo_40x40x2.png";
+		} */
+
+		icon = "/img/logo_40x40x2.png";
+
 		var notification = new Notification(title, {
 			tag: "message",
-			icon: "/img/logo_40x40x2.png",
+			icon: icon,
 			body: message
 		});
 
@@ -66,9 +91,9 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 			}
 		},
 
-		showNotification: function (title, message) {
+		showNotification: function (title, message, customIcon) {
 			if (window.Notification && Notification.permission === "granted") {
-				displayNotification(title, message);
+				displayNotification(title, message, customIcon);
 			}
 
 			else if (window.Notification && Notification.permission !== "denied") {
@@ -77,7 +102,7 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 						Notification.permission = status;
 					}
 
-					displayNotification(title, message);
+					displayNotification(title, message, customIcon);
 				}.bind(this));
 			}
 		},

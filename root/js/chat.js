@@ -157,7 +157,7 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 	dataHandler.on("ping", function (type, data) {
 		var room = rooms.get(data.roomId);
 		room.addPing(data.messageId);
-		notificationCenter.showNotification("Ping from " + data.user.name + " in " + room.getName(), data.text);
+		notificationCenter.showNotification("Ping from " + data.user.name + " in " + room.getName(), data.text, data.user.avatar + "&s=80");
 	});
 
 	dataHandler.on("ping-clear", function (type, data) {

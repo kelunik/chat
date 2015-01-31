@@ -4,19 +4,14 @@
 	<title>t@lkZone</title>
 	<meta charset="utf-8">
 
-	<script>
-		console.time("pageload");
-	</script>
-
 	<?php require TEMPLATE_DIR . "head_meta.php"; ?>
+
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Source+Code+Pro">
+	<link rel="stylesheet" href="/css/all.min.css?v=<?= CSS_VERSION ?>">
 
 	<script>
 		var url = "<?=DEPLOY_HTTPS ? "wss" : "ws"?>://<?=DEPLOY_AUTHORITY?>/chat";
 	</script>
-
-	<link rel="icon" href="/img/icon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Source+Code+Pro">
-	<link rel="stylesheet" href="/css/all.min.css?v=<?= CSS_VERSION ?>">
 
 	<script>
 		user = {
