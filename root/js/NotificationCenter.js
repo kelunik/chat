@@ -1,9 +1,29 @@
-var NotificationCenter = function () {
-	this.tags = {
-		message: "message"
+var NotificationCenter = (function (window, document, dataHandler, rooms) {
+	"use strict";
+
+	var displayNotification, favicon, icons, messageIndicator = null;
+
+	displayNotification = function (title, message) {
+		var notification = new Notification(title, {
+			tag: "message",
+			icon: "/img/logo_40x40x2.png",
+			body: message
+		});
+
+		// Firefox closes notifications after 4 seconds,
+		// let's do this in other browsers, too.
+		notification.onshow = function () {
+			setTimeout(this.close.bind(this), 5000);
+		}.bind(notification);
+	}.bind(this);
+
+	icons = {
+		default: "/favicon.ico",
+		ping: "/img/icon_new.ico"
 	};
 
-	window.addEventListener('load', function () {
+	// Chrome might need a user action for that
+	window.addEventListener("load", function () {
 		if (window.Notification && Notification.permission !== "granted") {
 			Notification.requestPermission(function (status) {
 				if (Notification.permission !== status) {
@@ -11,142 +31,91 @@ var NotificationCenter = function () {
 				}
 			});
 		}
-
-		var newMessage;
-		document.addEventListener("click", function (e) {
-			newMessage = newMessage || document.getElementById("new-messages");
-			if (e.target === newMessage) {
-				notificationCenter.hideMessageIndicator();
-				var node = roomHandler.getRoom(roomHandler.getCurrentRoom().id);
-				node.scrollTop = node.scrollHeight;
-			}
-		});
 	});
 
-	var hidden, visibilityChange;
+	var exports = {
+		setIcon: function (url) {
+			if (favicon === null) {
+				favicon = document.getElementById("favicon");
+			}
 
-	if (typeof document.hidden !== "undefined") {
-		hidden = "hidden";
-		visibilityChange = "visibilitychange";
-	} else if (typeof document.mozHidden !== "undefined") {
-		hidden = "mozHidden";
-		visibilityChange = "mozvisibilitychange";
-	} else if (typeof document.msHidden !== "undefined") {
-		hidden = "msHidden";
-		visibilityChange = "msvisibilitychange";
-	} else if (typeof document.webkitHidden !== "undefined") {
-		hidden = "webkitHidden";
-		visibilityChange = "webkitvisibilitychange";
-	}
+			if (!favicon) {
+				return;
+			}
 
-	this.hidden = hidden;
-	this.visibilityChange = visibilityChange;
-	this.userActive = true;
+			favicon.href = url;
+		},
 
-	document.addEventListener(visibilityChange, this.handleVisibilityChange.bind(this), false);
+		showMessageIndicator: function () {
+			if (messageIndicator === null) {
+				messageIndicator = document.getElementById("new-messages");
+			}
+
+			if (messageIndicator) {
+				messageIndicator.style.display = "block";
+			}
+		},
+
+		hideMessageIndicator: function () {
+			if (messageIndicator === null) {
+				messageIndicator = document.getElementById("new-messages");
+			}
+
+			if (messageIndicator) {
+				messageIndicator.style.display = "none";
+			}
+		},
+
+		showNotification: function (title, message) {
+			if (window.Notification && Notification.permission === "granted") {
+				displayNotification(title, message);
+			}
+
+			else if (window.Notification && Notification.permission !== "denied") {
+				Notification.requestPermission(function (status) {
+					if (Notification.permission !== status) {
+						Notification.permission = status;
+					}
+
+					displayNotification(title, message);
+				}.bind(this));
+			}
+		},
+
+		onPingChange: function () {
+			var cnt = 0;
+
+			rooms.forEach(function (room) {
+				cnt += room.getPingCount();
+			});
+
+			this.setIcon(cnt === 0 ? icons.default : icons.ping);
+		},
+
+		clearPing: function (id) {
+			rooms.forEach(function (room) {
+				var pings = room.getPings();
+
+				pings.forEach(function (ping) {
+					if (ping === id) {
+						dataHandler.send("ping", {
+							messageId: id
+						})
+					}
+				})
+			});
+		}
+	};
 
 	window.addEventListener("beforeunload", function () {
+		// close this explicitly, because browsers may not directly close connections on unload
+		// and further payloads would be processed
 		dataHandler.close();
-		changeFavicon("/img/icon.ico");
-	}, false);
-};
 
-NotificationCenter.prototype.handleVisibilityChange = function () {
-	if (document[this.hidden]) {
-		this.userActive = false;
-		timeUpdater.stop(); // don't update contents while user is somewhere else
-		dataHandler.send("activity", {state: "inactive"});
-	} else {
-		document.title = "t@lkZone";
-		this.userActive = true;
-		timeUpdater.update(); // update immediately when user comes back
-		timeUpdater.start(); // update contents while user is here
+		// restore default favicon, so user's bookmarks show the correct one
+		this.setIcon(icons.default);
+	}.bind(exports), false);
 
-		var current = document.getElementsByClassName("room-tab-current")[0].getAttribute("data-id");
-		var tabNode = roomHandler.getTab(current);
-
-		if (tabNode === null) {
-			return; // chat probably not yet loaded...
-		}
-
-		var newmessages = parseInt(tabNode.getAttribute("data-new-messages"));
-		tabNode.setAttribute("data-new-messages", "0");
-
-		var roomNode = roomHandler.getRoom(current);
-
-		if (roomHandler.rooms[current].defaultScroll) {
-			roomNode.scrollTop += roomNode.clientHeight;
-
-			if (roomNode.scrollHeight === roomNode.clientHeight || roomNode.scrollTop === roomNode.scrollHeight - roomNode.clientHeight) {
-				roomHandler.rooms[current].defaultScroll = true;
-				notificationCenter.hideMessageIndicator();
-			}
-		} else if (newmessages > 0) {
-			notificationCenter.showMessageIndicator();
-		}
-
-		dataHandler.send("activity", {state: "active"});
-	}
-};
-
-NotificationCenter.prototype.notifyMessage = function (title, message) {
-	if (window.Notification && Notification.permission === "granted") {
-		this.showNotification(title, message);
-	}
-
-	else if (window.Notification && Notification.permission !== "denied") {
-		Notification.requestPermission(function (status) {
-			if (Notification.permission !== status) {
-				Notification.permission = status;
-			}
-
-			this.showNotification(title, message);
-		}.bind(this));
-	}
-};
-
-NotificationCenter.prototype.showNotification = function (title, message) {
-	var notification = new Notification(title, {
-		tag: this.tags.message,
-		icon: "/img/logo_40x40x2.png",
-		body: message
-	});
-
-	// firefox closes notifications after 4 seconds, let's do this in other browsers, too.
-	notification.onshow = function () {
-		setTimeout(this.close.bind(this), 5000);
-	}.bind(notification);
-};
-
-NotificationCenter.prototype.checkPings = function () {
-	var cnt = 0;
-
-	for (var id in roomHandler.rooms) {
-		cnt += roomHandler.rooms[id].pings.length;
-	}
-
-	if (cnt == 0) {
-		changeFavicon("/img/icon.ico");
-	} else {
-		changeFavicon("/img/icon_new.ico");
-	}
-};
-
-NotificationCenter.prototype.showMessageIndicator = function () {
-	document.getElementById("new-messages").style.display = "block";
-};
-
-NotificationCenter.prototype.hideMessageIndicator = function () {
-	document.getElementById("new-messages").style.display = "none";
-};
-
-
-function changeFavicon(url) {
-	(function () {
-		var link = document.createElement('link');
-		link.type = 'image/x-icon';
-		link.rel = 'shortcut icon';
-		link.href = url;
-		document.getElementsByTagName('head')[0].appendChild(link);
-	}());
-}
+	return exports;
+})
+(window, document, DataHandler, Rooms);

@@ -1,11 +1,27 @@
-function forEach(list, callback) {
-	Array.prototype.forEach.call(list, callback);
+HTMLCollection.prototype.forEach = function (callback) {
+	Array.prototype.forEach.call(this, callback);
+};
+
+NodeList.prototype.forEach = function (callback) {
+	Array.prototype.forEach.call(this, callback);
+};
+
+if (typeof String.prototype.startsWith !== 'function') {
+	String.prototype.startsWith = function (str) {
+		return this.slice(0, str.length) === str;
+	};
 }
 
-function nodeFromHTML(html) {
-	var div = document.createElement("div");
-	div.innerHTML = html;
-	return div.firstChild;
+if (!Math.sign) {
+	Math.sign = function (x) {
+		x = +x;
+
+		if (x === 0 || isNaN(x)) {
+			return x;
+		}
+
+		return x > 0 ? 1 : -1;
+	}
 }
 
 function prev(node, selector) {
@@ -22,24 +38,16 @@ function next(node, selector) {
 	return index < children.length - 1 ? children.item(index + 1) : null;
 }
 
-function escapeHtml(str) {
-	var div = document.createElement('div');
-	div.appendChild(document.createTextNode(str));
-	return div.innerHTML;
+function isTouchDevice() {
+	return "ontouchstart" in window;
 }
 
-function generateToken(length) {
-	var token = "";
-
-	for (var i = 0; i < length; i += 5) {
-		token += Math.floor(10000000 + 89999999 * Math.random()).toString(36).substr(0, 5);
+function getSelectionText() {
+	var text = "";
+	if (window.getSelection) {
+		text = window.getSelection().toString();
+	} else if (document.selection && document.selection.type != "Control") {
+		text = document.selection.createRange().text;
 	}
-
-	return token.substr(0, length);
-}
-
-if (typeof String.prototype.startsWith !== 'function') {
-	String.prototype.startsWith = function (str) {
-		return this.slice(0, str.length) === str;
-	};
+	return text;
 }

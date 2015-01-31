@@ -10,7 +10,7 @@ $output = __DIR__ . "/../root/js/all.min.js";
 $source_map_path = __DIR__ . "/../root/all.min.js.map";
 $cmd = $js = "";
 
-foreach (explode(":", UI_JS_FILES) as $file) {
+foreach (explode(":", UI_JS_FILES_EXTERNAL) as $file) {
 	$cmd .= " --js='js/{$file}'";
 	$js .= file_get_contents("js/{$file}") . "\n";
 }
@@ -20,8 +20,15 @@ foreach (glob("../gen/*.handlebars.js") as $input) {
 	$js .= file_get_contents($input) . "\n";
 }
 
-//$js = shell_exec("java -jar ../deploy/compiler.jar --create_source_map {$source_map_path} --source_map_format=V3 --warning_level QUIET --charset UTF-8 --language_in ECMASCRIPT5 {$cmd}");
-//$js = "//# sourceMappingURL=/all.min.js.map\n{$js}";
+foreach (explode(":", UI_JS_FILES) as $file) {
+	$cmd .= " --js='js/{$file}'";
+	$js .= file_get_contents("js/{$file}") . "\n";
+}
+
+if (!DEVELOPMENT) {
+	$js = shell_exec("java -jar ../deploy/compiler.jar --create_source_map {$source_map_path} --source_map_format=V3 --warning_level QUIET --charset UTF-8 --language_in ECMASCRIPT5 {$cmd}");
+	$js = "//# sourceMappingURL=/all.min.js.map\n{$js}";
+}
 
 $before = md5(@file_get_contents($output));
 $after = md5($js);

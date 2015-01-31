@@ -1,10 +1,13 @@
-var TemplateManager = function () {
-};
+var TemplateManager = (function (handlebars) {
+	"use strict";
 
-TemplateManager.prototype.get = function (key) {
-	if (key in Handlebars.templates) {
-		return Handlebars.templates[key];
-	} else {
-		console.info("No template for key: " + key);
+	return {
+		get: function (key) {
+			if (key in handlebars.templates) {
+				return handlebars.templates[key];
+			}
+
+			throw new Error("no template with key '" + key + "'");
+		}
 	}
-};
+})(Handlebars);

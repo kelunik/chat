@@ -4,10 +4,10 @@ chdir(__DIR__);
 
 print shell_exec("rm -rf ../gen/*");
 
-print shell_exec(PHP_BINARY ." deploy_css.php");
+print shell_exec(PHP_BINARY . " deploy_css.php");
 
-print shell_exec(PHP_BINARY ." compile_templates.php");
-print shell_exec(PHP_BINARY ." deploy_js.php");
+print shell_exec(PHP_BINARY . " compile_templates.php");
+print shell_exec(PHP_BINARY . " deploy_js.php");
 
 require(__DIR__ . "/../gen/version_css.php");
 require(__DIR__ . "/../gen/version_js.php");

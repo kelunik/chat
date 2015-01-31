@@ -1,34 +1,211 @@
-if (window.top != window.self) {
-	alert("For security reasons, framing is not allowed.");
-	window.top.location.href = window.location.href;
-} else {
-	var timeUpdater = new TimeUpdater(5000);
-	var formatter = new Formatter();
-	var templateManager = new TemplateManager();
-	var notificationCenter = new NotificationCenter();
-	var dataHandler = new DataHandler(url);
-	var messageHandler = new MessageHandler();
-	var roomHandler = new RoomHandler();
-	var user = new User();
-	var lightBox = new LightBox();
-
-	var isTouchDevice = function () {
-		return "ontouchstart" in window;
-	};
-
-	dataHandler.on("message", messageHandler.handleMessage.bind(messageHandler));
-	dataHandler.on("message-edit", messageHandler.handleMessageEdit.bind(messageHandler));
-	dataHandler.on("missed-query", messageHandler.handleMissedQuery.bind(messageHandler));
-	dataHandler.on("star", messageHandler.handleStar.bind(messageHandler));
-	dataHandler.on("stars", roomHandler.handleStars.bind(roomHandler));
-	dataHandler.on("transcript", roomHandler.handleTranscript.bind(roomHandler));
-	dataHandler.on("ping", roomHandler.handlePing.bind(roomHandler));
-	dataHandler.on("ping-clear", roomHandler.handlePingClear.bind(roomHandler));
-	dataHandler.on("whereami", roomHandler.handleWhereAmI.bind(roomHandler));
-	dataHandler.on("activity", roomHandler.handleActivity.bind(roomHandler));
-	dataHandler.on("user-join", roomHandler.handleUserJoin.bind(roomHandler));
+function init(window, document, activityObserver, dataHandler, formatter, handlebars, messages, notificationCenter, rooms, templateManager, user) {
+	"use strict";
 
 	window.sessionStorage.setItem("autologout", "");
+	window.devicePixelRatio = window.devicePixelRatio || 1;
+
+	dataHandler.on("message", function (type, data) {
+		var node = document.getElementById("message-temp-" + data.token);
+
+		if (node) {
+			node.classList.remove("chat-message-pending");
+			node.setAttribute("id", "message-" + data.messageId);
+			node.setAttribute("data-id", data.messageId);
+
+			formatter.formatMessage(data.roomId, node.querySelector(".chat-message-text"), node.getAttribute("data-text"), data.reply, user);
+			var room = rooms.getCurrent();
+			room.setLastMessage(Math.max(room.getLastMessage(), data.messageId));
+
+			node.querySelector("time").parentNode.href = "/message/" + data.messageId + "#" + data.messageId;
+
+			node.querySelector(".chat-message-stars").addEventListener("click", function () {
+				var star = this.getAttribute("data-starred") == "0";
+				this.setAttribute("data-starred", star ? "1" : "0");
+
+				var event = star ? "star" : "unstar";
+				DataHandler.send(event, {
+					messageId: data.messageId
+				});
+			});
+		} else {
+			new Message(data);
+		}
+
+		if (data.user.id === user.id && data.reply) {
+			notificationCenter.clearPing(data.reply.messageId)
+		}
+	});
+
+	dataHandler.on("message-edit", function (type, data) {
+		var message = messages.get(data.messageId);
+		var text = data.text;
+
+		if (message === null) {
+			return; // just ignore that
+		}
+
+		message.classList.remove("chat-message-pending");
+		message.classList.remove("chat-message-cmd-me");
+		message.setAttribute("data-token", "");
+		message.setAttribute("data-text", text);
+
+		var roomId = message.get(data.messageId).getRoom().getId();
+
+		formatter.formatMessage(roomId, message.querySelector(".chat-message-text"), text, data.reply, data.user);
+
+		if (data.error) {
+			alert(data.error);
+			console.log(data.error);
+			return;
+		}
+
+		message.querySelector(".chat-message-meta").setAttribute("data-edit", data.time);
+
+		if (data.user.id === user.id && data.reply) {
+			notificationCenter.clearPing(data.reply.messageId);
+		}
+
+		var starredMessage = document.getElementById("message-starred-" + data.messageId);
+
+		if (starredMessage) {
+			var textNode = starredMessage.parentNode.parentNode.querySelector(".starred-message-text");
+			formatter.formatMessage(-1, textNode, data.text.replace(/^:\d+ /, ""), null, data.user);
+		}
+	});
+
+	dataHandler.on("missed-query", function (type, data) {
+		data.messages.forEach(function (o) {
+			new Message(o);
+		});
+
+		if (data.init) {
+			rooms.get(data.roomId).scrollToBottom();
+		}
+	});
+
+	dataHandler.on("star", function (type, data) {
+		var msg = messages.get(data.messageId);
+
+		if (msg) {
+			var node = msg.querySelector(".chat-message-stars");
+			node.setAttribute("data-stars", data.stars);
+
+			if (data.user === user.id) {
+				node.setAttribute("data-starred", data.action == "star" ? "1" : "0");
+			}
+		}
+
+		msg = document.getElementById("message-starred-" + data.messageId);
+
+		if (msg) {
+			if (data.stars === 0) {
+				msg.parentNode.parentNode.parentNode.removeChild(msg.parentNode.parentNode);
+			} else {
+				msg.setAttribute("data-stars", data.stars);
+
+				if (data.user == user.id) {
+					msg.setAttribute("data-starred", data.action == "star" ? "1" : "0");
+				}
+			}
+		} else {
+			dataHandler.send("stars", {roomId: rooms.getCurrent().getId()});
+		}
+	});
+
+	dataHandler.on("stars", function (type, data) {
+		var stars = document.getElementById("stars-" + data.roomId);
+		stars.innerHTML = templateManager.get("starred_messages")(data);
+
+		stars.children.forEach(function (o, i) {
+			var node = o.querySelector(".starred-message-text");
+			formatter.formatMessage(-1, node, data.messages[i].messageText.replace(/^:\d+ /, ""), null, data.user);
+
+			node = o.querySelector(".starred-message-meta time");
+			node.textContent = moment.unix(data.messages[i].time).fromNow();
+		});
+
+		stars.querySelectorAll(".star-message").forEach(function (o) {
+			o.addEventListener("click", function () {
+				var star = this.getAttribute("data-starred") === "0";
+				this.setAttribute("data-starred", star ? "1" : "0");
+
+				var event = star ? "star" : "unstar";
+				dataHandler.send(event, {
+					messageId: +this.getAttribute("data-message-id")
+				});
+			});
+		});
+	});
+
+	dataHandler.on("transcript", function (type, data) {
+		var room = rooms.get(data.roomId);
+		room.setTranscriptPending(false);
+		var node = room.getNode();
+		var tempScroll = node.scrollHeight - node.scrollTop;
+
+		data.messages.forEach(function (message) {
+			new Message(message);
+		});
+
+		if (data.messages.length > 0) {
+			node.scrollTop = node.scrollHeight - tempScroll;
+		} else {
+			room.noMoreMessages();
+		}
+	});
+
+	dataHandler.on("ping", function (type, data) {
+		var room = rooms.get(data.roomId);
+		room.addPing(data.messageId);
+		notificationCenter.showNotification("Ping from " + data.user.name + " in " + room.getName(), data.text);
+	});
+
+	dataHandler.on("ping-clear", function (type, data) {
+		rooms.forEach(function (room) {
+			room.clearPing(data.messageId);
+		});
+	});
+
+	dataHandler.on("whereami", function (type, data) {
+		var path = window.location.pathname;
+		var roomId = 1 * path.substr(7);
+
+		if (data.length === 0) {
+			// TODO: Show room search
+			window.location = "/rooms/1";
+		} else {
+			data.forEach(function (room) {
+				if (rooms.has(room.id)) {
+					return;
+				}
+
+				rooms.add(new Room(room));
+
+				if (roomId === room.id) {
+					rooms.focus(roomId);
+				}
+			}.bind(this));
+		}
+
+		notificationCenter.onPingChange();
+	});
+
+	dataHandler.on("activity", function (type, data) {
+		data.userId = data.userId || 0;
+		var elements = document.getElementsByClassName("user-activity-" + data.userId);
+
+		elements.forEach(function (element) {
+			element.setAttribute("data-state", data.state);
+		});
+	});
+
+	dataHandler.on("user-join", function (type, data) {
+		var room = rooms.get(data.roomId);
+
+		if (room) {
+			room.addUser(data.user);
+		}
+	});
 
 	dataHandler.on("logout", function () {
 		if (window.sessionStorage) {
@@ -38,35 +215,27 @@ if (window.top != window.self) {
 		window.location.href = "/auth";
 	});
 
-	var logout;
-
-	document.addEventListener("click", function(e) {
-		logout = logout || document.getElementById("logout");
-
-		if(e.target === logout) {
-			dataHandler.close();
-		}
+	document.getElementById("logout").addEventListener("click", function () {
+		dataHandler.close();
 	});
 
 	dataHandler.on("error", function (e) {
 		if (document.getElementById("error") === null) {
-			document.body.appendChild(nodeFromHTML(templateManager.get('error')("We couldn't establish any WebSocket connection, sorry about that!")));
+			document.body.appendChild(Util.html2node(TemplateManager.get('error')("We couldn't establish any WebSocket connection, sorry about that!")));
 		}
 
 		console.log(e);
 	});
 
-	Handlebars.registerHelper('datetime', function (time) {
+	handlebars.registerHelper('datetime', function (time) {
 		return moment.unix(time).toISOString();
 	});
 
-	Handlebars.registerHelper('dateformat', function (time) {
+	handlebars.registerHelper('dateformat', function (time) {
 		return moment.unix(time).format("LLL");
 	});
 
-	window.devicePixelRatio = window.devicePixelRatio || 1;
-
-	Handlebars.registerHelper('avatar', function (url) {
+	handlebars.registerHelper('avatar', function (url) {
 		return url + "&s=" + Math.round(window.devicePixelRatio * 30);
 	});
 
@@ -80,11 +249,15 @@ if (window.top != window.self) {
 		quotes: '“”‘’'
 	});
 
-	Handlebars.registerHelper('markdown', function (text) {
-		return new Handlebars.SafeString(markdown.render(text));
+	handlebars.registerHelper('markdown', function (text) {
+		return new handlebars.SafeString(markdown.render(text));
 	});
 
 	dataHandler.on("open", function () {
+		dataHandler.send("activity", {
+			state: activityObserver.isActive() ? "active" : "inactive"
+		});
+
 		var e = document.getElementById("error-overlay");
 
 		if (e !== null) {
@@ -94,85 +267,40 @@ if (window.top != window.self) {
 		var path = window.location.pathname;
 
 		if (path.substring(0, 7) === "/rooms/") {
-			dataHandler.send("whereami", {join: +path.substr(7)});
+			dataHandler.send("whereami", {
+				join: +path.substr(7)
+			});
 		}
 	});
 
-	console.log("App::addDOMContentLoader");
-
 	document.addEventListener("DOMContentLoaded", function () {
-		console.log("DOMContentLoaded");
-
-		dataHandler.connect();
+		dataHandler.init();
 
 		document.addEventListener("keydown", function (e) {
 			if (e.target.nodeName === "TEXTAREA" || e.target.nodeName === "INPUT" || e.target.isContentEditable) {
 				return;
 			}
 
-			if (e.which == 32) {
+			if (e.which === 32) {
 				e.preventDefault();
 				document.getElementById("input").focus();
-				return false;
 			}
 		});
 
 		new LongPress(document);
 	});
 
-	console.log("App::addDOMContentLoader...done");
-
-	if (!Math.sign) {
-		Math.sign = function (x) {
-			x = +x;
-
-			if (x === 0 || isNaN(x)) {
-				return x;
-			}
-
-			return x > 0 ? 1 : -1;
-		}
-	}
-
-
-	function adjustInput(node) {
-		var heightBefore = node.clientHeight;
-		var toScroll = [];
-
-		forEach(document.querySelectorAll(".room"), function (o) {
-			toScroll.push(o.scrollHeight - o.scrollTop - o.clientHeight);
-		});
-
-		node.style.height = 0;
-		node.style.height = Math.max(40, node.scrollHeight - 20) + "px";
-
-		forEach(document.querySelectorAll(".room"), function (o) {
-			var scroll = toScroll.shift();
-			o.scrollTop = o.scrollHeight - o.clientHeight - scroll;
-		});
-	}
-
-	function getSelectionText() {
-		var text = "";
-		if (window.getSelection) {
-			text = window.getSelection().toString();
-		} else if (document.selection && document.selection.type != "Control") {
-			text = document.selection.createRange().text;
-		}
-		return text;
-	}
 
 	key("r", function (e) {
 		e.preventDefault();
-
 		var input = document.getElementById("input");
 		input.value = "> " + getSelectionText().trim().replace(/\n\n/g, "\n").replace(/\n/g, "\n> ") + "\n\n";
-		adjustInput(input);
+		Input.adjust();
 		input.focus();
 		var caretPos = message.getAttribute("data-text").length;
 		if (input.createTextRange) {
 			var range = input.createTextRange();
-			range.move('character', caretPos);
+			range.move("character", caretPos);
 			range.select();
 		} else {
 			if (input.selectionStart) {
@@ -200,16 +328,12 @@ if (window.top != window.self) {
 		node.scrollTop += node.clientHeight * .2;
 	});
 
-	key("escape", function () {
-		lightBox.close();
-	});
-
-	var sessionCheck = setInterval(function () {
+	setInterval(function () {
 		var http = new XMLHttpRequest();
 		http.open("GET", "/session/status", true);
 
 		http.onreadystatechange = function () {
-			if (http.readyState != 4) {
+			if (http.readyState !== XMLHttpRequest.DONE) {
 				return;
 			}
 
@@ -224,12 +348,11 @@ if (window.top != window.self) {
 	}, 60 * 1000);
 
 	window.addEventListener("resize", function () {
-		for (var id in roomHandler.rooms) {
-			if (roomHandler.rooms.hasOwnProperty(id) && roomHandler.rooms[id].defaultScroll) {
-				var node = roomHandler.getRoom(id);
-				node.scrollTop = node.scrollHeight;
+		rooms.forEach(function (room) {
+			if (room.isDefaultScroll()) {
+				room.scrollToBottom();
 			}
-		}
+		});
 	});
 
 	document.addEventListener("submit", function (e) {

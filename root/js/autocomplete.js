@@ -1,8 +1,12 @@
-var autocomplete = function (node) {
+var autocomplete = function (node, rooms, templateManager) {
+	"use strict";
+
 	var currentUsers = [];
 	var current = 0;
 
 	node.addEventListener("keydown", function (e) {
+		var el;
+
 		if (currentUsers.length === 0) {
 			return;
 		}
@@ -11,9 +15,9 @@ var autocomplete = function (node) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
 
-			var text = this.value.lastIndexOf(" ");
-			this.value = (text > -1 ? this.value.substr(0, text + 1) : "") + "@" + currentUsers[current].name + " ";
-			adjustInput(this);
+			var text = node.value.lastIndexOf(" ");
+			node.value = (text > -1 ? node.value.substr(0, text + 1) : "") + "@" + currentUsers[current].name + " ";
+			Input.adjust();
 			document.getElementById("autocomplete").innerHTML = "";
 			currentUsers = [];
 			current = 0;
@@ -26,8 +30,8 @@ var autocomplete = function (node) {
 			e.stopImmediatePropagation();
 
 			current = --current < 0 ? currentUsers.length - 1 : current;
+			el = document.querySelector("#autocomplete-current");
 
-			var el = document.querySelector("#autocomplete-current");
 			if (el) {
 				el.id = "";
 			}
@@ -42,8 +46,8 @@ var autocomplete = function (node) {
 			e.stopImmediatePropagation();
 
 			current = ++current % currentUsers.length;
+			el = document.querySelector("#autocomplete-current");
 
-			var el = document.querySelector("#autocomplete-current");
 			if (el) {
 				el.id = "";
 			}
@@ -54,7 +58,7 @@ var autocomplete = function (node) {
 		}
 	});
 
-	node.addEventListener("input", function (e) {
+	node.addEventListener("input", function () {
 		var pos = this.selectionStart;
 		var word = this.value;
 		var pre = this.value.substr(0, pos);
@@ -66,10 +70,10 @@ var autocomplete = function (node) {
 
 		if (/^@[a-z][a-z-]*$/i.test(word)) {
 			var name = word.substr(1);
-			var room = roomHandler.getCurrentRoom();
+			var room = rooms.getCurrent();
 			currentUsers = [];
 
-			forEach(room.users, function (user) {
+			room.getUsers().forEach(function (user) {
 				if (user.name.toLowerCase().startsWith(name.toLowerCase())) {
 					currentUsers.push(user);
 				}

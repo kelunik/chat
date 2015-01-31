@@ -1,31 +1,32 @@
-var TimeUpdater = function (interval) {
-	this.interval = interval;
-	this.intervalId = null;
-	this.start();
-};
+var TimeUpdater = (function (window, document, moment) {
+	"use strict";
 
-TimeUpdater.prototype.start = function () {
-	var updater = this;
-	updater.stop();
-	updater.intervalId = setInterval(function () {
-		updater.update();
-	}, updater.interval);
-};
+	var interval = 10000, intervalId, update;
 
-TimeUpdater.prototype.stop = function () {
-	if (this.intervalId != null) {
-		window.clearInterval(this.intervalId);
-		this.intervalId = null;
-	}
-};
+	update = function () {
+		document.getElementsByClassName("relative-time").forEach(function (o) {
+			o.textContent = moment(o.getAttribute("datetime")).fromNow();
+		});
+	};
 
-TimeUpdater.prototype.setInterval = function (interval) {
-	this.interval = interval;
-	this.start();
-};
+	return {
+		start: function () {
+			this.stop();
 
-TimeUpdater.prototype.update = function () {
-	forEach(document.getElementsByTagName("time"), function (o) {
-		o.textContent = moment(o.getAttribute("datetime")).fromNow();
-	});
-};
+			intervalId = window.setInterval(update, interval);
+			update();
+		},
+
+		stop: function () {
+			if (intervalId !== null) {
+				window.clearInterval(intervalId);
+				intervalId = null;
+			}
+		},
+
+		setInterval: function (value) {
+			interval = value;
+			this.start();
+		}
+	};
+})(window, document, moment);

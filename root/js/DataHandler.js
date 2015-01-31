@@ -1,479 +1,121 @@
-var DataHandler = function (url) {
-	this.websocketUrl = url;
-	this.websocket = null;
-	this.handlers = {};
-	this.queue = [];
-	this.explicitClose = false;
-};
+var url = url || "";
 
-DataHandler.prototype.connect = function () {
-	if (this.websocket === null || this.websocket.readyState == WebSocket.CLOSED) {
-		this.websocket = new WebSocket(this.websocketUrl);
+var DataHandler = (function (window, url) {
+	"use strict";
 
-		var handler = this;
+	var websocket, handlers, queue, connect, invokeHandlers, explicitClose;
 
-		this.websocket.onopen = function () {
-			handler.onOpen();
+	explicitClose = false;
+	handlers = {};
+	queue = [];
 
-			dataHandler.send("activity", {state: notificationCenter.userActive ? "active" : "inactive"});
-		};
+	connect = function () {
+		if (!websocket || websocket.readyState === WebSocket.CLOSED) {
+			websocket = new WebSocket(url);
 
-		this.websocket.onmessage = function (e) {
-			handler.onMessage(e);
-		};
+			websocket.addEventListener("open", function () {
+				var tempQueue = queue;
+				queue = [];
 
-		this.websocket.onclose = function () {
-			handler.onClose();
-		};
+				if (tempQueue.length !== 0) {
+					DataHandler.send("lost-push", tempQueue);
+				}
 
-		this.websocket.onerror = function (e) {
-			handler.onError(e);
-		};
-	}
-};
+				invokeHandlers("open");
+			});
 
-DataHandler.prototype.onError = function (e) {
-	console.log(e);
+			websocket.addEventListener("message", function (e) {
+				if (explicitClose) {
+					return;
+				}
 
-	if ("error" in this.handlers) {
-		this.handlers["error"]();
-	}
-};
+				var payload = null;
 
-DataHandler.prototype.onOpen = function () {
-	console.debug("DataHandler::onOpen");
+				try {
+					payload = JSON.parse(e.data);
+				} catch (ex) {
+					throw new Error("invalid json", ex);
+				}
 
-	if ("open" in this.handlers) {
-		this.handlers["open"]();
-	}
+				if (payload === null || !"type" in payload) {
+					throw new Error("invalid websocket payload");
+				}
 
-	var queue = this.queue;
-	this.queue = [];
+				console.log(" ←  in   ", payload.type, payload.data);
+				invokeHandlers(payload.type, payload.data);
+			});
 
-	if (queue.length !== 0) {
-		this.send("lost-push", queue);
-	}
-};
+			websocket.addEventListener("close", function (e) {
+				invokeHandlers("close", e);
 
-DataHandler.prototype.onMessage = function (e) {
-	if (this.explicitClose) {
-		return;
-	}
+				if (!explicitClose) {
+					window.setTimeout(function () {
+						connect();
+					}, 3000);
+				}
+			});
 
-	if (document.getElementById("rooms") === null) { // TODO: Cache this, move away from here...
-		document.getElementById("page").innerHTML = templateManager.get("chat")(user);
-
-		var input = document.getElementById("input");
-
-		if (!isTouchDevice()) {
-			input.focus();
+			websocket.addEventListener("error", function (e) {
+				invokeHandlers("error", e);
+			});
 		}
+	};
 
-		autocomplete(input);
-
-		input.addEventListener("input", function (e) {
-			var message = parseInt(this.getAttribute("data-message"));
-
-			if (this.value === "" && (message || 0) === 0) {
-				this.removeAttribute("data-compose");
-				this.setAttribute("data-message", "0");
-			} else {
-				this.setAttribute("data-compose", "1");
-			}
-
-			adjustInput(this);
-		});
-
-		input.addEventListener("keydown", function (e) {
-			if (e.which == 37 || e.which == 39) {
-				input.setAttribute("data-compose", "1");
-				return;
-			}
-
-			if (e.which == 13 && e.shiftKey) {
-				e.preventDefault();
-
-				input.setAttribute("data-compose", "1");
-
-				var start = this.selectionStart;
-				var end = this.selectionEnd;
-				var value = this.value;
-				var indent = "";
-				var last_new_line = value.lastIndexOf("\n");
-
-				if (last_new_line > 0) {
-					indent = value.substring(last_new_line + 1);
+	invokeHandlers = function (type, data) {
+		if (type in handlers) {
+			handlers[type].forEach(function (callback) {
+				if (type in ["open", "close", "error"]) {
+					callback(data);
 				} else {
-					indent = value;
+					callback(type, data);
 				}
-
-				indent = indent.replace(/(\S.*)/, "");
-
-				this.value = value.substring(0, start) + "\n" + indent + value.substring(end);
-				this.selectionStart = this.selectionEnd = start + 1 + indent.length;
-
-				adjustInput(this);
-
-				return false;
-			}
-
-			if (e.which == 13) {
-				e.preventDefault();
-
-				var text = input.value;
-				var roomId = +document.getElementsByClassName("room-current")[0].getAttribute("data-id");
-
-				if (text === "") {
-					return;
-				}
-
-				var tempId = generateToken(20);
-				var editMessage = parseInt(input.getAttribute("data-message"));
-				var node = roomHandler.getRoom(roomId);
-
-				if (editMessage > 0) {
-					var shouldScroll = node.scrollTop === node.scrollHeight - node.clientHeight;
-
-					if (text === messageHandler.getDOM(editMessage).getAttribute("data-text")) {
-						input.setAttribute("data-message", "0");
-						input.value = "";
-						input.focus();
-						return;
-					}
-
-					var messageNode = messageHandler.getDOM(editMessage);
-					messageNode.classList.add("chat-message-pending");
-					messageNode.setAttribute("data-edit-id", tempId.toString());
-
-					formatter.formatMessage(roomId, messageNode.querySelector(".chat-message-text"), text, null, user);
-					this.removeAttribute("data-compose");
-
-					dataHandler.send("message-edit", {
-						messageId: +editMessage,
-						text: text,
-						tempId: tempId
-					});
-
-					if (shouldScroll) {
-						node.scrollTop = node.scrollHeight;
-					}
-
-					ga('send', 'event', 'chat', 'edit');
-				} else {
-					var message = nodeFromHTML(templateManager.get("chat_message")({
-						tempId: tempId,
-						roomId: roomId,
-						messageText: text,
-						user: {
-							id: user.id,
-							name: user.name,
-							avatar: user.imageUrl
-						},
-						stars: 0,
-						starred: false,
-						time: moment().unix()
-					}));
-
-					formatter.formatMessage(roomId, message.querySelector(".chat-message-text"), text, null, user);
-
-					message.querySelector("time").textContent = moment().fromNow();
-					message.querySelector("time").setAttribute("title", moment().format("LLL"));
-
-					message.classList.add("chat-message-me");
-					message.setAttribute("data-text", text);
-
-					var prevNode = node.querySelector(".chat-message:last-of-type");
-					node.appendChild(message);
-
-					if (prevNode && +prevNode.getAttribute("data-author") === user.id && moment(prevNode.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 60) {
-						message.classList.add("chat-message-followup");
-					}
-
-					dataHandler.send("message", {
-						roomId: roomId,
-						text: text,
-						tempId: tempId
-					});
-
-					var room = roomHandler.rooms[roomId];
-					var msg;
-					var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-					for (var i = room.pings.length - 1; i >= 0; i--) {
-						msg = messageHandler.getDOM(room.pings[i]);
-
-						if (msg === null) {
-							continue;
-						}
-
-						var rec = msg.getBoundingClientRect();
-						var top = rec.top >= 0 && rec.top < h;
-						var bottom = rec.bottom > 0 && rec.bottom <= h;
-
-						if (top || bottom) {
-							dataHandler.send("ping", {messageId: room.pings[i]});
-						}
-					}
-
-					if (isTouchDevice()) {
-						message.classList.add("unselectable");
-					}
-
-					message.addEventListener("longpress", function () {
-						var input = document.getElementById("input");
-
-						if (moment(message.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 5 * 60) {
-							input.value = message.getAttribute("data-text");
-							input.setAttribute("data-message", message.getAttribute("data-id"));
-
-							var caretPos = message.getAttribute("data-text").length;
-							if (input.createTextRange) {
-								var range = input.createTextRange();
-								range.move('character', caretPos);
-								range.select();
-							} else {
-								if (input.selectionStart) {
-									input.setSelectionRange(caretPos, caretPos);
-								}
-							}
-						} else {
-							alert('Previous message is older than 5 minutes and cannot be edited!');
-						}
-
-						adjustInput(input);
-					});
-
-					ga('send', 'event', 'chat', 'create');
-				}
-
-				input.removeAttribute("data-compose");
-				input.setAttribute("data-message", "0");
-				input.value = "";
-
-				adjustInput(input);
-
-				if (roomHandler.rooms[roomId].defaultScroll) {
-					node.scrollTop = node.scrollHeight;
-				}
-
-				input.focus();
-
-				return false;
-			}
-
-			else if (e.which == 38 && !e.shiftKey) {
-				if (input.getAttribute("data-compose")) {
-					return;
-				}
-
-				e.preventDefault();
-
-				var editMessage = +input.getAttribute("data-message");
-
-				var message;
-
-				if (editMessage > 0) {
-					message = window.prev(messageHandler.getDOM(editMessage), ".chat-message-me");
-				} else {
-					var nodes = document.querySelectorAll(".room-current .chat-message-me");
-					message = nodes[nodes.length - 1];
-				}
-
-				if (message !== null) {
-					if (moment(message.querySelector("time").getAttribute("datetime")).unix() > moment().unix() - 5 * 60) {
-						input.value = message.getAttribute("data-text");
-						input.setAttribute("data-message", message.getAttribute("data-id"));
-
-						var caretPos = message.getAttribute("data-text").length;
-						if (input.createTextRange) {
-							var range = input.createTextRange();
-							range.move('character', caretPos);
-							range.select();
-						} else {
-							if (input.selectionStart) {
-								input.setSelectionRange(caretPos, caretPos);
-							}
-						}
-					} else {
-						alert('Previous message is older than 5 minutes and cannot be edited!');
-					}
-				}
-
-				adjustInput(input);
-
-				return false;
-			}
-
-			else if (e.which == 40 && !e.shiftKey) {
-				if (input.hasAttribute("data-compose")) {
-					return;
-				}
-
-				e.preventDefault();
-
-				var editMessage = parseInt(input.getAttribute("data-message"));
-
-				var message = editMessage > 0
-					? window.next(messageHandler.getDOM(editMessage), ".chat-message-me") // FIXME: replace next
-					: null;
-
-				if (message !== null) {
-					input.value = message.getAttribute("data-text");
-					input.setAttribute("data-message", message.getAttribute("data-id"));
-
-					var caretPos = message.getAttribute("data-text").length;
-					if (input.createTextRange) {
-						var range = input.createTextRange();
-						range.move('character', caretPos);
-						range.select();
-					} else {
-						if (input.selectionStart) {
-							input.setSelectionRange(caretPos, caretPos);
-						}
-					}
-				} else {
-					input.removeAttribute("data-compose");
-					input.setAttribute("data-message", "0");
-					input.value = "";
-				}
-
-				adjustInput(input);
-
-				return false;
-			}
-
-			else if (e.which == 27) { // escape
-				e.preventDefault();
-				input.removeAttribute("data-compose");
-				input.setAttribute("data-message", "0");
-				input.value = "";
-				adjustInput(input);
-
-				return false;
-			}
-
-			else if (e.which == 9) { // tab
-				e.preventDefault();
-
-				var start = this.selectionStart;
-				var end = this.selectionEnd;
-				var value = this.value;
-				var before = value.substr(0, start);
-				var after = value.substr(end);
-
-				if (start === end) {
-					this.value = before + "\t" + after;
-					this.selectionStart = this.selectionEnd = start + 1;
-				} else {
-					var selectStart = start;
-
-					var line_before = before.substr(0, Math.max(0, before.lastIndexOf("\n") + 1));
-					var line_after = after.substr(Math.max(0, after.indexOf("\n")));
-					var text_to_indent = before.substr(Math.max(0, before.lastIndexOf("\n") + 1))
-						+ value.substring(start, end)
-						+ after.substr(0, Math.max(0, after.indexOf("\n")));
-
-					if (e.shiftKey) {
-						selectStart -= /(^|\n)(\t| {0,4})/g.exec(text_to_indent)[2].length;
-
-						text_to_indent = text_to_indent.replace(/(^|\n)(\t| {0,4})/g, "\n");
-
-						if (text_to_indent.indexOf("\n") === 0) { // TODO: Just get first char and compare
-							text_to_indent = text_to_indent.substr(1);
-						}
-
-						this.value = line_before + text_to_indent + line_after;
-					} else {
-						selectStart++;
-
-						this.value = line_before + "\t" + text_to_indent.replace(/\n/g, "\n\t") + line_after;
-					}
-
-					this.selectionStart = selectStart;
-					this.selectionEnd = this.value.length - after.length;
-				}
-			}
-
-			else if (e.which == 33) {
-				var roomNode = document.querySelector(".room-current");
-				roomNode.scrollTop -= roomNode.clientHeight * .2;
-			}
-
-			else if (e.which == 34) {
-				var roomNode = document.querySelector(".room-current");
-				roomNode.scrollTop += roomNode.clientHeight * .2;
-			}
-
-			else if (e.which === 35) {
-				var roomNode = document.querySelector(".room-current");
-				roomNode.scrollTop = roomNode.scrollHeight;
-			}
-		});
-
-		console.timeEnd("pageload");
-	}
-
-	var payload = null;
-
-	try {
-		payload = JSON.parse(e.data);
-	} catch (e) {
-		alert(e);
-		console.log(e);
-	}
-
-	if (payload == null || !"type" in payload || !"data" in payload) {
-		return;
-	}
-
-	console.log("in", payload.type, payload.data);
-
-	if (payload.type in this.handlers) {
-		this.handlers[payload.type](payload.type, payload.data);
-	} else {
-		console.info("No handler has been registered for that type: " + payload.type);
-	}
-};
-
-DataHandler.prototype.onClose = function () {
-	console.debug("DataHandler::onClose");
-
-	if ("close" in this.handlers) {
-		this.handlers["close"]();
-	}
-
-	if (!this.explicitClose) {
-		setTimeout(function () {
-			this.connect();
-		}.bind(this), 3000);
-	}
-};
-
-DataHandler.prototype.on = function (type, callback) {
-	this.handlers[type] = callback;
-};
-
-DataHandler.prototype.send = function (type, data) {
-	if (this.websocket.readyState === WebSocket.OPEN) {
-		this.websocket.send(JSON.stringify({type: type, data: data}));
-		console.log("out", type, data);
-	} else {
-		var handler = this;
-
-		if (type === "lost-push") {
-			forEach(data, function (i, o) {
-				handler.queue.push(o);
 			});
 		} else {
-			handler.queue.push({type: type, data: data});
+			console.info("No handler has been registered for that type: " + type);
+		}
+	};
+
+	return {
+		init: function () {
+			connect();
+		},
+
+		on: function (type, callback) {
+			if (type in handlers === false) {
+				handlers[type] = [];
+			}
+
+			handlers[type].push(callback);
+		},
+
+		send: function (type, data) {
+			if (websocket && websocket.readyState === WebSocket.OPEN) {
+				websocket.send(JSON.stringify({
+					type: type,
+					data: data
+				}));
+
+				console.log(" →  out  ", type, data);
+			} else {
+				if (type === "lost-push") {
+					data.forEach(function (o) {
+						queue.push(o);
+					});
+				} else {
+					queue.push({
+						type: type,
+						data: data
+					})
+				}
+			}
+		},
+
+		close: function () {
+			if (websocket) {
+				websocket.close();
+			}
+
+			explicitClose = true;
 		}
 	}
-};
-
-DataHandler.prototype.close = function () {
-	if (this.websocket) {
-		this.websocket.close();
-	}
-
-	this.explicitClose = true;
-};
+})(window, url);
