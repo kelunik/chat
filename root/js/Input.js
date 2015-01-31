@@ -18,6 +18,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 	autocomplete(input, rooms, templateManager);
 
 	input.addEventListener("input", function () {
+		compose = true;
 		Input.adjust();
 	});
 
