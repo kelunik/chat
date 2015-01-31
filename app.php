@@ -61,8 +61,8 @@ if (DEPLOY_HTTPS) {
 	$host->setCrypto(DEPLOY_HTTPS_CERT, [
 		"ciphers" => DEPLOY_HTTPS_SUITES
 	]);
-    $port = defined('DEPLOY_HTTPS_REDIRECT_PORT') ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
-    $redirect = "https://" . DEPLOY_DOMAIN;
-    $redirect.= ($port === 80) ? '' : ":{$port}";
-    (new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
+	$port = defined('DEPLOY_HTTPS_REDIRECT_PORT') ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
+	$redirect = "https://" . DEPLOY_DOMAIN;
+	$redirect.= ($port === 80) ? '' : ":{$port}";
+	(new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
 }
