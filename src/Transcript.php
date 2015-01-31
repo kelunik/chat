@@ -34,8 +34,7 @@ class Transcript {
 			$session = yield $this->sessionManager->getSession($sessionId);
 		}
 
-		$q = (yield $this->db->prepare(MessageHandler::buildQuery("time >= ? && time < ?")));
-		$q = (yield $q->execute([$roomId, $start, $end, isset($session) ? $session->id : -1]));
+		$q = (yield $this->db->prepare(MessageHandler::buildQuery("time >= ? && time < ?"), [$roomId, $start, $end, isset($session) ? $session->id : -1]));
 
 		$messages = [];
 
@@ -54,8 +53,7 @@ class Transcript {
 		$tpl = new Tpl(new Parsedown);
 		$tpl->load(TEMPLATE_DIR . "transcript.php", Tpl::LOAD_PHP);
 
-		$q = yield $this->db->prepare("SELECT m.id, m.roomId, m.userId, u.name AS userName, u.avatar_url AS userAvatar, m.text, m.edited, m.time, (SELECT COUNT(1) FROM `message_stars` AS ms WHERE ms.messageId = m.id) AS stars FROM `messages` AS m, `users` AS u, `room_users` AS ru, (SELECT `id`, `time` FROM messages WHERE id = ?) AS parent WHERE m.userId = ru.userId && ru.userId = u.id && m.roomId = ru.roomId && m.time > parent.time - 1440 && m.time < parent.time + 1440 ORDER BY m.id ASC");
-		$q = yield $q->execute([$messageId]);
+		$q = yield $this->db->prepare("SELECT m.id, m.roomId, m.userId, u.name AS userName, u.avatar_url AS userAvatar, m.text, m.edited, m.time, (SELECT COUNT(1) FROM `message_stars` AS ms WHERE ms.messageId = m.id) AS stars FROM `messages` AS m, `users` AS u, `room_users` AS ru, (SELECT `id`, `time` FROM messages WHERE id = ?) AS parent WHERE m.userId = ru.userId && ru.userId = u.id && m.roomId = ru.roomId && m.time > parent.time - 1440 && m.time < parent.time + 1440 ORDER BY m.id ASC", [$messageId]);
 
 		$messages = [];
 
