@@ -225,8 +225,6 @@ var Input = (function (window, document, dataHandler, formatter, messages, rooms
 			var roomNode = rooms.getCurrent().getNode();
 
 			if (edit) {
-				edit = 0;
-
 				var messageNode = messages.get(edit);
 
 				if (text === messageNode.getAttribute("data-text")) {
@@ -251,6 +249,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, rooms
 				}
 
 				ga('send', 'event', 'chat', 'edit');
+				edit = 0;
 			} else {
 				var message = util.html2node(templateManager.get("chat_message")({
 					tempId: tempId,

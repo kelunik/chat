@@ -49,7 +49,7 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 		message.setAttribute("data-token", "");
 		message.setAttribute("data-text", text);
 
-		var roomId = message.get(data.messageId).getRoom().getId();
+		var roomId = messages.get(data.messageId).parentNode.getAttribute("data-id") * 1;
 
 		formatter.formatMessage(roomId, message.querySelector(".chat-message-text"), text, data.reply, data.user);
 
