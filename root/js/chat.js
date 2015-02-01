@@ -163,7 +163,7 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 			}
 
 			// see https://developer.mozilla.org/en-US/docs/Navigation_timing
-			if (window.performance.navigation === 0) { // we only want to measure real navigation
+			if (window.performance.navigation.type === window.performance.navigation.TYPE_NAVIGATE) { // we only want to measure real navigation
 				var now = new Date().getTime();
 				var overallLoadTime = now - window.performance.timing.navigationStart;
 				var requestTime = window.performance.timing.responseEnd - window.performance.timing.requestStart;
