@@ -72,3 +72,9 @@ if (DEPLOY_HTTPS) {
 	$redirect .= DEPLOY_PORT === 443 ? "" : ":" . DEPLOY_PORT;
 	(new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
 }
+
+if (defined("HOST_DOCS")) {
+	(new Aerys\Host)
+		->setName(HOST_DOCS)
+		->setRoot(__DIR__ . "/vendor/amphp/aerys/doc");
+}
