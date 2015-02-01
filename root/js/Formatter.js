@@ -36,16 +36,16 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 
 	return {
 		formatMessage: function (roomId, node, text, reply, user) {
-			var match = /^https:\/\/trello\.com\/c\/([0-9a-z]+)$/i.exec(text);
+			var match = /^(https:\/\/trello\.com\/c\/([0-9a-z]+))(\/.*)?$/i.exec(text);
 
 			if (roomId > 0 && match) {
 				var link = document.createElement("a");
-				link.href = text;
+				link.href = match[1];
 				link.target = "_blank";
-				link.textContent = text;
+				link.textContent = match[1];
 				node.appendChild(link);
 
-				var url = "https://api.trello.com/1/card/" + match[1];
+				var url = "https://api.trello.com/1/card/" + match[2];
 				url += "?key=" + window.trelloKey;
 
 				var req = new XMLHttpRequest();
