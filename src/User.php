@@ -36,7 +36,7 @@ class User {
 
 		$result = yield $result->fetchObject();
 
-		yield isset($result) && ($result->role === "WRITER" || $result->role === "ADMIN");
+		return isset($result) && ($result->role === "WRITER" || $result->role === "ADMIN");
 	}
 
 	public function canEdit ($messageId) {
@@ -46,6 +46,6 @@ class User {
 
 		$result = yield $result->fetchObject();
 
-		yield isset($result) && (int) $result->userId === $this->id && (int) $result->time > time() - 300;
+		return isset($result) && (int) $result->userId === $this->id && (int) $result->time > time() - 300;
 	}
 }
