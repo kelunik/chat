@@ -42,7 +42,13 @@ $settingsHandler = new Settings($db);
 $host = (new Aerys\Host)
 	->setPort(DEPLOY_PORT)
 	->setName(DEPLOY_DOMAIN)
-	->setRoot(__DIR__ . "/root", ["mimeTypes" => ["js" => "text/javascript", "appcache" => "text/cache-manifest"]])
+	->setRoot(__DIR__ . "/root", [
+		"mimeTypes" => [
+			"js" => "text/javascript",
+			"appcache" => "text/cache-manifest"
+		],
+		"expiresPeriod" => 3600 * 24 * 30
+	])
 	->addRoute("GET", "/rooms/{id:[0-9]+}", [$pageHandler, "handleRequest"])
 	->addRoute("GET", "/rooms/{id:[0-9]+}/transcript/{year:[0-9]+}/{month:[0-9]+}/{day:[0-9]+}", [$transcriptHandler, "handleRequest"])
 	->addRoute("GET", "/message/{id:[0-9]+}", [$transcriptHandler, "handleMessageRequest"])
