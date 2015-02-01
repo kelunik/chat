@@ -39,7 +39,11 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 			var match = /^https:\/\/trello\.com\/c\/([0-9a-z]+)$/i.exec(text);
 
 			if (roomId > 0 && match) {
-				node.textContent = text;
+				var link = document.createElement("a");
+				link.href = text;
+				link.target = "_blank";
+				link.textContent = text;
+				node.appendChild(link);
 
 				var url = "https://api.trello.com/1/card/" + match[1];
 				url += "?key=" + window.trelloKey;
