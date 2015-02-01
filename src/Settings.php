@@ -32,8 +32,7 @@ class Settings {
 			return;
 		}
 
-		$q = yield $this->db->prepare("SELECT s.`key`, s.`default`, us.`value` FROM settings AS s LEFT JOIN (SELECT * FROM user_settings WHERE userId = ?) AS us ON (s.key = us.key)");
-		$q = yield $q->execute([$session->id]);
+		$q = yield $this->db->prepare("SELECT s.`key`, s.`default`, us.`value` FROM settings AS s LEFT JOIN (SELECT * FROM user_settings WHERE userId = ?) AS us ON (s.key = us.key)", [$session->id]);
 		$data = yield $q->fetchObjects();
 
 		$settings = [];
@@ -87,8 +86,7 @@ class Settings {
 			}
 		}
 
-		$q = yield $this->db->prepare("SELECT s.`key`, s.`default`, us.`value` FROM settings AS s LEFT JOIN (SELECT * FROM user_settings WHERE `userId` = ?) AS us ON (s.`key` = us.`key`)");
-		$q = yield $q->execute([$session->id]);
+		$q = yield $this->db->prepare("SELECT s.`key`, s.`default`, us.`value` FROM settings AS s LEFT JOIN (SELECT * FROM user_settings WHERE `userId` = ?) AS us ON (s.`key` = us.`key`)", [$session->id]);
 		$data = yield $q->fetchObjects();
 
 		$settings = [];
