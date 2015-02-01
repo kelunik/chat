@@ -11,12 +11,17 @@ var autocomplete = function (node, rooms, templateManager) {
 			return;
 		}
 
-		if (e.which === 9 || e.which === 13) {
-			e.preventDefault();
-			e.stopImmediatePropagation();
+		// tab, enter, comma, dot, question mark, exclamation mark, colon
+		var keys = [9, 13, 188, 190, 219, 49];
+
+		if (keys.indexOf(e.which) > -1) {
+			if (e.which === 9 || e.which === 13) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+			}
 
 			var text = node.value.lastIndexOf(" ");
-			node.value = (text > -1 ? node.value.substr(0, text + 1) : "") + "@" + currentUsers[current].name + " ";
+			node.value = (text > -1 ? node.value.substr(0, text + 1) : "") + "@" + currentUsers[current].name + (e.which === 9 || e.which === 13 ? " " : "");
 			Input.adjust();
 			document.getElementById("autocomplete").innerHTML = "";
 			currentUsers = [];
