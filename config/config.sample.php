@@ -31,6 +31,9 @@ const REDIS_PASSWORD = "secret";
 const GITHUB_CLIENT_ID = "";
 const GITHUB_CLIENT_SECRET = "";
 
+# see https://trello.com/app-key
+const TRELLO_KEY = "";
+
 
 # Deployment
 # ----------

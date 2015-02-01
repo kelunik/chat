@@ -262,6 +262,22 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 		return url + "&s=" + Math.round(window.devicePixelRatio * 30);
 	});
 
+	handlebars.registerHelper('pluralize', function (number, single, plural) {
+		if (number === 1) {
+			return single;
+		} else {
+			return plural;
+		}
+	});
+
+	handlebars.registerHelper('pluralizeCount', function (number, single, plural) {
+		if (number === 1) {
+			return number + " " + single;
+		} else {
+			return number + " " + plural;
+		}
+	});
+
 	var markdown = new Remarkable('full', {
 		html: false,
 		xhtmlOut: false,

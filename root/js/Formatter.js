@@ -1,4 +1,4 @@
-var Formatter = (function (document, messages, templateManager, util) {
+var Formatter = (function (window, document, messages, rooms, templateManager, util) {
 	"use strict";
 
 	var md = new Remarkable('full', {
@@ -36,6 +36,38 @@ var Formatter = (function (document, messages, templateManager, util) {
 
 	return {
 		formatMessage: function (roomId, node, text, reply, user) {
+			var match = /^https:\/\/trello\.com\/c\/([0-9a-z]+)$/i.exec(text);
+
+			if (roomId > 0 && match) {
+				node.textContent = text;
+
+				var url = "https://api.trello.com/1/card/" + match[1];
+				url += "?key=" + window.trelloKey;
+
+				var req = new XMLHttpRequest();
+				req.onload = function () {
+					if (this.status === 200) {
+						try {
+							var data = JSON.parse(this.response);
+							var html = templateManager.get("trello_card")(data);
+							node.parentNode.replaceChild(util.html2node(html), node);
+
+							var room = rooms.get(roomId);
+							if (room.isDefaultScroll()) {
+								room.scrollToBottom();
+							}
+						} catch (e) {
+							console.log("Couldn't load trello card.", e);
+						}
+					}
+				};
+
+				req.open("GET", url, true);
+				req.send();
+
+				return node;
+			}
+
 			node.innerHTML = md.render(text);
 
 			node.querySelectorAll("code:not([class])").forEach(function (o) {
@@ -108,4 +140,4 @@ var Formatter = (function (document, messages, templateManager, util) {
 			return node;
 		}
 	}
-})(document, Messages, TemplateManager, Util);
+})(window, document, Messages, Rooms, TemplateManager, Util);

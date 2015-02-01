@@ -17,7 +17,7 @@ var Message = (function (window, document, activityObserver, dataHandler, format
 			messageNode.classList.add("chat-message-me");
 		}
 
-		formatter.formatMessage(room.id, messageNode.querySelector(".chat-message-text"), data.messageText, data.reply, data.user);
+		formatter.formatMessage(room.getId(), messageNode.querySelector(".chat-message-text"), data.messageText, data.reply, data.user);
 		messageNode.querySelector("time").textContent = moment.unix(data.time).fromNow();
 		messageNode.querySelector("time").setAttribute("title", moment.unix(data.time).format("LLL"));
 		messageNode.querySelector("time").parentNode.href = "/message/" + data.messageId + "#" + data.messageId;

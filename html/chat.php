@@ -11,10 +11,11 @@
 
 	<script>
 		var url = "<?=DEPLOY_HTTPS ? "wss" : "ws"?>://<?=DEPLOY_AUTHORITY?>/chat";
+		var trelloKey = "<?=TRELLO_KEY?>";
 	</script>
 
 	<script>
-		user = {
+		var user = {
 			id: <?= (int) $session->id ?>,
 			name: "<?= htmlspecialchars($session->name) ?>",
 			avatar: "<?= htmlspecialchars($session->avatar) ?>"
