@@ -15,7 +15,7 @@ class ChatApi {
 	}
 
 	public function addMessage ($roomId, User $user, $messageText, $token, $time) {
-		if (!yield $user->canWrite($roomId)) {
+		if (!$user->canWrite($roomId)) {
 			throw new PermissionException(sprintf(
 				"%s doesn't have the right to post messages to %d",
 				$user->getName(), $roomId
@@ -59,7 +59,7 @@ class ChatApi {
 	}
 
 	public function editMessage ($messageId, User $user, $messageText, $token, $time) {
-		if (!yield $user->canEdit($messageId)) {
+		if (!$user->canEdit($messageId)) {
 			throw new PermissionException(sprintf(
 				"%s doesn't have the right to edit message %d",
 				$user->getName(), $messageId
