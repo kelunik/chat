@@ -1,6 +1,8 @@
 function init(window, document, activityObserver, dataHandler, formatter, handlebars, messages, notificationCenter, rooms, templateManager, user) {
 	"use strict";
 
+	var initialLoad = true;
+
 	window.sessionStorage.setItem("autologout", "");
 	window.devicePixelRatio = window.devicePixelRatio || 1;
 
@@ -151,6 +153,27 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 			node.scrollTop = node.scrollHeight - tempScroll;
 		} else {
 			room.noMoreMessages();
+		}
+
+		if (initialLoad) {
+			initialLoad = false;
+
+			if (!window.performance) {
+				return;
+			}
+
+			// see https://developer.mozilla.org/en-US/docs/Navigation_timing
+			if (window.performance.navigation === 0) { // we only want to measure real navigation
+				var now = new Date().getTime();
+				var overallLoadTime = now - window.performance.timing.navigationStart;
+				var requestTime = window.performance.timing.responseEnd - window.performance.timing.requestStart;
+
+				console.log("Overall load time: " + overallLoadTime);
+				console.log("Request time: " + requestTime);
+
+				ga("send", "event", "performance", "load", "overall load time", overallLoadTime);
+				ga("send", "event", "performance", "load", "request time", requestTime);
+			}
 		}
 	});
 
