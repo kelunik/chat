@@ -204,8 +204,22 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 				return;
 			}
 
-			input.value = message.getAttribute("data-text");
 			edit = id;
+
+			if (isTouchDevice()) {
+				var result = prompt("Message Edit", message.getAttribute("data-text"));
+
+				if (result === null) {
+					edit = 0;
+				} else {
+					input.value = result;
+					Input.submit();
+				}
+
+				return;
+			}
+
+			input.value = message.getAttribute("data-text");
 
 			var caretPos = input.value.length;
 			if (input.createTextRange) {
@@ -217,6 +231,8 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 					input.setSelectionRange(caretPos, caretPos);
 				}
 			}
+
+			input.focus();
 		},
 
 		submit: function () {
