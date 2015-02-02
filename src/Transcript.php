@@ -10,7 +10,7 @@ use Tpl;
 class Transcript {
 	private $db;
 	private $sessionManager;
-	
+
 	public function __construct (Pool $db) {
 		$this->db = $db;
 		$this->sessionManager = new SessionManager;
@@ -38,8 +38,11 @@ class Transcript {
 
 		$messages = [];
 
+		$md = new Parsedown;
+		$md->setMarkupEscaped(true);
+
 		foreach (yield $q->fetchObjects() as $message) {
-			$message->messageText = (new Parsedown())->parse($message->text);
+			$message->messageText = $md->text($message->text);
 			$messages[] = $message;
 		}
 

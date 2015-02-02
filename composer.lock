@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f2b2ff30f721d633c85a2c257f82e7e1",
+    "hash": "1e65b3e469ab12b4a49a2707a2ad2ee9",
     "packages": [
         {
             "name": "amphp/aerys",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys.git",
-                "reference": "80ee1b7883cca4264807f8fee70351f3f2603df0"
+                "reference": "149746eff0bb2fba67d51f6a52eb06a3ab3498e7"
             },
             "require": {
                 "amphp/amp": "~0.15.0",
@@ -67,7 +67,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-01-30 01:39:33"
+            "time": "2015-02-01 01:41:43"
         },
         {
             "name": "amphp/amp",
@@ -335,6 +335,38 @@
                 "dns"
             ],
             "time": "2013-11-28 15:57:15"
+        },
+        {
+            "name": "erusev/parsedown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:kelunik/parsedown",
+                "reference": "cb8cc57742546648bb5461e66e35a92f2f89538b"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2015-02-01 23:58:24"
         },
         {
             "name": "nikic/fast-route",
@@ -637,7 +669,8 @@
         "amphp/redis": 20,
         "amphp/artax": 20,
         "vladkens/autoprefixer": 20,
-        "tubalmartin/cssmin": 20
+        "tubalmartin/cssmin": 20,
+        "erusev/parsedown": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

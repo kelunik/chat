@@ -20,12 +20,12 @@
 		"amphp/artax": "dev-master",
 		"vladkens/autoprefixer": "dev-master",
 		"tubalmartin/cssmin": "dev-master",
-		"swiftmailer/swiftmailer": "5.3.*"
+		"swiftmailer/swiftmailer": "5.3.*",
+		"erusev/parsedown": "dev-master"
 	},
 	"repositories": [
 		{
 			"type": "git",
-			"no-api": true,
 			"url": "git@github.com:rdlowrey/aerys.git",
 			"vendor-alias": "amphp"
 		},
@@ -36,6 +36,10 @@
 		{
 			"type": "git",
 			"url": "git@github.com:amphp/redis.git"
+		},
+		{
+			"type": "git",
+			"url": "git@github.com:kelunik/parsedown"
 		}
 	],
 	"minimum-stability": "dev",

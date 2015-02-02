@@ -186,3 +186,50 @@
 	color: #eee;
 	padding: 20px;
 }
+
+#nav {
+	height: 54px;
+	background: #111;
+	text-align: center;
+	line-height: 52px;
+	border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+#nav img {
+	vertical-align: middle;
+	transform: translateY(-7px); /* FIXME: position without translate */
+}
+
+#nav h1 {
+	font-family: 'Pacifico', cursive;
+	font-weight: normal;
+	font-size: 26px;
+	line-height: 52px;
+	margin: 0 0 0 20px;
+	padding: 0;
+	display: inline-block;
+	color: #fafafa;
+}
+
+#content-fw {
+	margin: 0 auto;
+	padding: 15px 0;
+	width: 1000px;
+}
+
+#room-overview {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+
+.room-card {
+	margin: 8px;
+	padding: 15px;
+	border: 1px solid rgba(0, 0, 0, .05);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+	width: calc(25% - 48px);
+	flex: 0 0 auto;
+	border-radius: 3px;
+	background: #fff;
+}

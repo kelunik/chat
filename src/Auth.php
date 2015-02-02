@@ -83,7 +83,7 @@ class Auth {
 			yield $this->redis->set("session.{$sessionId['server']}", $sessionData);
 
 			yield "status" => 302;
-			yield "header" => "Location: /rooms/1";
+			yield "header" => "Location: /rooms";
 			yield "header" => ("Set-Cookie: aerys_sess=" . $sessionId["client"] . "; PATH=/; httpOnly");
 			yield "body" => "";
 		} else {
