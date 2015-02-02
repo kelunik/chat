@@ -42,7 +42,7 @@ class Transcript {
 		$md->setMarkupEscaped(true);
 
 		foreach (yield $q->fetchObjects() as $message) {
-			$message->messageText = $md->text($message->text);
+			$message->messageText = htmlspecialchars($message->text); // $md->text($message->text);
 			$messages[] = $message;
 		}
 
@@ -61,7 +61,7 @@ class Transcript {
 		$messages = [];
 
 		foreach (yield $q->fetchObjects() as $message) {
-			$message->messageText = (new Parsedown())->parse($message->text);
+			$message->messageText = htmlspecialchars($message->text); // (new Parsedown())->parse($message->text);
 			$messages[] = $message;
 		}
 

@@ -48,8 +48,8 @@
 	</div>
 
 	<?php
-		$md = new Parsedown;
-		$md->setMarkupEscaped(true);
+	$md = new Parsedown;
+	$md->setMarkupEscaped(true);
 	?>
 
 	<div id="content">
@@ -64,7 +64,7 @@
 						</div>
 
 						<div class="room-card-desc">
-							<?= $md->parse($room->description) ?>
+							<?= htmlspecialchars($room->description) /* $md->parse($room->description) */ ?>
 						</div>
 					</div>
 				<?php endforeach; ?>
