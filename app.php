@@ -1,5 +1,6 @@
 <?php
 
+use Aerys\Root\Root;
 use App\Auth;
 use App\Chat;
 use App\Page;
@@ -43,11 +44,13 @@ $host = (new Aerys\Host)
 	->setPort(DEPLOY_PORT)
 	->setName(DEPLOY_DOMAIN)
 	->setRoot(__DIR__ . "/root", [
-		"mimeTypes" => [
+		Root::OP_MIME_TYPES => [
 			"js" => "text/javascript",
 			"appcache" => "text/cache-manifest"
 		],
-		"expiresPeriod" => 3600 * 24 * 30
+		Root::OP_EXPIRES_PERIOD => 3600 * 24 * 14,
+		Root::OP_AGGRESSIVE_CACHE_HEADER_ENABLED => true,
+		Root::OP_AGGRESSIVE_CACHE_MULTIPLIER => 0.75
 	])
 	->addRoute("GET", "/rooms", [$pageHandler, "roomOverview"])
 	->addRoute("GET", "/rooms/{id:[0-9]+}", [$pageHandler, "handleRequest"])
