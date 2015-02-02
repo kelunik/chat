@@ -126,7 +126,7 @@ class RoomHandler {
 		yield $this->listener->unsubscribe("room.broadcast");
 		yield $this->listener->unsubscribe("chat.user");
 		yield $this->listener->unsubscribe("chat.session");
-		yield $this->listener->close();
+		yield $this->listener->close(true);
 		yield $this->redis->close();
 	}
 

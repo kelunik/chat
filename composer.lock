@@ -267,7 +267,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:amphp/redis.git",
-                "reference": "f22174989f71800a58704463f8b61858ebcd239a"
+                "reference": "7221b88a9804dfbbe2891b5cae13c8a2425a8737"
             },
             "require": {
                 "amphp/amp": "~0.15",
@@ -301,7 +301,7 @@
             "support": {
                 "issues": "https://github.com/amphp/redis/issues"
             },
-            "time": "2015-01-26 14:42:33"
+            "time": "2015-02-02 12:37:58"
         },
         {
             "name": "daverandom/libdns",
