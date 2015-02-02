@@ -260,7 +260,7 @@ class RoomHandler {
 		}
 
 		$session = $this->getSession($clientId);
-		$result = yield $this->db->prepare(MessageHandler::buildQuery("id > ?"), [$data->roomId, $data->last, $session->id]);
+		$result = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ? && id > ?"), [$data->roomId, $data->last, $session->id]);
 		$messages = [];
 
 		foreach (yield $result->fetchAll() as $message) {
@@ -285,9 +285,9 @@ class RoomHandler {
 		$session = $this->getSession($clientId);
 
 		if($data->messageId === -1) {
-			$result = yield $this->db->prepare(MessageHandler::buildQuery("1"), [$data->roomId, $session->id]);
+			$result = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ?"), [$data->roomId, $session->id]);
 		} else {
-			$result = yield $this->db->prepare(MessageHandler::buildQuery("id < ?"), [$data->roomId, $data->messageId, $session->id]);
+			$result = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ? && id < ?"), [$data->roomId, $data->messageId, $session->id]);
 		}
 
 		$messages = [];

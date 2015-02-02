@@ -34,7 +34,7 @@ class Transcript {
 			$session = yield $this->sessionManager->getSession($sessionId);
 		}
 
-		$q = (yield $this->db->prepare(MessageHandler::buildQuery("time >= ? && time < ?"), [$roomId, $start, $end, isset($session) ? $session->id : -1]));
+		$q = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ? && time >= ? && time < ?"), [$roomId, $start, $end, isset($session) ? $session->id : -1]);
 
 		$messages = [];
 
@@ -67,5 +67,45 @@ class Transcript {
 
 		$tpl->set("messages", $messages);
 		yield "body" => $tpl->page();
+	}
+
+	public function messageJson ($request) {
+		$messageId = $request["URI_ROUTE_ARGS"]["id"];
+
+		$sessionId = SessionManager::getSessionId($request);
+
+		if ($sessionId !== null) {
+			$session = yield $this->sessionManager->getSession($sessionId);
+		}
+
+		$q = yield $this->db->prepare(MessageHandler::buildQuery("id = ?"), [$messageId, isset($session) ? $session->id : -1]);
+		$message = yield $q->fetchObject();
+
+		$message = [
+			"id" => $message->id,
+			"roomId" => $message->roomId,
+			"user" => [
+				"id" => $message->userId,
+				"name" => $message->userName,
+				"avatar" => $message->userAvatar
+			],
+			"text" => $message->text,
+			"edited" => (bool) $message->edited,
+			"time" => $message->time,
+			"stars" => (int) $message->stars,
+			"starred" => (bool) $message->starred,
+			"reply" => $message->replyMessageId ? [
+				"messageId" => $message->replyMessageId,
+				"user" => [
+					"id" => $message->replyUserId,
+					"name" => $message->replyUserName
+				]
+			] : null
+		];
+
+		$indent = isset($request["QUERY"]["pretty"]) ? JSON_PRETTY_PRINT : 0;
+
+		yield "header" => "Content-Type: application/json";
+		yield "body" => json_encode($message, $indent);
 	}
 }

@@ -1,4 +1,4 @@
-var Formatter = (function (window, document, messages, rooms, templateManager, util) {
+var Formatter = (function (window, document, messages, rooms, templateManager, url, util) {
 	"use strict";
 
 	var md = new Remarkable('full', {
@@ -36,19 +36,57 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 
 	return {
 		formatMessage: function (roomId, node, text, reply, user) {
-			var match = /^(https:\/\/trello\.com\/c\/([0-9a-z]+))(\/.*)?$/i.exec(text);
+			var self = "http" + url.slice(2).substring(0, url.length - 7);
+			console.log(self);
+			var match = new RegExp("^(" + RegExp.quote(self) + "\/message\/([0-9]+))(#[0-9]+)?$").exec(text);
+			var link, reqUrl, req;
 
 			if (roomId > 0 && match) {
-				var link = document.createElement("a");
+				link = document.createElement("a");
 				link.href = match[1];
 				link.target = "_blank";
 				link.textContent = match[1];
 				node.appendChild(link);
 
-				var url = "https://api.trello.com/1/card/" + match[2];
-				url += "?key=" + window.trelloKey;
+				reqUrl = match[1] + ".json";
 
-				var req = new XMLHttpRequest();
+				req = new XMLHttpRequest();
+				req.onload = function () {
+					if (this.status === 200) {
+						try {
+							var data = JSON.parse(this.response);
+							var html = templateManager.get("message_card")(data);
+							node.parentNode.replaceChild(util.html2node(html), node);
+
+							var room = rooms.get(roomId);
+							if (room.isDefaultScroll()) {
+								room.scrollToBottom();
+							}
+						} catch (e) {
+							console.log("Couldn't load message card.", e);
+						}
+					}
+				};
+
+				req.open("GET", reqUrl, true);
+				req.send();
+
+				return node;
+			}
+
+			match = /^(https:\/\/trello\.com\/c\/([0-9a-z]+))(\/.*)?$/i.exec(text);
+
+			if (roomId > 0 && match) {
+				link = document.createElement("a");
+				link.href = match[1];
+				link.target = "_blank";
+				link.textContent = match[1];
+				node.appendChild(link);
+
+				reqUrl = "https://api.trello.com/1/card/" + match[2];
+				reqUrl += "?key=" + window.trelloKey;
+
+				req = new XMLHttpRequest();
 				req.onload = function () {
 					if (this.status === 200) {
 						try {
@@ -66,7 +104,7 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 					}
 				};
 
-				req.open("GET", url, true);
+				req.open("GET", reqUrl, true);
 				req.send();
 
 				return node;
@@ -144,4 +182,4 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 			return node;
 		}
 	}
-})(window, document, Messages, Rooms, TemplateManager, Util);
+})(window, document, Messages, Rooms, TemplateManager, url, Util);

@@ -6,6 +6,10 @@ NodeList.prototype.forEach = function (callback) {
 	Array.prototype.forEach.call(this, callback);
 };
 
+RegExp.quote = function(str) {
+	return (str+'').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+};
+
 if (typeof String.prototype.startsWith !== 'function') {
 	String.prototype.startsWith = function (str) {
 		return this.slice(0, str.length) === str;
