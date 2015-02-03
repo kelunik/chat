@@ -109,16 +109,23 @@ class RoomHandler {
 				return;
 			}
 
-			$sessionClientPairs = $this->users[$this->sessions[$sessionId]->id];
+			$clients = $this->users[$this->sessions[$sessionId]->id];
+			$closingClients = [];
 
-			yield "broadcast" => [
-				json_encode([
-					"type" => $payload->type,
-					"data" => $payload->payload
-				]),
-				array_keys(array_filter($sessionClientPairs, function ($id) use ($sessionId) { return $id === $sessionId; })),
-				[]
-			];
+			foreach ($clients as $clientId => $client) {
+				if ($this->clients[$clientId] === $sessionId) {
+					$closingClients[] = $clientId;
+				}
+			}
+
+			if (!empty($closingClients)) {
+				yield "broadcast" => [
+					json_encode([
+						"type" => $payload->type,
+						"data" => $payload->payload
+					]), $closingClients, []
+				];
+			}
 		});
 	}
 
@@ -284,7 +291,7 @@ class RoomHandler {
 
 		$session = $this->getSession($clientId);
 
-		if($data->messageId === -1) {
+		if ($data->messageId === -1) {
 			$result = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ?"), [$data->roomId, $session->id]);
 		} else {
 			$result = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ? && id < ?"), [$data->roomId, $data->messageId, $session->id]);
