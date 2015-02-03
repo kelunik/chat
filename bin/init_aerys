@@ -6,4 +6,4 @@ fi
 cd `dirname $hardpath`/..
 sudo echo $PPID >/var/run/aerys.pid
 sudo chmod 777 /var/run/aerys.pid
-./vendor/amphp/aerys/bin/aerys -d -c app.php > >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("logs/aerys.log", "OUT ".date("M d H:i:s")." $in", FILE_APPEND); }' >&1) 2> >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("logs/aerys.log", "ERR ".date("M d H:i:s")." $in", FILE_APPEND); }' >&2)
+./vendor/amphp/aerys/bin/aerys -c app.php > >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("logs/aerys.log", "OUT ".date("M d H:i:s")." $in", FILE_APPEND); }' >&1) 2> >(php -r 'while("" != $in = fgets(STDIN)) { echo $in; file_put_contents("logs/aerys.log", "ERR ".date("M d H:i:s")." $in", FILE_APPEND); }' >&2)

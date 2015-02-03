@@ -17,10 +17,10 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 
 	autocomplete(input, rooms, templateManager);
 
-	input.addEventListener("input", function () {
+	input.addEventListener("input", throttle(function () {
 		compose = true;
 		Input.adjust();
-	});
+	}));
 
 	input.addEventListener("keydown", function (e) {
 		var message, roomNode;
