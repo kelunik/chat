@@ -51,8 +51,13 @@
 
 				<span id="current-user"><?= htmlspecialchars($session->name) ?></span>
 
+				<span id="ping-clear-all">
+					<i class="fa fa-magic"></i>
+				</span>
+
 				<form id="logout" action="/logout" method="post">
-					<button type="submit" class="button-no-style"><i class="fa fa-power-off" title="logout"></i>
+					<button type="submit" class="button-no-style">
+						<i class="fa fa-power-off" title="logout"></i>
 					</button>
 				</form>
 			</div>

@@ -44,8 +44,8 @@ var NotificationCenter = (function (window, document, dataHandler, Favico, rooms
 			// Firefox closes notifications after 4 seconds,
 			// let's do this in other browsers, too.
 			notification.onshow = function () {
-				setTimeout(this.close.bind(this), 5000);
-			}.bind(notification);
+				setTimeout(notification.close.bind(notification), 5000);
+			};
 		};
 		image.src = customIcon;
 	}.bind(this);

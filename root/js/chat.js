@@ -406,6 +406,14 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 		rooms.getCurrent().scrollToBottom();
 	});
 
+	document.getElementById("ping-clear-all").addEventListener("click", function () {
+		rooms.forEach(function (room) {
+			room.getPings().forEach(function (ping) {
+				dataHandler.send("ping", {messageId: ping});
+			});
+		});
+	});
+
 // "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 // ^ smallest valid gif, set when GitHub images is not available or in dev mode without internet connection
 }
