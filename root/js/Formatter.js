@@ -45,6 +45,7 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 				link.href = match[1];
 				link.target = "_blank";
 				link.textContent = match[1];
+				node.innerHTML = "";
 				node.appendChild(link);
 
 				reqUrl = match[1] + ".json";
@@ -80,6 +81,7 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 				link.href = match[1];
 				link.target = "_blank";
 				link.textContent = match[1];
+				node.innerHTML = "";
 				node.appendChild(link);
 
 				reqUrl = "https://api.trello.com/1/card/" + match[2];
