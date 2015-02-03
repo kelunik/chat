@@ -1,8 +1,8 @@
 <?php
 
-use function Amp\stop;
 use Mysql\Pool;
 use function Amp\run;
+use function Amp\stop;
 
 require __DIR__ . "/../vendor/autoload.php";
 require __DIR__ . "/../general_config.php";
@@ -29,10 +29,10 @@ $run = function () use ($db) {
 	foreach ($users as $user) {
 		$settingsResult = yield $settingsQuery->execute([$user->id]);
 
-		if(yield $settingsResult->rowCount() === 1) {
+		if (yield $settingsResult->rowCount() === 1) {
 			$setting = yield $settingsResult->fetchObject();
 
-			if($setting->value === "never") {
+			if ($setting->value === "never") {
 				yield $clearPingsQuery->execute([$user->id]);
 				continue;
 			}
@@ -53,7 +53,7 @@ $run = function () use ($db) {
 		try {
 			$mailer->send($message);
 			yield $clearPingsQuery->execute([$user->id]);
-			print "sent mail to " . $user->mail . "\n\n";
+			print "sent mail to " . $user->mail . " with " . sizeof($pings) . " pings\n";
 		} catch (\Exception $e) {
 			print $e->getMessage();
 			print "\n\n";
@@ -63,4 +63,8 @@ $run = function () use ($db) {
 	stop();
 };
 
+print "cron start up @ " . date("c") . "\n";
+
 run($run);
+
+print "cron shut down @ " . date("c") . "\n";
