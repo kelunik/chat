@@ -6,15 +6,9 @@
 
 	<?php require TEMPLATE_DIR . "head_meta.php"; ?>
 
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Source+Code+Pro">
-	<link rel="stylesheet" href="/css/all.min.css?v=<?= CSS_VERSION ?>">
-
 	<script>
 		var url = "<?=DEPLOY_HTTPS ? "wss" : "ws"?>://<?=DEPLOY_AUTHORITY?>/chat";
 		var trelloKey = "<?=TRELLO_KEY?>";
-	</script>
-
-	<script>
 		var user = {
 			id: <?= (int) $session->id ?>,
 			name: "<?= htmlspecialchars($session->name) ?>",
@@ -40,6 +34,9 @@
 		ga('create', '<?= GA_CODE ?>', 'auto');
 		ga('send', 'pageview');
 	</script>
+
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Source+Code+Pro">
+	<link rel="stylesheet" href="/css/all.min.css?v=<?= CSS_VERSION ?>">
 </head>
 <body>
 <div id="page">

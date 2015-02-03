@@ -37,7 +37,6 @@ var Formatter = (function (window, document, messages, rooms, templateManager, u
 	return {
 		formatMessage: function (roomId, node, text, reply, user) {
 			var self = "http" + url.slice(2).substring(0, url.length - 7);
-			console.log(self);
 			var match = new RegExp("^(" + RegExp.quote(self) + "\/message\/([0-9]+))(#[0-9]+)?$").exec(text);
 			var link, reqUrl, req;
 
