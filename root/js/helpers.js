@@ -1,10 +1,5 @@
-HTMLCollection.prototype.forEach = function (callback) {
-	Array.prototype.forEach.call(this, callback);
-};
-
-NodeList.prototype.forEach = function (callback) {
-	Array.prototype.forEach.call(this, callback);
-};
+HTMLCollection.prototype.forEach = Array.prototype.forEach;
+NodeList.prototype.forEach = Array.prototype.forEach;
 
 RegExp.quote = function (str) {
 	return (str + '').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
