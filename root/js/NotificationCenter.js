@@ -1,7 +1,15 @@
-var NotificationCenter = (function (window, document, dataHandler, rooms) {
+var NotificationCenter = (function (window, document, dataHandler, Favico, rooms) {
 	"use strict";
 
 	var displayNotification, icons, messageIndicator = null, appIcon, userImages;
+
+	var favicon = new Favico({
+		type : 'circle',
+		animation: 'none',
+		bgColor : '#d00',
+		textColor : '#eee',
+		fontFamily: 'Lato'
+	});
 
 	userImages = {};
 
@@ -61,20 +69,6 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 	});
 
 	var exports = {
-		setIcon: function (url) {
-			try {
-				var icon = document.createElement('link');
-				icon.id = "icon";
-				icon.rel = "icon";
-				icon.href = url;
-				var curr = document.getElementById("icon");
-				document.head.removeChild(curr);
-				document.head.insertBefore(icon, document.getElementsByTagName("link")[0]);
-			} catch (e) {
-				// you suck, js!
-			}
-		},
-
 		showMessageIndicator: function () {
 			if (messageIndicator === null) {
 				messageIndicator = document.getElementById("new-messages");
@@ -118,7 +112,7 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 				cnt += room.getPingCount();
 			});
 
-			this.setIcon(cnt === 0 ? icons.default : icons.ping);
+			favicon.badge(cnt);
 		},
 
 		clearPing: function (id) {
@@ -142,9 +136,9 @@ var NotificationCenter = (function (window, document, dataHandler, rooms) {
 		dataHandler.close();
 
 		// restore default favicon, so user's bookmarks show the correct one
-		this.setIcon(icons.default);
+		favicon.reset();
 	}.bind(exports), false);
 
 	return exports;
 })
-(window, document, DataHandler, Rooms);
+(window, document, DataHandler, Favico, Rooms);

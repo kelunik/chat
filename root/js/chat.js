@@ -4,7 +4,6 @@ function init(window, document, activityObserver, dataHandler, formatter, handle
 	var initialLoad = true;
 
 	window.sessionStorage.setItem("autologout", "");
-	window.devicePixelRatio = window.devicePixelRatio || 1;
 
 	dataHandler.on("message", function (type, data) {
 		var node = document.getElementById("message-temp-" + data.token);
