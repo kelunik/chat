@@ -82,6 +82,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 				input.value = "";
 				compose = false;
 				edit = 0;
+				input.removeAttribute("data-edit");
 			}
 
 			Input.adjust();
@@ -93,6 +94,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 			input.value = "";
 			compose = false;
 			edit = 0;
+			input.removeAttribute("data-edit");
 			Input.adjust();
 			return false;
 		}
