@@ -4,10 +4,10 @@ var NotificationCenter = (function (window, document, dataHandler, Favico, rooms
 	var displayNotification, icons, messageIndicator = null, appIcon, userImages;
 
 	var favicon = new Favico({
-		type : 'circle',
+		type: 'circle',
 		animation: 'none',
-		bgColor : '#d00',
-		textColor : '#eee',
+		bgColor: '#d00',
+		textColor: '#eee',
 		fontFamily: 'Lato'
 	});
 
@@ -18,38 +18,36 @@ var NotificationCenter = (function (window, document, dataHandler, Favico, rooms
 
 	displayNotification = function (title, message, customIcon) {
 		var image = new Image(80, 80);
+		image.crossOrigin = "Anonymous";
+		image.onload = function () {
+			var icon;
+
+			if (customIcon in userImages) {
+				icon = userImages[customIcon];
+			} else if (image.complete || image.readyState === 4 || image.readyState === "complete") {
+				var canvas = document.createElement("canvas");
+				canvas.width = canvas.height = 80;
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(image, 0, 0, 80, 80);
+				ctx.drawImage(appIcon, 40, 40, 35, 35);
+				icon = userImages[customIcon] = canvas.toDataURL();
+			}
+
+			var notification = new Notification(title, {
+				tag: "message",
+				icon: icon,
+				lang: "en_US",
+				dir: "ltr",
+				body: message
+			});
+
+			// Firefox closes notifications after 4 seconds,
+			// let's do this in other browsers, too.
+			notification.onshow = function () {
+				setTimeout(this.close.bind(this), 5000);
+			}.bind(notification);
+		};
 		image.src = customIcon;
-		var icon;
-
-		// TODO: Enable again when GitHub allows access to image data
-		/* if (customIcon in userImages) {
-		 icon = userImages[customIcon];
-		 } else if (image.complete || image.readyState === 4 || image.readyState === "complete") {
-		 var canvas = document.createElement("canvas");
-		 canvas.width = canvas.height = 80;
-		 var ctx = canvas.getContext("2d");
-		 ctx.drawImage(image, 0, 0, 80, 80);
-		 ctx.drawImage(appIcon, 50, 50, 30, 30);
-		 icon = userImages[customIcon] = canvas.toDataURL();
-		 } else {
-		 icon = "/img/logo_40x40x2.png";
-		 } */
-
-		icon = "/img/logo_40x40x2.png";
-
-		var notification = new Notification(title, {
-			tag: "message",
-			icon: icon,
-			lang: "en_US",
-			dir: "ltr",
-			body: message
-		});
-
-		// Firefox closes notifications after 4 seconds,
-		// let's do this in other browsers, too.
-		notification.onshow = function () {
-			setTimeout(this.close.bind(this), 5000);
-		}.bind(notification);
 	}.bind(this);
 
 	icons = {
