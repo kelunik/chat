@@ -220,6 +220,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 			}
 
 			input.focus();
+			input.setAttribute("data-edit", "true");
 		},
 
 		submit: function () {
@@ -330,6 +331,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 			compose = false;
 			edit = 0;
 			input.value = "";
+			input.removeAttribute("data-edit");
 
 			Input.adjust();
 
