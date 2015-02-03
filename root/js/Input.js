@@ -79,10 +79,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 			if (message) {
 				Input.edit(parseInt(message.getAttribute("data-id")));
 			} else {
-				input.value = "";
-				compose = false;
-				edit = 0;
-				input.removeAttribute("data-edit");
+				Input.reset();
 			}
 
 			Input.adjust();
@@ -91,11 +88,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 
 		else if (e.which == 27) { // escape
 			e.preventDefault();
-			input.value = "";
-			compose = false;
-			edit = 0;
-			input.removeAttribute("data-edit");
-			Input.adjust();
+			Input.reset();
 			return false;
 		}
 
@@ -230,7 +223,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 			var roomId = rooms.getCurrent().getId();
 
 			if (text === "") {
-				input.value = "";
+				Input.reset();
 				return;
 			}
 
@@ -241,8 +234,7 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 				var messageNode = messages.get(edit);
 
 				if (text === messageNode.getAttribute("data-text")) {
-					input.value = "";
-					input.focus();
+					Input.reset();
 					return;
 				}
 
@@ -261,8 +253,8 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 					rooms.getCurrent().scrollToBottom();
 				}
 
+				Input.reset();
 				ga('send', 'event', 'chat', 'edit');
-				edit = 0;
 			} else {
 				var message = util.html2node(templateManager.get("chat_message")({
 					tempId: tempId,
@@ -330,16 +322,20 @@ var Input = (function (window, document, dataHandler, formatter, messages, momen
 				ga('send', 'event', 'chat', 'create');
 			}
 
-			compose = false;
-			edit = 0;
-			input.value = "";
-			input.removeAttribute("data-edit");
-
-			Input.adjust();
+			Input.reset();
 
 			if (rooms.getCurrent().shouldScroll()) {
 				rooms.getCurrent().scrollToBottom();
 			}
+		},
+
+		reset: function() {
+			edit = 0;
+			compose = false;
+			input.value = "";
+			input.removeAttribute("data-edit");
+			this.adjust();
+			input.focus();
 		}
 	}
 })(window, document, DataHandler, Formatter, Messages, moment, Rooms, TemplateManager, user, Util, ga);
