@@ -112,7 +112,7 @@
 	content: attr(data-pings);
 	cursor: pointer;
 	display: inline-block;
-	background: rgb(200, 0, 100);
+	background: rgb(200, 0, 0);
 	width: 16px;
 	height: 16px;
 	text-align: center;
