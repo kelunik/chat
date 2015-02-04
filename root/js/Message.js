@@ -7,6 +7,7 @@ var Message = (function (window, document, activityObserver, dataHandler, format
 
 	return function (data) {
 		var node, room = rooms.get(data.roomId);
+		var showIndicator = false;
 
 		var messageNode = util.html2node(template.chat(data));
 		messageNode.setAttribute("data-text", data.messageText);
@@ -26,6 +27,7 @@ var Message = (function (window, document, activityObserver, dataHandler, format
 			room.setFirstMessage(data.messageId);
 			room.setLastMessage(data.messageId);
 			messageNode = node.appendChild(messageNode);
+			showIndicator = true;
 		}
 
 		else if (data.messageId > room.getLastMessage()) {
@@ -40,6 +42,8 @@ var Message = (function (window, document, activityObserver, dataHandler, format
 
 			room.setLastMessage(data.messageId);
 			messageNode = node.appendChild(messageNode);
+
+			showIndicator = true;
 		}
 
 		else if (data.messageId < room.getFirstMessage()) {
@@ -60,11 +64,13 @@ var Message = (function (window, document, activityObserver, dataHandler, format
 
 				last = last.previousElementSibling;
 			}
+
+			showIndicator = true;
 		}
 
 		if (room.shouldScroll()) {
 			room.scrollToBottom();
-		} else {
+		} else if (room === rooms.getCurrent() && showIndicator) {
 			notificationCenter.showMessageIndicator();
 		}
 
