@@ -173,6 +173,19 @@
 	vertical-align: middle;
 }
 
+.user-avatar-small {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	padding: 0;
+	margin: 2px 2px -4px 2px;
+	border-radius: 50%;
+	background: no-repeat center;
+	background-size: 16px;
+	box-shadow: 0 0 3px #ccc;
+	position: relative;
+}
+
 .user-avatar {
 	width: 30px;
 	height: 30px;
