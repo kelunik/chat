@@ -1,264 +1,264 @@
 .chat-message {
-	margin: 3px 0 0 0;
-	padding: 0 15px;
-	border-top: 1px solid rgba(0, 0, 0, .05);
-	border-bottom: 1px solid transparent;
-	line-height: 20px;
-	position: relative;
-	max-width: 100%;
+    margin: 3px 0 0 0;
+    padding: 0 15px;
+    border-top: 1px solid rgba(0, 0, 0, .05);
+    border-bottom: 1px solid transparent;
+    line-height: 20px;
+    position: relative;
+    max-width: 100%;
 }
 
 .chat-message:last-child {
-	margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 .chat-message::after {
-	content: "";
-	display: table;
-	clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .chat-message-followup {
-	border-top: 1px solid transparent;
-	margin-top: 0;
+    border-top: 1px solid transparent;
+    margin-top: 0;
 }
 
 .chat-message-text img {
-	max-height: 130px;
-	max-width: 100%;
-	cursor: pointer;
+    max-height: 130px;
+    max-width: 100%;
+    cursor: pointer;
 }
 
 .chat-message-user {
-	float: left;
-	margin-top: 8px;
+    float: left;
+    margin-top: 8px;
 }
 
 .chat-message-user img {
-	border-radius: 50%;
-	box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+    border-radius: 50%;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .2);
 }
 
 .chat-message-content {
-	margin-left: 35px;
-	padding-left: 10px;
+    margin-left: 35px;
+    padding-left: 10px;
 }
 
 .chat-message-meta {
-	padding: 8px 0 4px 0;
-	font-size: .9em;
-	color: #666;
+    padding: 8px 0 4px 0;
+    font-size: .9em;
+    color: #666;
 }
 
 .chat-message-text {
-	word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .chat-message-text p {
-	margin: 5px 0;
-	padding: 0;
-	line-height: 25px;
+    margin: 5px 0;
+    padding: 0;
+    line-height: 25px;
 }
 
 .chat-message-text p:first-of-type {
-	margin-top: 0;
+    margin-top: 0;
 }
 
 .chat-message-text p:last-of-type {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .chat-message-meta[data-edit]::after {
-	content: "\f040";
-	display: inline-block;
-	margin-left: 4px;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
+    content: "\f040";
+    display: inline-block;
+    margin-left: 4px;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
 }
 
 .chat-message-stars {
-	display: inline-block;
+    display: inline-block;
 }
 
 .chat-message-stars:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .chat-message-stars::before {
-	display: inline-block; /* Fixes onClick for WebKit */
+    display: inline-block; /* Fixes onClick for WebKit */
 }
 
 .chat-message-stars[data-stars]::before {
-	content: attr(data-stars) " " "\f006";
+    content: attr(data-stars) " " "\f006";
 }
 
 .chat-message-stars[data-stars][data-starred="1"]::before {
-	content: attr(data-stars) " " "\f005";
-	color: rgb(0, 100, 200);
+    content: attr(data-stars) " " "\f005";
+    color: rgb(0, 100, 200);
 }
 
 .chat-message-stars[data-stars="0"]::before {
-	content: "\f006";
+    content: "\f006";
 }
 
 .chat-message pre, code {
-	white-space: pre-wrap !important;
-	word-wrap: break-word;
+    white-space: pre-wrap !important;
+    word-wrap: break-word;
 }
 
 .chat-message blockquote {
-	padding: 0 8px 0 16px;
-	margin: 4px 8px 4px 16px;
-	color: rgb(85, 85, 85);
-	border-left: 3px solid rgba(0, 100, 200, 0.85);
+    padding: 0 8px 0 16px;
+    margin: 4px 8px 4px 16px;
+    color: rgb(85, 85, 85);
+    border-left: 3px solid rgba(0, 100, 200, 0.85);
 }
 
 .chat-message-followup .chat-message-user,
 .chat-message-followup .chat-message-meta {
-	display: none;
+    display: none;
 }
 
 .chat-message-pending {
-	animation: pending 2s;
-	opacity: .5;
+    animation: pending 2s;
+    opacity: .5;
 }
 
 .chat-message-pending .chat-message-icons {
-	display: none;
+    display: none;
 }
 
 @keyframes pending {
-	0% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 1;
-	}
-	100% {
-		opacity: .5;
-	}
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .5;
+    }
 }
 
 .chat-message-icons {
-	float: right;
-	font-size: .75em;
-	margin: 3px 0 0 4px;
-	display: inline-block;
-	transform: translateY(-24px);
+    float: right;
+    font-size: .75em;
+    margin: 3px 0 0 4px;
+    display: inline-block;
+    transform: translateY(-24px);
 }
 
 .chat-message-icons > i {
-	display: inline-block;
-	cursor: pointer;
-	visibility: hidden;
+    display: inline-block;
+    cursor: pointer;
+    visibility: hidden;
 }
 
 .chat-message-followup .chat-message-icons {
-	transform: translateY(0);
+    transform: translateY(0);
 }
 
 .chat-message:hover .chat-message-reply,
 .chat-message:hover .chat-message-stars,
 .chat-message-stars.chat-message-stars {
-	/* CSS is ugly */
-	visibility: visible;
+    /* CSS is ugly */
+    visibility: visible;
 }
 
 .chat-message-stars[data-stars=""],
 .chat-message-stars[data-stars="0"] {
-	visibility: hidden;
+    visibility: hidden;
 }
 
 .in-reply {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .in-reply[data-id]::before {
-	content: "\f112";
-	display: inline-block;
-	margin-left: 4px;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
-	transform: rotate(90deg) scale(.75, -.75);
-	margin-right: 4px;
+    content: "\f112";
+    display: inline-block;
+    margin-left: 4px;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    transform: rotate(90deg) scale(.75, -.75);
+    margin-right: 4px;
 }
 
 .chat-message:target {
-	background: #ff9;
-	border-top: 1px solid rgba(0, 0, 0, .1);
-	border-bottom: 1px solid rgba(0, 0, 0, .1);
+    background: #ff9;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 pre code {
-	display: block !important;
-	margin-right: 20px;
-	background: #fafafa !important;
-	color: #333 !important;
-	padding: 8px !important;
-	border: 1px solid rgba(0, 0, 0, .025);
+    display: block !important;
+    margin-right: 20px;
+    background: #fafafa !important;
+    color: #333 !important;
+    padding: 8px !important;
+    border: 1px solid rgba(0, 0, 0, .025);
 }
 
 .chat-message pre {
-	margin: 5px 0;
+    margin: 5px 0;
 }
 
 .chat-message code {
-	background: #fafafa;
-	padding: 3px 5px;
-	border-radius: 3px;
-	line-height: 14px;
-	color: #333;
-	font-size: 14px;
-	font-family: "Source Code Pro", monospace;
+    background: #fafafa;
+    padding: 3px 5px;
+    border-radius: 3px;
+    line-height: 14px;
+    color: #333;
+    font-size: 14px;
+    font-family: "Source Code Pro", monospace;
 }
 
 .chat-message .inline-code {
-	display: inline-block;
-	word-break: break-all;
+    display: inline-block;
+    word-break: break-all;
 }
 
 .chat-message-text a::before {
-	display: inline-block;
-	margin-left: 4px;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
-	margin-right: 7px;
+    display: inline-block;
+    margin-left: 4px;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    margin-right: 7px;
 }
 
 .chat-message-text a[href^="https://"]::after {
-	content: "\f023";
-	display: inline-block;
-	margin-left: 7px;
-	margin-right: 4px;
-	font: normal normal normal 14px/1 FontAwesome;
-	font-size: inherit;
-	color: #333;
+    content: "\f023";
+    display: inline-block;
+    margin-left: 7px;
+    margin-right: 4px;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    color: #333;
 }
 
 .chat-message-text a[href^="https://twitter.com"]::before {
-	content: "\f099";
-	color: #55acee;
+    content: "\f099";
+    color: #55acee;
 }
 
 .chat-message-text a[href^="http://jsfiddle.net"]::before {
-	content: "\f1cc";
-	color: #000;
+    content: "\f1cc";
+    color: #000;
 }
 
 .chat-message-text a[href^="http://stackoverflow.com"]::before,
 .chat-message-text a[href^="http://chat.stackoverflow.com"]::before {
-	content: "\f16c";
-	color: #f37a20;
+    content: "\f16c";
+    color: #f37a20;
 }
 
 .chat-message-text a[href^="https://trello.com"]::before {
-	content: "\f181";
-	color: #216883;
+    content: "\f181";
+    color: #216883;
 }
 
 .chat-message-text a[href^="https://github.com"]::before {
-	content: "\f09b";
-	color: #000;
+    content: "\f09b";
+    color: #000;
 }
 
 .chat-message-text a[href^="https://twitter.com"],
@@ -267,66 +267,66 @@ pre code {
 .chat-message-text a[href^="http://chat.stackoverflow.com"],
 .chat-message-text a[href^="https://trello.com"],
 .chat-message-text a[href^="https://github.com"] {
-	display: inline;
-	word-break: break-all;
-	background: rgba(0, 0, 0, .03);
-	line-height: 16px;
-	padding: 3px 5px 2px 5px;
-	border-radius: 3px;
+    display: inline;
+    word-break: break-all;
+    background: rgba(0, 0, 0, .03);
+    line-height: 16px;
+    padding: 3px 5px 2px 5px;
+    border-radius: 3px;
 }
 
 .reply {
-	background: rgba(0, 100, 200, .05);
-	border-top: 1px solid rgba(0, 0, 0, .1);
-	border-bottom: 1px solid rgba(0, 0, 0, .1);
+    background: rgba(0, 100, 200, .05);
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 .chat-message-me .chat-message-reply {
-	display: none;
+    display: none;
 }
 
 .chat-message-cmd-me {
-	text-align: center;
-	padding: 10px;
-	margin: 3px 0;
-	background: rgba(0, 0, 0, .025);
-	border-top: 1px solid rgba(0, 0, 0, .1);
-	border-bottom: 1px solid rgba(0, 0, 0, .1);
+    text-align: center;
+    padding: 10px;
+    margin: 3px 0;
+    background: rgba(0, 0, 0, .025);
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 .chat-message-cmd-me .chat-message-user,
 .chat-message-cmd-me .chat-message-icons {
-	display: none;
+    display: none;
 }
 
 .chat-message-cmd-me .chat-message-content {
-	margin: 6px 10px;
-	padding: 0;
+    margin: 6px 10px;
+    padding: 0;
 }
 
 .chat-message.longpress {
-	-webkit-animation: 1s longpress;
-	animation: 1s longpress;
+    -webkit-animation: 1s longpress;
+    animation: 1s longpress;
 }
 
 @-webkit-keyframes longpress {
-	0%, 20% {
-		background: transparent;
-	}
-	100% {
-		background: rgba(0, 100, 200, .2);
-		border-top: 1px solid rgba(0, 0, 0, .1);
-		border-bottom: 1px solid rgba(0, 0, 0, .1);
-	}
+    0%, 20% {
+        background: transparent;
+    }
+    100% {
+        background: rgba(0, 100, 200, .2);
+        border-top: 1px solid rgba(0, 0, 0, .1);
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+    }
 }
 
 @keyframes longpress {
-	0%, 20% {
-		background: transparent;
-	}
-	100% {
-		background: rgba(0, 100, 200, .2);
-		border-top: 1px solid rgba(0, 0, 0, .1);
-		border-bottom: 1px solid rgba(0, 0, 0, .1);
-	}
+    0%, 20% {
+        background: transparent;
+    }
+    100% {
+        background: rgba(0, 100, 200, .2);
+        border-top: 1px solid rgba(0, 0, 0, .1);
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+    }
 }

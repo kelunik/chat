@@ -17,16 +17,16 @@ require __DIR__ . "/check_requirements.php";
 
 $manifest = file_get_contents(__DIR__ . "/root/manifest.appcache");
 $manifestResponder = function () use ($manifest) {
-	return [
-		"header" => DEVELOPMENT ? [] : [
-			"Content-Type: text/cache-manifest; charset=utf-8",
-			"Cache-Control: no-cache, no-store, must-revalidate",
-			"Pragma: no-cache",
-			"Expires: 0",
-		],
-		"status" => DEVELOPMENT ? 410 : 200,
-		"body" => DEVELOPMENT ? "" : $manifest
-	];
+    return [
+        "header" => DEVELOPMENT ? [] : [
+            "Content-Type: text/cache-manifest; charset=utf-8",
+            "Cache-Control: no-cache, no-store, must-revalidate",
+            "Pragma: no-cache",
+            "Expires: 0",
+        ],
+        "status" => DEVELOPMENT ? 410 : 200,
+        "body" => DEVELOPMENT ? "" : $manifest
+    ];
 };
 
 
@@ -41,45 +41,45 @@ $sessionHandler = new Session($db, \Amp\getReactor());
 $settingsHandler = new Settings($db);
 
 $host = (new Aerys\Host)
-	->setPort(DEPLOY_PORT)
-	->setName(DEPLOY_DOMAIN)
-	->setRoot(__DIR__ . "/root", [
-		Root::OP_MIME_TYPES => [
-			"js" => "text/javascript",
-			"appcache" => "text/cache-manifest"
-		],
-		Root::OP_EXPIRES_PERIOD => 3600 * 24 * 14,
-		Root::OP_AGGRESSIVE_CACHE_HEADER_ENABLED => true,
-		Root::OP_AGGRESSIVE_CACHE_MULTIPLIER => 0.75
-	])
-	->addRoute("GET", "/rooms", [$pageHandler, "roomOverview"])
-	->addRoute("GET", "/rooms/{id:[0-9]+}", [$pageHandler, "handleRequest"])
-	->addRoute("GET", "/rooms/{id:[0-9]+}/transcript/{year:[0-9]+}/{month:[0-9]+}/{day:[0-9]+}", [$transcriptHandler, "handleRequest"])
-	->addRoute("GET", "/message/{id:[0-9]+}", [$transcriptHandler, "handleMessageRequest"])
-	->addRoute("GET", "/message/{id:[0-9]+}.json", [$transcriptHandler, "messageJson"])
-	->addRoute("GET", "/", [$authHandler, "redirect"])
-	->addRoute("GET", "/auth", [$authHandler, "handleRequest"])
-	->addRoute("GET", "/auth/github", [$authHandler, "handleGitHubRequest"])
-	->addRoute("GET", "/oauth/github", [$authHandler, "handleGitHubCallbackRequest"])
-	->addRoute("POST", "/logout", [$authHandler, "handleLogout"])
-	->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
-	->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
-	->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
-	->addRoute("GET", "/manifest.appcache", $manifestResponder)
-	->addWebsocket("/chat", $chatHandler);
+    ->setPort(DEPLOY_PORT)
+    ->setName(DEPLOY_DOMAIN)
+    ->setRoot(__DIR__ . "/root", [
+        Root::OP_MIME_TYPES => [
+            "js" => "text/javascript",
+            "appcache" => "text/cache-manifest"
+        ],
+        Root::OP_EXPIRES_PERIOD => 3600 * 24 * 14,
+        Root::OP_AGGRESSIVE_CACHE_HEADER_ENABLED => true,
+        Root::OP_AGGRESSIVE_CACHE_MULTIPLIER => 0.75
+    ])
+    ->addRoute("GET", "/rooms", [$pageHandler, "roomOverview"])
+    ->addRoute("GET", "/rooms/{id:[0-9]+}", [$pageHandler, "handleRequest"])
+    ->addRoute("GET", "/rooms/{id:[0-9]+}/transcript/{year:[0-9]+}/{month:[0-9]+}/{day:[0-9]+}", [$transcriptHandler, "handleRequest"])
+    ->addRoute("GET", "/message/{id:[0-9]+}", [$transcriptHandler, "handleMessageRequest"])
+    ->addRoute("GET", "/message/{id:[0-9]+}.json", [$transcriptHandler, "messageJson"])
+    ->addRoute("GET", "/", [$authHandler, "redirect"])
+    ->addRoute("GET", "/auth", [$authHandler, "handleRequest"])
+    ->addRoute("GET", "/auth/github", [$authHandler, "handleGitHubRequest"])
+    ->addRoute("GET", "/oauth/github", [$authHandler, "handleGitHubCallbackRequest"])
+    ->addRoute("POST", "/logout", [$authHandler, "handleLogout"])
+    ->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
+    ->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
+    ->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
+    ->addRoute("GET", "/manifest.appcache", $manifestResponder)
+    ->addWebsocket("/chat", $chatHandler);
 
 if (DEPLOY_HTTPS) {
-	$host->setCrypto(DEPLOY_HTTPS_CERT, [
-		"ciphers" => DEPLOY_HTTPS_SUITES
-	]);
-	$port = defined("DEPLOY_HTTPS_REDIRECT_PORT") ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
-	$redirect = "https://" . DEPLOY_DOMAIN;
-	$redirect .= DEPLOY_PORT === 443 ? "" : ":" . DEPLOY_PORT;
-	(new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
+    $host->setCrypto(DEPLOY_HTTPS_CERT, [
+        "ciphers" => DEPLOY_HTTPS_SUITES
+    ]);
+    $port = defined("DEPLOY_HTTPS_REDIRECT_PORT") ? DEPLOY_HTTPS_REDIRECT_PORT : 80;
+    $redirect = "https://" . DEPLOY_DOMAIN;
+    $redirect .= DEPLOY_PORT === 443 ? "" : ":" . DEPLOY_PORT;
+    (new Aerys\Host)->setPort($port)->setName(DEPLOY_DOMAIN)->redirectTo($redirect);
 }
 
 if (defined("HOST_DOCS")) {
-	(new Aerys\Host)
-		->setName(HOST_DOCS)
-		->setRoot(__DIR__ . "/vendor/amphp/aerys/doc");
+    (new Aerys\Host)
+        ->setName(HOST_DOCS)
+        ->setRoot(__DIR__ . "/vendor/amphp/aerys/doc");
 }

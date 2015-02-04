@@ -14,17 +14,17 @@
  * @link http://stackoverflow.com/a/17266448/2373138
  */
 function safe_compare ($safe, $user) {
-	$safe .= chr(0);
-	$user .= chr(0);
+    $safe .= chr(0);
+    $user .= chr(0);
 
-	$safeLen = strlen($safe);
-	$userLen = strlen($user);
+    $safeLen = strlen($safe);
+    $userLen = strlen($user);
 
-	$result = $safeLen - $userLen;
+    $result = $safeLen - $userLen;
 
-	for ($i = 0; $i < $userLen; $i++) {
-		$result |= (ord($safe[$i % $safeLen]) ^ ord($user[$i]));
-	}
+    for ($i = 0; $i < $userLen; $i++) {
+        $result |= (ord($safe[$i % $safeLen]) ^ ord($user[$i]));
+    }
 
-	return $result === 0;
+    return $result === 0;
 }

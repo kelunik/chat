@@ -1,50 +1,50 @@
 var Rooms = (function () {
-	"use strict";
+    "use strict";
 
-	var rooms, current;
+    var rooms, current;
 
-	rooms = {};
+    rooms = {};
 
-	return {
-		add: function (room) {
-			rooms[room.getId()] = room;
-		},
+    return {
+        add: function (room) {
+            rooms[room.getId()] = room;
+        },
 
-		getCurrent: function () {
-			return current;
-		},
+        getCurrent: function () {
+            return current;
+        },
 
-		forEach: function (callback) {
-			for (var id in rooms) {
-				if (rooms.hasOwnProperty(id)) {
-					callback(rooms[id], id);
-				}
-			}
-		},
+        forEach: function (callback) {
+            for (var id in rooms) {
+                if (rooms.hasOwnProperty(id)) {
+                    callback(rooms[id], id);
+                }
+            }
+        },
 
-		focus: function (id, skipEvent) {
-			skipEvent = skipEvent || false;
+        focus: function (id, skipEvent) {
+            skipEvent = skipEvent || false;
 
-			var room = rooms[id];
-			current = room;
+            var room = rooms[id];
+            current = room;
 
-			if (!room) {
-				return;
-			}
+            if (!room) {
+                return;
+            }
 
-			if(!skipEvent) {
-				room.getTabNode().dispatchEvent(new Event('click'));
-			}
+            if (!skipEvent) {
+                room.getTabNode().dispatchEvent(new Event('click'));
+            }
 
-			room.onComeBack();
-		},
+            room.onComeBack();
+        },
 
-		has: function(id) {
-			return id in rooms;
-		},
+        has: function (id) {
+            return id in rooms;
+        },
 
-		get: function(id) {
-			return rooms[id];
-		}
-	}
+        get: function (id) {
+            return rooms[id];
+        }
+    }
 })();

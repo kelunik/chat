@@ -1,75 +1,75 @@
 /* smartphones */
 @media only screen and (max-width: 320px) {
-	.mobile-only {
-		display: block;
-	}
+    .mobile-only {
+        display: block;
+    }
 
-	#chat {
-		flex-flow: column;
-	}
+    #chat {
+        flex-flow: column;
+    }
 
-	#left-col {
-		width: auto;
-		position: relative;
-		height: 50px;
-		border: 0;
-	}
+    #left-col {
+        width: auto;
+        position: relative;
+        height: 50px;
+        border: 0;
+    }
 
-	#main-col {
-		border: 0;
-		margin: 0;
-	}
+    #main-col {
+        border: 0;
+        margin: 0;
+    }
 
-	#right-col {
-		display: none;
-	}
+    #right-col {
+        display: none;
+    }
 
-	#room-tabs {
-		position: absolute;
-		background: #222228;
-		z-index: 50;
-		top: 50px;
-		left: -1px;
-		right: -1px;
-	}
+    #room-tabs {
+        position: absolute;
+        background: #222228;
+        z-index: 50;
+        top: 50px;
+        left: -1px;
+        right: -1px;
+    }
 
-	#mobile-menu-switch-checkbox:not(:checked) + #left-col {
-		overflow: hidden;
-	}
+    #mobile-menu-switch-checkbox:not(:checked) + #left-col {
+        overflow: hidden;
+    }
 
-	.chat-message-user {
-		float: none;
-		position: absolute;
-		right: 10px;
-		margin-top: 0;
-		top: 7px;
-	}
+    .chat-message-user {
+        float: none;
+        position: absolute;
+        right: 10px;
+        margin-top: 0;
+        top: 7px;
+    }
 
-	.chat-message-user img {
-		width: 20px;
-		height: 20px;
-	}
+    .chat-message-user img {
+        width: 20px;
+        height: 20px;
+    }
 
-	.chat-message-content {
-		margin-left: 0;
-		padding-left: 0;
-	}
+    .chat-message-content {
+        margin-left: 0;
+        padding-left: 0;
+    }
 
-	.chat-message-icons {
-		display: none;
-	}
+    .chat-message-icons {
+        display: none;
+    }
 
-	#new-messages-indicator {
-		width: 100%;
-	}
+    #new-messages-indicator {
+        width: 100%;
+    }
 
-	#new-messages {
-		background: rgb(0, 100, 200);
-		box-shadow: none;
-		color: #fff;
-		border: 1px solid rgba(0, 0, 0, .2);
-		border-left: 0;
-		border-top: 0;
-		z-index: 3;
-	}
+    #new-messages {
+        background: rgb(0, 100, 200);
+        box-shadow: none;
+        color: #fff;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-left: 0;
+        border-top: 0;
+        z-index: 3;
+    }
 }

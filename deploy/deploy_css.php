@@ -12,7 +12,7 @@ $source_map_path = __DIR__ . "/../root/css/all.min.css.map";
 $css = "";
 
 foreach (explode(":", UI_CSS_FILES) as $file) {
-	$css .= file_get_contents("css/{$file}");
+    $css .= file_get_contents("css/{$file}");
 }
 
 $bef = $css;
@@ -31,7 +31,7 @@ $before = md5(@file_get_contents($output));
 $after = md5($css);
 
 if ($after !== $before) {
-	file_put_contents($output, $css);
+    file_put_contents($output, $css);
 }
 
 $time = filemtime($output);

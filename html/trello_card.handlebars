@@ -1,46 +1,46 @@
 <div class="trello-card {{#if closed}}trello-card-closed{{/if}}">
     <div class="trello-labels">
-		{{#each labels}}
+        {{#each labels}}
             <div class="trello-label" data-color="{{color}}" title="{{name}}"></div>
-		{{/each}}
+        {{/each}}
     </div>
 
     <div class="trello-card-title">
-		{{name}}
+        {{name}}
     </div>
 
     <div class="trello-footer">
         <div class="trello-badges">
-			{{#if badges.votes}}
+            {{#if badges.votes}}
                 <div class="trello-votes">
                     <i class="fa fa-fw fa-thumbs-up"></i>
-					{{pluralizeCount badges.votes "vote" "votes"}}
+                    {{pluralizeCount badges.votes "vote" "votes"}}
                 </div>
-			{{/if}}
+            {{/if}}
 
-			{{#if badges.comments}}
+            {{#if badges.comments}}
                 <div class="trello-comments">
                     <i class="fa fa-fw fa-comment"></i>
-					{{pluralizeCount badges.comments "comment" "comments"}}
+                    {{pluralizeCount badges.comments "comment" "comments"}}
                 </div>
-			{{/if}}
+            {{/if}}
 
-			{{#if badges.attachments}}
+            {{#if badges.attachments}}
                 <div class="trello-attachments">
                     <i class="fa fa-fw fa-paperclip"></i>
-					{{pluralizeCount badges.attachments "attachment" "attachments"}}
+                    {{pluralizeCount badges.attachments "attachment" "attachments"}}
                 </div>
-			{{/if}}
+            {{/if}}
         </div>
 
         <div class="trello-card-footer">
             #{{idShort}}
             &nbsp;&nbsp;—&nbsp;&nbsp;
             <a href="{{url}}" target="_blank">VIEW ON TRELLO</a>
-			{{#if closed}}
+            {{#if closed}}
                 &nbsp;&nbsp;—&nbsp;&nbsp;
                 <span>ARCHIVED</span>
-			{{/if}}
+            {{/if}}
         </div>
     </div>
 </div>

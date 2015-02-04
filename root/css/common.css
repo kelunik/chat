@@ -1,82 +1,82 @@
 html, body {
-	margin: 0;
-	font-size: 14px;
-	font-family: 'Lato', sans-serif;
-	overflow: hidden;
-	tab-size: 4;
-	background: #fafafa;
+    margin: 0;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    overflow: hidden;
+    tab-size: 4;
+    background: #fafafa;
 }
 
 a {
-	font-weight: bold;
-	text-decoration: none;
-	color: rgb(0, 100, 200);
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(0, 100, 200);
 }
 
 a, button, input {
-	touch-action: manipulation; /* IE11+ */
-	-ms-touch-action: manipulation; /* IE10 */
+    touch-action: manipulation; /* IE11+ */
+    -ms-touch-action: manipulation; /* IE10 */
 }
 
 .textLeft {
-	text-align: left;
+    text-align: left;
 }
 
 .textCenter {
-	text-align: center;
+    text-align: center;
 }
 
 .textRight {
-	text-align: right;
+    text-align: right;
 }
 
 .left {
-	float: left;
+    float: left;
 }
 
 .center {
-	margin: 0 auto;
+    margin: 0 auto;
 }
 
 .right {
-	float: right;
+    float: right;
 }
 
 .timelink {
-	color: #666;
-	font-weight: normal;
+    color: #666;
+    font-weight: normal;
 }
 
 .timelink:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .no-display,
 .mobile-only {
-	display: none;
+    display: none;
 }
 
 .button-no-style {
-	border: 0;
-	background: transparent;
-	font-size: inherit;
-	font-style: inherit;
-	color: inherit;
-	display: inline;
-	cursor: pointer;
+    border: 0;
+    background: transparent;
+    font-size: inherit;
+    font-style: inherit;
+    color: inherit;
+    display: inline;
+    cursor: pointer;
 }
 
 textarea,
 input {
-	outline: none;
-	box-shadow: none;
+    outline: none;
+    box-shadow: none;
 }
 
 .unselectable {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

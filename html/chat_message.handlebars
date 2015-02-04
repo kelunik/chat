@@ -2,7 +2,7 @@
      class="chat-message {{#if tempId}}chat-message-pending{{/if}}"
      data-id="{{#if messageId}}{{messageId}}{{/if}}"
      data-author="{{user.id}}"
-	 {{#if reply}}data-reply="{{reply.messageId}}"{{/if}}>
+     {{#if reply}}data-reply="{{reply.messageId}}"{{/if}}>
     <div class="chat-message-user">
         <img src="{{{avatar user.avatar}}}" width="30px" height="30px"
              draggable="true" ondragstart="event.dataTransfer.setData('text/plain', '@{{user.name}}')"
@@ -11,14 +11,15 @@
 
     <div class="chat-message-content">
         <div class="chat-message-meta"
-			 {{#if edit-time}}data-edit="{{{datetime edit-time}}}"{{/if}}>
+             {{#if edit-time}}data-edit="{{{datetime edit-time}}}"{{/if}}>
             <a href="#" style="cursor: pointer;"
                onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus(); return false;">
-				{{user.name}}
+                {{user.name}}
             </a>
             &nbsp;&nbsp;—&nbsp;&nbsp;
             <a class="chat-message-time timelink" target="_blank">
-                <time class="chat-message-time relative-time" datetime="{{{datetime time}}}" title="{{{dateformat time}}}"></time>
+                <time class="chat-message-time relative-time" datetime="{{{datetime time}}}"
+                      title="{{{dateformat time}}}"></time>
             </a>
         </div>
 

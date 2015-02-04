@@ -1,40 +1,40 @@
 .message-card {
-	border: 1px solid rgba(0, 0, 0, .075);
-	border-bottom: 1px solid rgba(0, 0, 0, .1);
-	display: inline-block;
-	border-radius: 3px;
-	margin: 5px 0;
-	background: #fefefe;
+    border: 1px solid rgba(0, 0, 0, .075);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    display: inline-block;
+    border-radius: 3px;
+    margin: 5px 0;
+    background: #fefefe;
 }
 
 .message-card-content {
-	border-bottom: rgba(0, 0, 0, 0.05);
-	padding: 5px 10px 0 10px;
+    border-bottom: rgba(0, 0, 0, 0.05);
+    padding: 5px 10px 0 10px;
 }
 
 .message-card-footer {
-	padding: 5px 10px;
-	color: #666;
-	font-size: 12px;
-	line-height: 20px;
+    padding: 5px 10px;
+    color: #666;
+    font-size: 12px;
+    line-height: 20px;
 }
 
 .message-card-footer img {
-	transform: translateY(-1px);
-	vertical-align: middle;
-	margin-right: 5px;
+    transform: translateY(-1px);
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
 .message-card-content p {
-	margin: 5px 0;
-	padding: 0;
-	line-height: 25px;
+    margin: 5px 0;
+    padding: 0;
+    line-height: 25px;
 }
 
 .message-card-content p:first-of-type {
-	margin-top: 0;
+    margin-top: 0;
 }
 
 .message-card-content p:last-of-type {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }

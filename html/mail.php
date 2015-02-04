@@ -14,35 +14,35 @@ $css["footer_link"] = "color:#666;text-decoration:none";
 <meta charset="utf-8">
 <body style="<?= $css["body"] ?>">
 <div style="<?= $css["header"] ?>">
-	You're receiving this e-mail because you were active in t@lk.<br>You can change your notification settings by
-	clicking the link at the end of this e-mail.
+    You're receiving this e-mail because you were active in t@lk.<br>You can change your notification settings by
+    clicking the link at the end of this e-mail.
 </div>
 <div style="<?= $css["all"] ?>">
-	<div style="<?= $css["title"] ?>">
-		Here's what you missed ...
-	</div>
+    <div style="<?= $css["title"] ?>">
+        Here's what you missed ...
+    </div>
 
-	<div>
-		<?php foreach ($pings as $ping): ?>
-			<div style="<?= $css["notification"] ?>">
-				<div style="<?= $css["notification_meta"] ?>">
-					Unread ping from @<?= htmlentities($ping->author) ?> – <?= date("d.m.Y H:i", $ping->time) ?> UTC –
-					<a style="<?= $css["link"] ?>" href="<?= DEPLOY_URL ?>/message/<?= $ping->id ?>#<?= $ping->id ?>">
-						view message
-					</a>
-				</div>
+    <div>
+        <?php foreach ($pings as $ping): ?>
+            <div style="<?= $css["notification"] ?>">
+                <div style="<?= $css["notification_meta"] ?>">
+                    Unread ping from @<?= htmlentities($ping->author) ?> – <?= date("d.m.Y H:i", $ping->time) ?> UTC –
+                    <a style="<?= $css["link"] ?>" href="<?= DEPLOY_URL ?>/message/<?= $ping->id ?>#<?= $ping->id ?>">
+                        view message
+                    </a>
+                </div>
 
-				<div>
-					<?= htmlentities($ping->message) ?>
-				</div>
-			</div>
-		<?php endforeach; ?>
-	</div>
+                <div>
+                    <?= htmlentities($ping->message) ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>
 <div style="<?= $css["footer"] ?>">
-	<a style="<?= $css["footer_link"] ?>" href="<?= DEPLOY_URL ?>/settings#notifications">
-		change notification settings
-	</a>
+    <a style="<?= $css["footer_link"] ?>" href="<?= DEPLOY_URL ?>/settings#notifications">
+        change notification settings
+    </a>
 </div>
 </body>
 </html>

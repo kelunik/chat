@@ -1,13 +1,13 @@
 var TemplateManager = (function (handlebars) {
-	"use strict";
+    "use strict";
 
-	return {
-		get: function (key) {
-			if (key in handlebars.templates) {
-				return handlebars.templates[key];
-			}
+    return {
+        get: function (key) {
+            if (key in handlebars.templates) {
+                return handlebars.templates[key];
+            }
 
-			throw new Error("no template with key '" + key + "'");
-		}
-	}
+            throw new Error("no template with key '" + key + "'");
+        }
+    }
 })(Handlebars);

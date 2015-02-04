@@ -1,8 +1,8 @@
 <div id="room-info-{{id}}" class="room-info" data-id="{{id}}">
     <h2>{{name}}</h2>
-	{{#if description}}{{{markdown description}}}{{/if}}
+    {{#if description}}{{{markdown description}}}{{/if}}
     <div id="room-info-people-{{id}}" class="room-info-people">
-		{{#each users}}
+        {{#each users}}
             <a href="https://github.com/{{name}}" target="_blank" draggable="true"
                ondragstart="event.dataTransfer.setData('text/plain', '@{{name}}')">
                 <div id="room-info-{{this.id}}-person-{{id}}"
@@ -12,6 +12,6 @@
                      data-state="{{state}}">
                 </div>
             </a>
-		{{/each}}
+        {{/each}}
     </div>
 </div>

@@ -3,8 +3,8 @@
 namespace App;
 
 class MessageHandler {
-	public static function buildQuery ($where = "1", $order = "id DESC", $limit = 40) {
-		$query = <<<SQL
+    public static function buildQuery ($where = "1", $order = "id DESC", $limit = 40) {
+        $query = <<<SQL
 SELECT
 	m.id, m.roomId, m.userId,
 	u.name AS userName, u.avatar_url AS userAvatar,
@@ -20,6 +20,6 @@ FROM (SELECT * FROM `messages` WHERE {$where} ORDER BY {$order} LIMIT {$limit}) 
 	LEFT JOIN message_stars AS ms ON (ms.userId = ? && ms.messageId = m.id)
 SQL;
 
-		return $query;
-	}
+        return $query;
+    }
 }
