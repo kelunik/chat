@@ -76,7 +76,7 @@ function setup() {
         }
 
         else if (e.which == 38 && !e.shiftKey) {
-            if (compose) {
+            if (compose && input.value !== "") {
                 return;
             }
 
@@ -95,7 +95,7 @@ function setup() {
         }
 
         else if (e.which == 40 && !e.shiftKey) {
-            if (compose) {
+            if (compose && input.value !== "") {
                 return;
             }
 
