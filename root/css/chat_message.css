@@ -140,7 +140,7 @@
 }
 
 .chat-message-icons {
-    float: left;
+    float: right;
     font-size: .75em;
     margin: 3px 0 0 4px;
     display: inline-block;
@@ -150,6 +150,11 @@
     display: inline-block;
     cursor: pointer;
     visibility: hidden;
+    padding: 5px 5px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 15px;
+    height: 10px;
 }
 
 .chat-message:hover .chat-message-reply,
@@ -288,8 +293,7 @@ pre code {
     border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
-.chat-message-cmd-me .chat-message-user,
-.chat-message-cmd-me .chat-message-icons {
+.chat-message-cmd-me .chat-message-user {
     display: none;
 }
 
