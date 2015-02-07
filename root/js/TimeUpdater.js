@@ -1,8 +1,9 @@
-var TimeUpdater = (function (window, document, moment) {
-    "use strict";
+"use strict";
 
-    var interval = 10000, intervalId, update;
+var moment = require("moment");
+var interval = 10000, intervalId, update;
 
+module.exports = function () {
     update = function () {
         document.getElementsByClassName("relative-time").forEach(function (o) {
             o.textContent = moment(o.getAttribute("datetime")).fromNow();
@@ -29,4 +30,4 @@ var TimeUpdater = (function (window, document, moment) {
             this.start();
         }
     };
-})(window, document, moment);
+};

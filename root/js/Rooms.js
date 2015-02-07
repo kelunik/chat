@@ -1,10 +1,8 @@
-var Rooms = (function () {
-    "use strict";
+"use strict";
 
-    var rooms, current;
+var rooms = {}, current;
 
-    rooms = {};
-
+module.exports = function () {
     return {
         add: function (room) {
             rooms[room.getId()] = room;
@@ -47,4 +45,4 @@ var Rooms = (function () {
             return rooms[id];
         }
     }
-})();
+};

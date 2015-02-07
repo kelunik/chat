@@ -1,10 +1,8 @@
-var url = url || "";
+"use strict";
 
-var DataHandler = (function (window, url) {
-    "use strict";
+var websocket, handlers, queue, connect, invokeHandlers, explicitClose;
 
-    var websocket, handlers, queue, connect, invokeHandlers, explicitClose;
-
+module.exports = function () {
     explicitClose = false;
     handlers = {};
     queue = [];
@@ -118,4 +116,4 @@ var DataHandler = (function (window, url) {
             explicitClose = true;
         }
     }
-})(window, url);
+};

@@ -1,26 +1,22 @@
-var ActivityObserver = (function (document, rooms, timeUpdater, dataHandler) {
-    "use strict";
+"use strict";
 
-    var current, currentRoom, currentTab, eventName, property, userActive;
+var userActive = !document.hidden;
 
-    if (typeof document.hidden !== "undefined") {
-        property = "hidden";
-        eventName = "visibilitychange";
-    } else if (typeof document.mozHidden !== "undefined") {
-        property = "mozHidden";
-        eventName = "mozvisibilitychange";
-    } else if (typeof document.msHidden !== "undefined") {
-        property = "msHidden";
-        eventName = "msvisibilitychange";
-    } else if (typeof document.webkitHidden !== "undefined") {
-        property = "webkitHidden";
-        eventName = "webkitvisibilitychange";
+module.exports = function (roomList, dataHandler, timeUpdater) {
+    setup(roomList, dataHandler, timeUpdater);
+
+    return {
+        isActive: function () {
+            return userActive;
+        }
     }
+};
 
-    document.addEventListener(eventName, function () {
-        userActive = !document[property];
+function setup(roomList, dataHandler, timeUpdater) {
+    document.addEventListener("visibilitychange", function () {
+        userActive = !document.hidden;
 
-        if (document[property]) {
+        if (document.hidden) {
             timeUpdater.stop();
             dataHandler.send("activity", {
                 state: "inactive"
@@ -32,25 +28,11 @@ var ActivityObserver = (function (document, rooms, timeUpdater, dataHandler) {
                 state: "active"
             });
 
-            current = rooms.getCurrent();
-            currentRoom = current.getNode();
-            currentTab = current.getTabNode();
+            var current = roomList.getCurrent();
 
-            if (!currentRoom || !currentTab) {
-                return; // chat probably not yet loaded
+            if (current) {
+                current.onComeBack();
             }
-
-            currentTab.setAttribute("data-new-messages", "0");
-            current.onComeBack();
         }
     }, false);
-
-    userActive = userActive = !document[property];
-    ;
-
-    return {
-        isActive: function () {
-            return userActive;
-        }
-    };
-})(document, Rooms, TimeUpdater, DataHandler);
+}

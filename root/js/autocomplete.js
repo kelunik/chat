@@ -1,31 +1,30 @@
-var autocomplete = function (node, rooms, templateManager) {
-    "use strict";
+"use strict";
 
-    var currentUsers = [];
-    var current = 0;
+var current = 0, suggestions = [], inputNode, displayNode, suggestedElement, template;
 
-    node.addEventListener("keydown", function (e) {
-        var el;
+module.exports = function (inputId, displayId, suggestCallback, template) {
+    setup(inputId, displayId, suggestCallback, template);
 
-        if (currentUsers.length === 0) {
+    return {};
+};
+
+function setup(inputId, displayId, suggestCallback, template) {
+    inputNode = document.getElementById(inputId);
+    displayNode = document.getElementById(displayId);
+
+    if (!inputNode || !displayNode) {
+        throw new Error("Specified node not found!");
+    }
+
+    inputNode.addEventListener("keydown", function (e) {
+        if (suggestions.length === 0) {
             return;
         }
 
-        // tab, enter, comma, dot, question mark, exclamation mark, colon
-        var keys = [9, 13, 188, 190, 219, 49];
-
-        if (keys.indexOf(e.which) > -1) {
-            if (e.which === 9 || e.which === 13) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-            }
-
-            var text = node.value.lastIndexOf(" ");
-            node.value = (text > -1 ? node.value.substr(0, text + 1) : "") + "@" + currentUsers[current].name + (e.which === 9 || e.which === 13 ? " " : "");
-            Input.adjust();
-            document.getElementById("autocomplete").innerHTML = "";
-            currentUsers = [];
-            current = 0;
+        if (e.which === 9 || e.which === 13) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            onComplete();
 
             return false;
         }
@@ -34,14 +33,8 @@ var autocomplete = function (node, rooms, templateManager) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            current = --current < 0 ? currentUsers.length - 1 : current;
-            el = document.querySelector("#autocomplete-current");
-
-            if (el) {
-                el.id = "";
-            }
-
-            document.querySelectorAll(".autocomplete-entry")[current].id = "autocomplete-current";
+            current = --current < 0 ? suggestions.length - 1 : current;
+            update();
 
             return false;
         }
@@ -50,48 +43,69 @@ var autocomplete = function (node, rooms, templateManager) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            current = ++current % currentUsers.length;
-            el = document.querySelector("#autocomplete-current");
-
-            if (el) {
-                el.id = "";
-            }
-
-            document.querySelectorAll(".autocomplete-entry")[current].id = "autocomplete-current";
+            current = ++current % suggestions.length;
+            update();
 
             return false;
         }
     });
 
-    node.addEventListener("input", function () {
-        var pos = this.selectionStart;
-        var word = this.value;
-        var pre = this.value.substr(0, pos);
+    inputNode.addEventListener("input", function () {
+        var text = inputNode.value;
+        var cursor = inputNode.selectionStart;
 
-        if (pre.indexOf(" ") > -1) {
-            var words = pre.split(" ");
-            word = words[words.length - 1];
+        var before = text.substr(0, cursor);
+        var wordBreak = before.lastIndexOf(" ");
+
+        if (wordBreak > -1) {
+            var words = before.split(" ");
+            text = words[words.length - 1];
         }
 
-        if (/^@[a-z][a-z-]*$/i.test(word)) {
-            var name = word.substr(1);
-            var room = rooms.getCurrent();
-            currentUsers = [];
-
-            room.getUsers().forEach(function (user) {
-                if (user.name.toLowerCase().startsWith(name.toLowerCase())) {
-                    currentUsers.push(user);
-                }
-            });
-
-            document.getElementById("autocomplete").innerHTML = templateManager.get("autocomplete")(currentUsers);
-
-            if (currentUsers.length > 0) {
-                document.querySelector(".autocomplete-entry").id = "autocomplete-current";
-            }
+        if (/^@[a-z][a-z-]*$/i.test(text)) {
+            var name = text.substr(1);
+            suggestions = suggestCallback(name);
+            displayNode.innerHTML = template(suggestions);
+            update();
         } else {
-            document.getElementById("autocomplete").innerHTML = "";
-            currentUsers = [];
+            displayNode.innerHTML = "";
+            suggestions = [];
+            update();
         }
     });
-};
+}
+
+function onComplete() {
+    var text = inputNode.value;
+    var cursor = inputNode.selectionStart;
+
+    var before = text.substr(0, cursor);
+    var wordBreak = before.lastIndexOf(" ");
+    var newText = "";
+
+    var value = suggestions[current].name;
+
+    if (wordBreak > -1) {
+        newText = before.substr(0, wordBreak + 1);
+    }
+
+    newText += "@" + value + " " + text.substr(cursor);
+    inputNode.value = newText;
+    inputNode.selectionStart = inputNode.selectionEnd = before.length + value.length - 1;
+
+    displayNode.innerHTML = "";
+    suggestions = [];
+    update();
+}
+
+function update() {
+    if (suggestedElement) {
+        suggestedElement.removeAttribute("id");
+    }
+
+    suggestedElement = displayNode.getElementsByClassName("autocomplete-entry")[current];
+
+    if (suggestedElement) {
+        suggestedElement.setAttribute("id", "autocomplete-current");
+    }
+}

@@ -1,80 +1,84 @@
-var LongPress = function (element) {
-    this.element = element;
-    this.target = null;
-    this.startX = null;
-    this.startY = null;
-    this.longpress = false;
+"use strict";
 
-    element.addEventListener("touchstart", this, true);
+var element, target, startX, startY, longpress, timer;
+
+module.exports = function (_element) {
+    element = _element;
+    target = null;
+    startX = null;
+    startY = null;
+    longpress = false;
+
+    element.addEventListener("touchstart", handleEvent, true);
 };
 
-LongPress.prototype.handleEvent = function (event) {
+function handleEvent(event) {
     switch (event.type) {
         case "touchstart":
-            this.onTouchStart(event);
+            onTouchStart(event);
             break;
         case "touchmove":
-            this.onTouchMove(event);
+            onTouchMove(event);
             break;
         case "touchend":
-            this.onTouchEnd(event);
+            onTouchEnd(event);
             break;
     }
-};
+}
 
-LongPress.prototype.onTouchStart = function (event) {
+function onTouchStart(event) {
     event.stopPropagation();
-    this.target = event.target;
+    target = event.target;
 
-    this.element.addEventListener("touchend", this, true);
-    document.body.addEventListener("touchmove", this, true);
+    element.addEventListener("touchend", handleEvent, true);
+    document.body.addEventListener("touchmove", handleEvent, true);
 
-    this.startX = event.touches[0].clientX;
-    this.startY = event.touches[0].clientY;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
 
-    this.timer = setInterval(function () {
-        this.longpress = true;
-        this.onTouchEnd(new Event("touchend", {
+    timer = setInterval(function () {
+        longpress = true;
+        onTouchEnd(new Event("touchend", {
             bubbles: true
         }));
-    }.bind(this), 1000);
-};
+    }, 1000);
+}
 
-LongPress.prototype.onTouchMove = function (event) {
-    if (this.startX === null || this.startY === null) {
+function onTouchMove(event) {
+    if (startX === null || startY === null) {
         return;
     }
 
-    if (Math.abs(event.touches[0].clientX - this.startX) > 10 ||
-        Math.abs(event.touches[0].clientY - this.startY) > 10
+    if (Math.abs(event.touches[0].clientX - startX) > 10 ||
+        Math.abs(event.touches[0].clientY - startY) > 10
     ) {
-        this.reset();
+        reset();
     }
-};
+}
 
-LongPress.prototype.onTouchEnd = function (event) {
+function onTouchEnd(event) {
     event.stopPropagation();
 
-    if (this.longpress) {
-        var target = event.target || this.target;
+    if (longpress) {
+        var target = event.target || target;
 
         if (target) {
             event.preventDefault();
 
-            this.target.dispatchEvent(new Event("longpress", {
+            target.dispatchEvent(new Event("longpress", {
                 bubbles: true
             }));
         }
     }
 
-    this.reset();
-};
+    reset();
+}
 
-LongPress.prototype.reset = function (event) {
-    this.element.removeEventListener("touchend", this, true);
-    document.body.removeEventListener("touchmove", this, true);
-    clearTimeout(this.timer);
-    this.timer = null;
-    this.longpress = false;
-    this.target = null;
-};
+function reset() {
+    element.removeEventListener("touchend", handleEvent, true);
+    document.body.removeEventListener("touchmove", handleEvent, true);
+    clearTimeout(timer);
+    timer = null;
+    longpress = false;
+    target = null;
+}

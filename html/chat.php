@@ -15,6 +15,10 @@
             avatar: "<?= htmlspecialchars($session->avatar) ?>"
         };
 
+        var config = {
+            host: "<?= htmlspecialchars(DEPLOY_URL) ?>"
+        };
+
         window.csrfToken = "<?=htmlspecialchars($session->csrfToken)?>";
     </script>
 

@@ -1,14 +1,16 @@
-var NotificationCenter = (function (window, document, dataHandler, Favico, rooms) {
-    "use strict";
+"use strict";
 
-    var displayNotification, icons, messageIndicator = null, appIcon, userImages;
+var Favico = require("./vendor/favico.min.js");
 
+var displayNotification, icons, messageIndicator = null, appIcon, userImages;
+
+module.exports = function (roomList, dataHandler) {
     var favicon = new Favico({
-        type: 'circle',
-        animation: 'none',
-        bgColor: '#d00',
-        textColor: '#eee',
-        fontFamily: 'Lato'
+        type: "circle",
+        animation: "none",
+        bgColor: "#d00",
+        textColor: "#eee",
+        fontFamily: "Lato"
     });
 
     userImages = {};
@@ -106,7 +108,7 @@ var NotificationCenter = (function (window, document, dataHandler, Favico, rooms
         onPingChange: function () {
             var cnt = 0;
 
-            rooms.forEach(function (room) {
+            roomList.forEach(function (room) {
                 cnt += room.getPingCount();
             });
 
@@ -114,7 +116,7 @@ var NotificationCenter = (function (window, document, dataHandler, Favico, rooms
         },
 
         clearPing: function (id) {
-            rooms.forEach(function (room) {
+            roomList.forEach(function (room) {
                 var pings = room.getPings();
 
                 pings.forEach(function (ping) {
@@ -138,5 +140,4 @@ var NotificationCenter = (function (window, document, dataHandler, Favico, rooms
     }.bind(exports), false);
 
     return exports;
-})
-(window, document, DataHandler, Favico, Rooms);
+};

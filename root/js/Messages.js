@@ -1,14 +1,22 @@
-var Messages = (function (document, rooms) {
-    "use strict";
+"use strict";
 
-    var messages = {};
+var messages = {};
+
+module.exports = function (roomList) {
+    setupEventHandlers();
 
     return {
         get: function (id) {
             if (id in messages) {
                 return messages[id];
             } else {
-                return messages[id] = document.getElementById("message-" + id);
+                var element = document.getElementById("message-" + id);
+
+                if (element) {
+                    return messages[id] = element;
+                } else {
+                    return null;
+                }
             }
         },
 
@@ -28,10 +36,10 @@ var Messages = (function (document, rooms) {
                 return;
             }
 
-            var room = rooms.get(message.parentNode.getAttribute("data-id") * 1);
+            var room = roomList.get(message.parentNode.getAttribute("data-id") * 1);
             var roomNode = message.parentNode;
             var roomId = room.getId();
-            rooms.focus(roomId);
+            roomList.focus(roomId);
 
             var pos = message.offsetTop;
             var height = message.clientHeight;
@@ -53,4 +61,32 @@ var Messages = (function (document, rooms) {
             }, 1000);
         }
     }
-})(document, Rooms);
+};
+
+function setupEventHandlers() {
+    document.addEventListener("mouseover", function (e) {
+        if (e.target.classList.contains("chat-message")) {
+            var node = e.target;
+            var id = node.getAttribute("data-id");
+            var nodes = document.querySelectorAll(".chat-message[data-reply='" + id + "']");
+
+            nodes.forEach(function (node) {
+                node.classList.add("reply");
+                node.classList.add("reply-" + id);
+            });
+        }
+    });
+
+    document.addEventListener("mouseout", function (e) {
+        if (e.target.classList.contains("chat-message")) {
+            var node = e.target;
+            var id = node.getAttribute("data-id");
+            var nodes = document.querySelectorAll(".reply-" + id);
+
+            nodes.forEach(function (node) {
+                node.classList.remove("reply");
+                node.classList.remove("reply-" + id);
+            });
+        }
+    });
+}
