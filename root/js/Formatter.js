@@ -33,7 +33,6 @@ module.exports = function (_messageList, roomList) {
                 }
             }
 
-            // FIXME this totally hangs things up
             try {
                 return hljs.highlightAuto(str).value;
             } catch (err) {

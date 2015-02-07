@@ -98,6 +98,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/js/all.min.js?v=<?= DEVELOPMENT ? rand() : JS_VERSION ?>"></script>
+<script type="text/javascript" src="/js/all.min.js?v=<?= DEVELOPMENT ? time() : JS_VERSION ?>"></script>
 </body>
 </html>
