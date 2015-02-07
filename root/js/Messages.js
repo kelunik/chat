@@ -3,8 +3,6 @@
 var messages = {};
 
 module.exports = function (roomList) {
-    setupEventHandlers();
-
     return {
         get: function (id) {
             if (id in messages) {
@@ -62,31 +60,3 @@ module.exports = function (roomList) {
         }
     }
 };
-
-function setupEventHandlers() {
-    document.addEventListener("mouseover", function (e) {
-        if (e.target.classList.contains("chat-message")) {
-            var node = e.target;
-            var id = node.getAttribute("data-id");
-            var nodes = document.querySelectorAll(".chat-message[data-reply='" + id + "']");
-
-            nodes.forEach(function (node) {
-                node.classList.add("reply");
-                node.classList.add("reply-" + id);
-            });
-        }
-    });
-
-    document.addEventListener("mouseout", function (e) {
-        if (e.target.classList.contains("chat-message")) {
-            var node = e.target;
-            var id = node.getAttribute("data-id");
-            var nodes = document.querySelectorAll(".reply-" + id);
-
-            nodes.forEach(function (node) {
-                node.classList.remove("reply");
-                node.classList.remove("reply-" + id);
-            });
-        }
-    });
-}

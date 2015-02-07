@@ -4,9 +4,11 @@ var Formatter = require("./Formatter.js"),
     moment = require("moment"),
     Util = require("./Util.js");
 
-var id, template, room, roomNode, messageNode, formatter;
+var template, formatter;
 
-module.exports = function (data, messageList, roomList, activityObserver, dataHandler, notificationCenter) {
+module.exports = function (data, input, messageList, roomList, activityObserver, dataHandler, notificationCenter) {
+    var id, room, roomNode, messageNode;
+
     template = {
         chat: require("../../html/chat_message.handlebars")
     };
@@ -129,9 +131,25 @@ module.exports = function (data, messageList, roomList, activityObserver, dataHa
 
     if (data.user.id === user.id) {
         messageNode.addEventListener("longpress", function () {
-            Input.edit(data.messageId);
+            input.edit(data.messageId);
         });
     }
+
+    messageNode.addEventListener("mouseenter", function () {
+        var nodes = document.querySelectorAll(".chat-message[data-reply='" + id + "']");
+
+        nodes.forEach(function (node) {
+            node.classList.add("reply");
+        });
+    });
+
+    messageNode.addEventListener("mouseleave", function () {
+        var nodes = document.querySelectorAll(".reply");
+
+        nodes.forEach(function (node) {
+            node.classList.remove("reply");
+        });
+    });
 
     return {
         getId: function () {

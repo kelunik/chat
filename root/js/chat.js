@@ -39,28 +39,10 @@ dataHandler.on("message", function (type, data) {
     var node = document.getElementById("message-temp-" + data.token);
 
     if (node) {
-        node.classList.remove("chat-message-pending");
-        node.setAttribute("id", "message-" + data.messageId);
-        node.setAttribute("data-id", data.messageId);
-
-        formatter.formatMessage(data.roomId, node.querySelector(".chat-message-text"), node.getAttribute("data-text"), data.reply, user);
-        var room = roomList.getCurrent();
-        room.setLastMessage(Math.max(room.getLastMessage(), data.messageId));
-
-        node.querySelector("time").parentNode.href = "/message/" + data.messageId + "#" + data.messageId;
-
-        node.querySelector(".chat-message-stars").addEventListener("click", function () {
-            var star = this.getAttribute("data-starred") == "0";
-            this.setAttribute("data-starred", star ? "1" : "0");
-
-            var event = star ? "star" : "unstar";
-            DataHandler.send(event, {
-                messageId: data.messageId
-            });
-        });
-    } else {
-        new Message(data);
+        node.parentNode.removeChild(node);
     }
+
+    new Message(data, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
 
     if (data.user.id === user.id && data.reply) {
         notificationCenter.clearPing(data.reply.messageId)
@@ -106,7 +88,7 @@ dataHandler.on("message-edit", function (type, data) {
 
 dataHandler.on("missed-query", function (type, data) {
     data.messages.forEach(function (o) {
-        new Message(o);
+        new Message(o, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
     });
 
     if (data.init) {
@@ -175,7 +157,7 @@ dataHandler.on("transcript", function (type, data) {
     var tempScroll = node.scrollHeight - node.scrollTop;
 
     data.messages.forEach(function (message) {
-        new Message(message, messageList, roomList, activityObserver, dataHandler, notificationCenter);
+        new Message(message, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
     });
 
     if (data.messages.length > 0) {
