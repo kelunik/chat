@@ -81,6 +81,12 @@ class Transcript {
         $q = yield $this->db->prepare(MessageHandler::buildQuery("id = ?"), [$messageId, isset($session) ? $session->id : -1]);
         $message = yield $q->fetchObject();
 
+        if ($message === null) {
+            yield "status" => 404;
+            yield "header" => "Content-Type: application/json";
+            yield "body" => "null";
+        }
+
         $message = [
             "id" => $message->id,
             "roomId" => $message->roomId,
