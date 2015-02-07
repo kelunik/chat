@@ -141,6 +141,14 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
         nodes.forEach(function (node) {
             node.classList.add("reply");
         });
+
+        if (data.reply) {
+            var message = messageList.get(data.reply.messageId);
+
+            if (message) {
+                message.classList.add("reply");
+            }
+        }
     });
 
     messageNode.addEventListener("mouseleave", function () {
@@ -149,6 +157,14 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
         nodes.forEach(function (node) {
             node.classList.remove("reply");
         });
+
+        if (data.reply) {
+            var message = messageList.get(data.reply.messageId);
+
+            if (message) {
+                message.classList.remove("reply");
+            }
+        }
     });
 
     return {
