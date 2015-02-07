@@ -6,6 +6,8 @@
     line-height: 20px;
     position: relative;
     max-width: 100%;
+    max-height: 300px;
+    overflow: auto;
 }
 
 .chat-message:last-child {
