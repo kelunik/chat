@@ -34,11 +34,11 @@ module.exports = function (_messageList, roomList) {
             }
 
             // FIXME this totally hangs things up
-            /* try {
+            try {
                 return hljs.highlightAuto(str).value;
             } catch (err) {
                 // default
-            } */
+            }
 
             return ""; // use external default escaping
         }
