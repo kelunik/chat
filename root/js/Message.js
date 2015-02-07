@@ -131,7 +131,6 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
 
     if (data.user.id === user.id) {
         messageNode.addEventListener("longpress", function () {
-            console.log("_____________YEAH________________");
             input.edit(data.messageId);
         });
     }

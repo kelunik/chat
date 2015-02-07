@@ -63,7 +63,7 @@ function formatMessage(roomId, node, text, reply, user) {
     node.querySelectorAll("img").forEach(replaceImageWithLink);
 
     if (text.indexOf("/me ") === 0) {
-        initMe(node);
+        initMe(node, user);
     }
 
     else if (reply) {
@@ -92,7 +92,7 @@ function initReplyNode(node, reply) {
     }
 }
 
-function initMe(node) {
+function initMe(node, user) {
     node.parentNode.parentNode.classList.remove("chat-message-followup");
     node.parentNode.parentNode.classList.add("chat-message-cmd-me");
     node.innerHTML = node.innerHTML.replace("/me ", Util.escapeHtml(user.name) + " ");
