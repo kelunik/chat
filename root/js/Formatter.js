@@ -19,6 +19,7 @@ module.exports = function (_messageList, roomList) {
         langPrefix: "language-",
         linkify: true,
         typographer: true,
+        maxNesting: 2,
         quotes: "“”‘’",
         highlight: function (str, lang) {
             if (lang === "text" || lang === "plain" || lang === "nohighlight" || lang === "no-highlight") {
