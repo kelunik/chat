@@ -1,0 +1,28 @@
+{
+  "name": "amp-chat",
+  "version": "1.0.0",
+  "author": "Niklas Keller <me@kelunik.com>",
+  "contributors": [],
+  "scripts": {
+    "build": "browserify -t hbsfy main.js -p [minifyify --map /js/map.json --output map.json] -o all.min.js --debug",
+    "watch": "watchify -t hbsfy main.js -p [minifyify --map /js/map.json --output map.json] -o all.min.js --debug --verbose"
+  },
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rdlowrey/amp-chat"
+  },
+  "bugs": {
+    "url": "https://github.com/rdlowrey/amp-chat/issues"
+  },
+  "dependencies": {
+    "hbsfy": "2.2.x",
+    "moment": "2.9.x"
+  },
+  "devDependencies": {
+    "handlebars": "2.0.x",
+    "minifyify": "6.1.x"
+  },
+  "preferGlobal": false,
+  "private": true
+}

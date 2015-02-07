@@ -11,7 +11,7 @@ module.exports = function (data, messageList, roomList, activityObserver, dataHa
         chat: require("../../html/chat_message.handlebars")
     };
 
-    formatter = formatter || new Formatter(messageList);
+    formatter = formatter || new Formatter(messageList, roomList);
 
     var showIndicator = false;
 

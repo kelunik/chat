@@ -29,7 +29,7 @@ var activityObserver = new ActivityObserver(roomList, dataHandler, timeUpdater);
 var messageList = new MessageList(roomList);
 var notificationCenter = new NotificationCenter(roomList, dataHandler);
 var input = new Input(roomList, messageList, dataHandler);
-var formatter = new Formatter(messageList);
+var formatter = new Formatter(messageList, roomList);
 
 var initialLoad = true;
 
@@ -307,14 +307,14 @@ Handlebars.registerHelper('pluralizeCount', function (number, single, plural) {
     }
 });
 
-var markdown = new Remarkable('full', {
+var markdown = new Remarkable("full", {
     html: false,
     xhtmlOut: false,
     breaks: true,
-    langPrefix: 'language-',
+    langPrefix: "language-",
     linkify: true,
     typographer: true,
-    quotes: '“”‘’'
+    quotes: "“”‘’"
 });
 
 Handlebars.registerHelper('markdown', function (text) {

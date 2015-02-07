@@ -3,18 +3,18 @@
 var Autocomplete = require("./autocomplete.js"),
     Util = require("./Util.js"),
     Formatter = require("./Formatter.js"),
-    formatter = new Formatter(),
     moment = require("moment");
 
 var editMessage = 0,
     compose = false,
     input = document.getElementById("input"),
-    roomList, messageList, dataHandler;
+    roomList, messageList, dataHandler, formatter;
 
 module.exports = function (_roomList, _messageList, _dataHandler) {
     roomList = _roomList;
     messageList = _messageList;
     dataHandler = _dataHandler;
+    formatter = new Formatter(messageList, roomList);
     setup();
     reset();
 

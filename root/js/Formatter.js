@@ -2,17 +2,15 @@
 
 var Util = require("./Util.js"),
     Remarkable = require("remarkable"),
-    hljs = require("highlight.js"),
+    hljs = require("./vendor/highlight.js"),
     IssueLinker = require("./vendor/issue-linker.min.js"),
-    MessageExpand = require("./MessageExpand.js"),
-    messageExpand = new MessageExpand;
+    MessageExpand = require("./MessageExpand.js");
 
-console.log(hljs);
+var messageList, md, messageExpand;
 
-var messageList, md;
-
-module.exports = function (_messageList) {
+module.exports = function (_messageList, roomList) {
     messageList = _messageList;
+    messageExpand = new MessageExpand(roomList);
 
     md = new Remarkable("full", {
         html: false,
