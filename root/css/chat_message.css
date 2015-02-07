@@ -140,21 +140,16 @@
 }
 
 .chat-message-icons {
-    float: right;
+    float: left;
     font-size: .75em;
     margin: 3px 0 0 4px;
     display: inline-block;
-    transform: translateY(-24px);
 }
 
 .chat-message-icons > i {
     display: inline-block;
     cursor: pointer;
     visibility: hidden;
-}
-
-.chat-message-followup .chat-message-icons {
-    transform: translateY(0);
 }
 
 .chat-message:hover .chat-message-reply,
@@ -191,7 +186,6 @@
 
 pre code {
     display: block !important;
-    margin-right: 20px;
     background: #fafafa !important;
     color: #333 !important;
     padding: 8px !important;

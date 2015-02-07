@@ -7,6 +7,14 @@
         <img src="{{{avatar user.avatar}}}" width="30px" height="30px"
              draggable="true" ondragstart="event.dataTransfer.setData('text/plain', '@{{user.name}}')"
              onclick="var i = document.getElementById('input'); i.value = i.value + '@{{user.name}} '; i.focus();">
+
+        <br>
+
+        <span class="chat-message-icons">
+            <i class="fa fa-reply chat-message-reply"></i>
+            <i class="fa chat-message-stars" data-stars="{{stars}}"
+               data-starred="{{#if starred}}1{{else}}0{{/if}}"></i>
+        </span>
     </div>
 
     <div class="chat-message-content">
@@ -22,12 +30,6 @@
                       title="{{{dateformat time}}}"></time>
             </a>
         </div>
-
-        <span class="chat-message-icons">
-            <i class="fa fa-reply chat-message-reply"></i>
-            <i class="fa chat-message-stars" data-stars="{{stars}}"
-               data-starred="{{#if starred}}1{{else}}0{{/if}}"></i>
-        </span>
 
         <div class="chat-message-text"></div>
     </div>

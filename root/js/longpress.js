@@ -9,29 +9,15 @@ module.exports = function (_element) {
     startY = null;
     longpress = false;
 
-    element.addEventListener("touchstart", handleEvent, true);
+    element.addEventListener("touchstart", onTouchStart, true);
 };
-
-function handleEvent(event) {
-    switch (event.type) {
-        case "touchstart":
-            onTouchStart(event);
-            break;
-        case "touchmove":
-            onTouchMove(event);
-            break;
-        case "touchend":
-            onTouchEnd(event);
-            break;
-    }
-}
 
 function onTouchStart(event) {
     event.stopPropagation();
     target = event.target;
 
-    element.addEventListener("touchend", handleEvent, true);
-    document.body.addEventListener("touchmove", handleEvent, true);
+    element.addEventListener("touchend", onTouchEnd, true);
+    document.body.addEventListener("touchmove", onTouchMove, true);
 
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
@@ -60,12 +46,12 @@ function onTouchEnd(event) {
     event.stopPropagation();
 
     if (longpress) {
-        var target = event.target || target;
+        var _target = event.target || target;
 
-        if (target) {
+        if (_target) {
             event.preventDefault();
 
-            target.dispatchEvent(new Event("longpress", {
+            _target.dispatchEvent(new Event("longpress", {
                 bubbles: true
             }));
         }
@@ -75,8 +61,8 @@ function onTouchEnd(event) {
 }
 
 function reset() {
-    element.removeEventListener("touchend", handleEvent, true);
-    document.body.removeEventListener("touchmove", handleEvent, true);
+    element.removeEventListener("touchend", onTouchEnd, true);
+    document.body.removeEventListener("touchmove", onTouchMove, true);
     clearTimeout(timer);
     timer = null;
     longpress = false;

@@ -5,6 +5,19 @@
     position: relative;
 }
 
+#load-error {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #eee;
+    color: #888;
+    font-size: 20px;
+    padding-top: 100px;
+    text-align: center;
+}
+
 #input {
     flex-grow: 0;
     flex-shrink: 0;

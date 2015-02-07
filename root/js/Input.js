@@ -40,7 +40,7 @@ function setup() {
             var suggestions = [];
 
             users.forEach(function (user) {
-                if (user.name.startsWith(name)) {
+                if (user.name.toLowerCase().startsWith(name)) {
                     suggestions.push(user);
                 }
             });

@@ -69,6 +69,12 @@
         </div>
 
         <div id="main-col">
+            <div id="load-error">
+                <i class="fa fa-exclamation-triangle" style="font-size: 100px; color: #aaa;"></i><br><br>
+                Sorry, our scripts don't seem to load.<br>
+                Please try refreshing the page.
+            </div>
+
             <div id="rooms">
 
             </div>
