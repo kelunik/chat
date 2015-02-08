@@ -256,6 +256,10 @@ function submit() {
     if (text === "") {
         reset();
         return;
+    } else if (text === "/leave") {
+        reset();
+        window.location = window.location + "/leave";
+        return;
     }
 
     var tempId = Util.generateToken(20);
