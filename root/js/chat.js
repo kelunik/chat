@@ -246,7 +246,7 @@ dataHandler.on("logout", function () {
         window.sessionStorage.setItem("autologout", "1");
     }
 
-    window.location.href = "/auth";
+    window.location.href = "/login";
 });
 
 document.getElementById("logout").addEventListener("click", function () {
@@ -254,11 +254,15 @@ document.getElementById("logout").addEventListener("click", function () {
 });
 
 dataHandler.on("error", function (e) {
+    console.log(e);
+
     if (document.getElementById("error") === null) {
         document.body.appendChild(Util.html2node(require("../../html/error.handlebars")("We couldn't establish any WebSocket connection, sorry about that!")));
     }
+});
 
-    console.log(e);
+dataHandler.on("close", function () {
+    console.log("dataHandler::close");
 });
 
 Handlebars.registerHelper('datetime', function (time) {
@@ -304,6 +308,8 @@ Handlebars.registerHelper('markdown', function (text) {
 });
 
 dataHandler.on("open", function () {
+    console.log("dataHandler::open");
+
     dataHandler.send("activity", {
         state: activityObserver.isActive() ? "active" : "inactive"
     });
