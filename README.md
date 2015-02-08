@@ -1,4 +1,4 @@
-# amp-chat
+# amp-chat [![](https://img.shields.io/badge/amp--chat-join%20Two%20Crowns-blue.svg)](https://dev.kelunik.com)
 
 ## Installation
 
