@@ -20,7 +20,7 @@ class Page {
 
         if ($sessionId === null) {
             yield "status" => 302;
-            yield "header" => "Location: /auth";
+            yield "header" => "Location: /login";
             yield "body" => "";
             return;
         }
@@ -29,7 +29,7 @@ class Page {
 
         if ($session === null) {
             yield "status" => 302;
-            yield "header" => "Location: /auth";
+            yield "header" => "Location: /login";
             yield "body" => "";
             return;
         }
@@ -45,16 +45,15 @@ class Page {
 
         if ($sessionId === null) {
             yield "status" => 302;
-            yield "header" => "Location: /auth";
+            yield "header" => "Location: /login";
             yield "body" => "";
-            return;
         }
 
         $session = yield $this->sessionManager->getSession($sessionId);
 
         if ($session === null) {
             yield "status" => 302;
-            yield "header" => "Location: /auth";
+            yield "header" => "Location: /login";
             yield "body" => "";
             return;
         }
@@ -64,8 +63,80 @@ class Page {
 
         $tpl = new Tpl(new Parsedown);
         $tpl->load(TEMPLATE_DIR . "rooms.php", Tpl::LOAD_PHP);
-        $tpl->set('rooms', $rooms);
-        $tpl->set('session', $session);
+        $tpl->set("rooms", $rooms);
+        $tpl->set("session", $session);
         yield "body" => $tpl->page();
+    }
+
+    public function createRoom ($request) {
+        $sessionId = SessionManager::getSessionId($request);
+
+        if ($sessionId === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+        }
+
+        $session = yield $this->sessionManager->getSession($sessionId);
+
+        if ($session === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+            return;
+        }
+
+        $tpl = new Tpl(new Parsedown);
+        $tpl->load(TEMPLATE_DIR . "room_create.php", Tpl::LOAD_PHP);
+        $tpl->set("session", $session);
+        yield "body" => $tpl->page();
+    }
+
+    public function createRoomSubmit ($request) {
+        $sessionId = SessionManager::getSessionId($request);
+
+        if ($sessionId === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+        }
+
+        $session = yield $this->sessionManager->getSession($sessionId);
+
+        if ($session === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+            return;
+        }
+
+        $token = $request["FORM"]["csrf-token"] ?? "";
+
+        if (!is_string($token) || !safe_compare($session->csrfToken, $token)) {
+            yield "status" => 401;
+            yield "body" => "";
+            return;
+        }
+
+        $name = $request["FORM"]["name"] ?? null;
+        $desc = $request["FORM"]["description"] ?? null;
+
+        if (!is_string($name) || !is_string($desc)) {
+            yield "status" => 400;
+            yield "body" => "";
+            return;
+        }
+
+        $q = yield $this->db->prepare("INSERT INTO rooms (`name`, `description`, `creationTime`) VALUES (?, ?, ?)", [
+            $name, $desc, time()
+        ]);
+
+        yield $this->db->prepare("INSERT INTO room_users (`roomId`, `userId`, `role`, `joinedTime`) VALUES (?, ?, ?, ?)", [
+            $q->insertId, $session->id, "ADMIN", time()
+        ]);
+
+        yield "status" => 302;
+        yield "header" => "Location: /rooms/" . $q->insertId;
+        yield "body" => "";
     }
 }

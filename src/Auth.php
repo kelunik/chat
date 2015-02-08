@@ -24,7 +24,7 @@ class Auth {
 
     public function redirect () {
         yield "status" => 302;
-        yield "header" => "Location: /auth";
+        yield "header" => "Location: /login";
         yield "body" => "";
     }
 
@@ -88,7 +88,7 @@ class Auth {
             yield "body" => "";
         } else {
             yield "status" => 302;
-            yield "header" => "Location: /auth";
+            yield "header" => "Location: /login";
             yield "body" => "";
         }
     }
@@ -131,7 +131,7 @@ class Auth {
 
         if ($sessionId === null) {
             yield "status" => 302;
-            yield "header" => "Location: /auth";
+            yield "header" => "Location: /login";
             yield "body" => "";
         }
 
@@ -149,7 +149,7 @@ class Auth {
                 yield $this->redis->del("session.{$sessionId}");
                 yield "header" => "Set-Cookie: aerys_sess=; PATH=/"; // TODO: Add negative expire
                 yield "status" => 302;
-                yield "header" => "Location: /auth";
+                yield "header" => "Location: /login";
                 yield "body" => "";
                 return;
             }

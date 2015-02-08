@@ -17,6 +17,15 @@
         };
 
         window.csrfToken = "<?=htmlspecialchars($session->csrfToken)?>";
+
+        document.addEventListener("submit", function (e) {
+            var form = e.target;
+            var input = document.createElement('input');
+            input.type = "hidden";
+            input.name = "csrf-token";
+            input.value = window.csrfToken;
+            form.appendChild(input);
+        }, true);
     </script>
 
     <script>
@@ -47,33 +56,31 @@
         <h1>t@lkZone</h1>
     </div>
 
-    <?php
-    $md = new Parsedown;
-    $md->setMarkupEscaped(true);
-    ?>
-
     <div id="content">
         <div id="content-fw">
-            <div id="room-overview">
-                <?php foreach ($rooms as $room): ?>
-                    <div class="room-card">
-                        <div class="room-card-title">
-                            <a href="/rooms/<?= $room->id ?>">
-                                <?= htmlspecialchars($room->name) ?>
-                            </a>
-                        </div>
+            <form action="/rooms/new" method="post">
+                <div>
+                    <i class="fa fa-info-circle pull-left"></i>Please review the list of existing rooms before creating a new one.
+                </div>
 
-                        <div class="room-card-desc">
-                            <?= htmlspecialchars($room->description) /* $md->parse($room->description) */ ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+                <table>
+                    <tr>
+                        <td><label for="room.name">Room Name</label></td>
+                        <td><input type="text" name="name" id="room.name"></td>
+                    </tr>
 
-            <div class="info">
-                Couldn't find a room that suits you?&nbsp;&nbsp;
-                <a href="/rooms/new">Create a new one.</a>
-            </div>
+                    <tr>
+                        <td><label for="room.name">Description</label></td>
+                        <td><textarea name="description" id="room.name"></textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit">create</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
         </div>
     </div>
 </div>

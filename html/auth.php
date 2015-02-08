@@ -182,7 +182,7 @@
             <div id="logout-notice">You were redirected here as your session was terminated.</div>
 
             <div>
-                <a href="/auth/github" id="login">
+                <a href="/login/github" id="login">
                     <i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
                 </a>
             </div>

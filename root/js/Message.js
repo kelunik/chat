@@ -32,7 +32,7 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
     formatter.formatMessage(room.getId(), messageNode.querySelector(".chat-message-text"), data.messageText, data.reply, data.user);
     messageNode.querySelector("time").textContent = moment.unix(data.time).fromNow();
     messageNode.querySelector("time").setAttribute("title", moment.unix(data.time).format("LLL"));
-    messageNode.querySelector("time").parentNode.href = "/message/" + data.messageId + "#" + data.messageId;
+    messageNode.querySelector("time").parentNode.href = "/messages/" + data.messageId + "#" + data.messageId;
 
     if (room.getFirstMessage() === null || room.getLastMessage() === null) {
         room.setFirstMessage(data.messageId);

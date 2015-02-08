@@ -30,7 +30,7 @@ module.exports = function (roomList) {
             var message = this.get(id);
 
             if (!message) {
-                window.open("/message/" + id + "#" + id, '_blank');
+                window.open("/messages/" + id + "#" + id, '_blank');
                 return;
             }
 

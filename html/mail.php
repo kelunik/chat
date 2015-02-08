@@ -27,7 +27,7 @@ $css["footer_link"] = "color:#666;text-decoration:none";
             <div style="<?= $css["notification"] ?>">
                 <div style="<?= $css["notification_meta"] ?>">
                     Unread ping from @<?= htmlentities($ping->author) ?> – <?= date("d.m.Y H:i", $ping->time) ?> UTC –
-                    <a style="<?= $css["link"] ?>" href="<?= DEPLOY_URL ?>/message/<?= $ping->id ?>#<?= $ping->id ?>">
+                    <a style="<?= $css["link"] ?>" href="<?= DEPLOY_URL ?>/messages/<?= $ping->id ?>#<?= $ping->id ?>">
                         view message
                     </a>
                 </div>

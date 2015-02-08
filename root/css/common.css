@@ -18,6 +18,10 @@ a, button, input {
     -ms-touch-action: manipulation; /* IE10 */
 }
 
+.clear {
+    clear: both;
+}
+
 .textLeft {
     text-align: left;
 }
@@ -79,4 +83,13 @@ input {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.info {
+    border-radius: 3px;
+    padding: 15px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .05);
+    margin: 8px;
 }
