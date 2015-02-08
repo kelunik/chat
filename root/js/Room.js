@@ -53,6 +53,7 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
     })));
     tabNode = document.getElementById("room-tab-" + id);
     infoNode = infos.appendChild(Util.html2node(template.info(data)));
+    infoNode = document.getElementById("room-info-" + id);
     starsNode = stars.appendChild(Util.html2node(template.stars({
         roomId: id
     })));
