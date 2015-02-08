@@ -71,6 +71,13 @@ $host = (new Aerys\Host)
     ->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
     ->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
     ->addRoute("GET", "/manifest.appcache", $manifestResponder)
+    // legacy urls
+    ->addRoute("GET", "/message/{id:[0-9]+}", function($request) {
+        return [
+            "status" => 302,
+            "header" => "Location: /messages/". $request["URI_ROUTE_ARGS"]["id"]
+        ];
+    })
     ->addWebsocket("/chat", $chatHandler);
 
 if (DEPLOY_HTTPS) {
