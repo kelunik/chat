@@ -76,6 +76,7 @@ $host = (new Aerys\Host)
         return [
             "status" => 302,
             "header" => "Location: /messages/". $request["URI_ROUTE_ARGS"]["id"];
+        ];
     })
     ->addWebsocket("/chat", $chatHandler);
 
