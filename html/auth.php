@@ -6,6 +6,9 @@
 
     <?php require TEMPLATE_DIR . "head_meta.php"; ?>
 
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Pacifico|Lato">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
     <style>
         * {
             -webkit-text-size-adjust: none;
@@ -18,7 +21,7 @@
             font-family: Lato, sans-serif;
             margin: 0;
             min-height: 100vh;
-            background: #fafafa;
+            background: #fff;
         }
 
         #page {
@@ -44,11 +47,11 @@
         }
 
         #nav {
-            height: 54px;
-            background: #111;
+            padding: 15px 0;
+            background: #eee;
             text-align: center;
-            line-height: 52px;
-            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            line-height: 60px;
+            border-bottom: 1px solid rgba(0, 0, 0, .05);
             -webkit-box-flex: 0;
             -webkit-flex: 0 0 auto;
             -ms-flex: 0 0 auto;
@@ -57,42 +60,32 @@
 
         #nav img {
             vertical-align: middle;
-            -webkit-transform: translateY(-7px);
-            -ms-transform: translateY(-7px);
-            transform: translateY(-7px); /* FIXME: position without translate */
+            display: inline-block;
         }
 
         h1 {
-            font-family: 'Pacifico', cursive;
+            font-family: 'Pacifico', sans-serif;
             font-weight: normal;
             font-size: 26px;
-            line-height: 52px;
+            line-height: 60px;
             margin: 0 0 0 20px;
             padding: 0;
+            vertical-align: middle;
             display: inline-block;
-            color: #fafafa;
+            color: #333;
         }
 
         #content {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            padding: 20px 0;
+            padding: 20px;
             -webkit-box-flex: 2;
             -webkit-flex: 2;
             -ms-flex: 2;
             flex: 2;
         }
 
-        #about {
-            text-align: center;
-            padding: 20px;
-            margin: auto;
-            box-shadow: 0 0 3px rgba(0, 0, 0, .1);
-            border-radius: 3px;
-            border: 1px solid rgba(0, 0, 0, .1);
-            border-bottom: 1px solid rgba(0, 0, 0, .175);
+        #content-inner {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         h2 {
@@ -108,22 +101,42 @@
             margin: 25px 0 5px 0;
             padding: 20px;
             display: inline-block;
-            background: #31a354;
-            border-radius: 30px;
+            background: rgba(0, 100, 200, .85);
+            border-radius: 3px;
             line-height: 20px;
-            border: 1px solid rgba(0, 0, 0, .2);
-            box-shadow: 0 0 8px rgba(0, 0, 0, .1) inset;
+            border: 1px solid #005DBA;
+            border-bottom: 3px solid #005DBA;
             position: relative;
         }
 
+        #login:active,
+        .pending {
+            /* yeah, we need !important unfortunately */
+            -webkit-transform: translateY(2px) !important;
+            -ms-transform: translateY(2px) !important;
+            transform: translateY(2px) !important;
+            border-bottom: 1px solid #005DBA !important;
+        }
+
+        .pending {
+            opacity: .6;
+        }
+
+        #logout-container {
+            text-align: center;
+            line-height: 0;
+            margin-top: 20px;
+        }
+
         #logout-notice {
-            padding: 15px 20px;
-            margin: 15px -20px 0 -20px;
-            background-color: #ff9;
+            padding: 20px 20px;
+            margin: 0 auto;
+            background-color: #FFF3AE;
             border: 1px solid rgba(0, 0, 0, .1);
-            border-left: 0;
-            border-right: 0;
+            border-radius: 3px 3px;
             display: none;
+            color: #333;
+            box-shadow: 0 0 8px rgba(0, 0, 0, .05);
         }
 
         .fa-github {
@@ -141,8 +154,91 @@
             text-align: center;
         }
 
-        .pending {
-            opacity: 0.6;
+        #top {
+            background: rgba(0, 100, 200, .85);
+            border-bottom: 1px solid rgba(0, 0, 0, .2);
+            line-height: 35px;
+            color: #eee;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 0 20px;
+        }
+
+        #top-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+        }
+
+        .flex-left: {
+            -webkit-align-self: flex-start;
+            -ms-flex-item-align: start;
+            align-self: flex-start;
+        }
+
+        .flex-right {
+            -webkit-align-self: flex-end;
+            -ms-flex-item-align: end;
+            align-self: flex-end;
+        }
+
+        #features {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            border: 0px solid rgba(0, 0, 0, .01);
+            -webkit-box-flex: 2;
+            -webkit-flex-grow: 2;
+            -ms-flex-positive: 2;
+            flex-grow: 2;
+            width: 0;
+            margin: 10px;
+            padding: 10px 10px 10px 70px;
+            position: relative;
+            min-height: 70px;
+            color: #444;
+            min-width: 220px;
+        }
+
+        .feature .fa {
+            position: absolute;
+            left: 5px;
+            top: 20px;
+            color: #fff;
+            background: #D12115;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 50%;
+        }
+
+        .feature h2 {
+            color: #333;
+            margin: 0 0 4px 0;
+            padding: 0;
+            font-size: 20px;
+        }
+
+        .text-center {
+            text-align: center;
         }
     </style>
 
@@ -151,9 +247,10 @@
             i['GoogleAnalyticsObject'] = r;
             i[r] = i[r] || function () {
                 (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
+            };
+            i[r].l = 1 * new Date();
+            a = s.createElement(o);
+            m = s.getElementsByTagName(o)[0];
             a.async = 1;
             a.src = g;
             m.parentNode.insertBefore(a, m)
@@ -165,23 +262,52 @@
 </head>
 <body>
 <div id="page">
+    <div id="top">
+        <div id="top-inner" class="flex">
+            <div class="flex-left"></div>
+            <div class="flex-right">version <?= GIT_COMMIT_ID ?></div>
+        </div>
+    </div>
+
     <div id="nav">
         <picture>
-            <source srcset="img/logo_40x40.png, img/logo_40x40x2.png 2x">
-            <img src="img/logo_40x40.png" alt="logo">
+            <source srcset="/img/logo_60x60.png, img/logo_60x60x2.png 2x">
+            <img src="/img/logo_60x60.png" alt="logo">
         </picture>
 
         <h1>t@lkZone</h1>
     </div>
 
+    <div id="logout-container">
+        <div id="logout-notice">Your session has been terminated.</div>
+    </div>
+
     <div id="content">
-        <div id="about">
-            <h2>What's t@lkZone?</h2>
-            t@lkZone is a new chat based on <a href="https://github.com/amphp" target="_blank">amp</a> software stack.
+        <div id="content-inner">
+            <div id="features">
+                <div class="feature">
+                    <i class="fa fa-font fa-2x"></i>
 
-            <div id="logout-notice">You were redirected here as your session was terminated.</div>
+                    <h2>Markdown</h2>
+                    Write your message in markdown.
+                </div>
 
-            <div>
+                <div class="feature">
+                    <i class="fa fa-reply fa-2x"></i>
+
+                    <h2>Direct Reply</h2>
+                    Reply directly to messages so others can follow your conversation.
+                </div>
+
+                <div class="feature">
+                    <i class="fa fa-star fa-2x"></i>
+
+                    <h2>Stars</h2>
+                    Star messages so they get more attention.
+                </div>
+            </div>
+
+            <div class="text-center">
                 <a href="/login/github" id="login">
                     <i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
                 </a>
@@ -200,27 +326,9 @@
         © <?= date('Y') ?> <a href="https://github.com/amphp">amphp</a> and <a
             href="https://github.com/rdlowrey/amp-chat/graphs/contributors">contributors</a>
     </div>
-
 </div>
 
 <script>
-    function loadCSS(href, media) {
-        "use strict";
-
-        var s = window.document.createElement("link");
-        s.rel = "stylesheet";
-        s.href = href;
-        s.media = "only x"; // don't block rendering
-        document.head.appendChild(s);
-
-        setTimeout(function () {
-            s.media = media || "all"
-        }, 0);
-    }
-
-    loadCSS("//fonts.googleapis.com/css?family=Pacifico|Lato");
-    loadCSS("//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
-
     (function () {
         "use strict";
 
@@ -246,7 +354,7 @@
 
         if (logout) {
             window.sessionStorage.setItem("autologout", "1");
-            document.getElementById("logout-notice").style.display = "block";
+            document.getElementById("logout-notice").style.display = "inline-block";
         }
     }
 </script>

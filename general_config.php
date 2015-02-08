@@ -11,3 +11,5 @@ define("DEPLOY_URL", (DEPLOY_HTTPS ? "https" : "http") . "://" . DEPLOY_AUTHORIT
 
 define("TEMPLATE_DIR", __DIR__ . DIRECTORY_SEPARATOR . "html" . DIRECTORY_SEPARATOR);
 define("PROJECT_ROOT", __DIR__ . DIRECTORY_SEPARATOR);
+
+define("GIT_COMMIT_ID", `git rev-parse --short HEAD`);

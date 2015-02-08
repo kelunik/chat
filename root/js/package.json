@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "hbsfy": "2.2.x",
-    "moment": "2.9.x"
+    "moment": "2.9.x",
+    "remarkable": "1.6.x",
+    "autolinker": "0.15.x"
   },
   "devDependencies": {
     "handlebars": "2.0.x",
