@@ -26,14 +26,6 @@ Later changes will have to be integrated manually, at least currently.
 
 Be sure to add at least one room to the `rooms` table, otherwise you won't have much fun.
 
-#### Java & Closure Compiler
-
-Currently, we use Google's [Closure Compiler](https://developers.google.com/closure/compiler/) which requires Java.
-Please ensure that `java` is in your path.
-
-> Note: Currently, Javascript compression is always disabled,
-> so there's no need to have Java installed, this may change at any time.
-
 #### NodeJS & Handlebars
 
 Currently, we need node to precompile handlebars' templates, so they can be included into `all.min.js`.
@@ -42,10 +34,9 @@ Currently, we need node to precompile handlebars' templates, so they can be incl
 
 ```bash
 sudo apt-get install node
-npm install handlebars -g
+npm install -g handlebars remarkable autolinker
+cd root/js && npm install
 ```
-
-[Here's more information](http://handlebarsjs.com/precompilation.html) regarding handlebars precompilation.
 
 #### Redis
 
