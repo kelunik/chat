@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1e65b3e469ab12b4a49a2707a2ad2ee9",
+    "hash": "2775f81f6fd7f26d96b24115ecb39a76",
     "packages": [
         {
             "name": "amphp/aerys",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys.git",
-                "reference": "149746eff0bb2fba67d51f6a52eb06a3ab3498e7"
+                "reference": "defe9ae21c2161fab555263a8f272fa179a60fdc"
             },
             "require": {
                 "amphp/amp": "~0.15.0",
@@ -23,6 +23,9 @@
             "require-dev": {
                 "amphp/artax": "dev-master"
             },
+            "bin": [
+                "bin/aerys"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -67,7 +70,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-02-01 01:41:43"
+            "time": "2015-02-07 18:25:14"
         },
         {
             "name": "amphp/amp",

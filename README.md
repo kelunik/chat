@@ -51,7 +51,7 @@ redis-server config/redis.conf
 Current development recommendation is to start the server using the following command:
 
 ```bash
-php7 vendor/amphp/aerys/bin/aerys -c app.php
+php7 vendor/bin/aerys -c app.php
 ```
 
 > Note: We're using `php7` here, because you may have another version of PHP as `php`,
