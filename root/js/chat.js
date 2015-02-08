@@ -22,10 +22,10 @@ var ActivityObserver = require("./ActivityObserver.js"),
     moment = require("moment"),
     key = require("./vendor/keymaster.min.js");
 
-var dataHandler = new DataHandler();
+var dataHandler = new DataHandler(config.websocketUrl);
 var roomList = new RoomList();
 var timeUpdater = new TimeUpdater();
-var activityObserver = new ActivityObserver(roomList, dataHandler, timeUpdater);
+var activityObserver = new ActivityObserver(config, roomList, dataHandler, timeUpdater);
 var messageList = new MessageList(roomList);
 var notificationCenter = new NotificationCenter(roomList, dataHandler);
 var input = new Input(roomList, messageList, dataHandler);

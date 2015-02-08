@@ -7,8 +7,8 @@
     <?php require TEMPLATE_DIR . "head_meta.php"; ?>
 
     <script>
-        var url = "<?=DEPLOY_HTTPS ? "wss" : "ws"?>://<?=DEPLOY_AUTHORITY?>/chat";
         var trelloKey = "<?=TRELLO_KEY?>";
+
         var user = {
             id: <?= (int) $session->id ?>,
             name: "<?= htmlspecialchars($session->name) ?>",
@@ -17,7 +17,8 @@
 
         var config = {
             name: "<?= htmlspecialchars(APP_NAME) ?>",
-            host: "<?= htmlspecialchars(DEPLOY_URL) ?>"
+            host: "<?= htmlspecialchars(DEPLOY_URL) ?>",
+            websocketUrl: "<?=DEPLOY_HTTPS ? "wss" : "ws"?>://<?=DEPLOY_AUTHORITY?>/chat"
         };
 
         window.csrfToken = "<?=htmlspecialchars($session->csrfToken)?>";

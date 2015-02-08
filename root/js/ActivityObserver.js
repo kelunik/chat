@@ -2,8 +2,8 @@
 
 var userActive = !document.hidden;
 
-module.exports = function (roomList, dataHandler, timeUpdater) {
-    setup(roomList, dataHandler, timeUpdater);
+module.exports = function (config, roomList, dataHandler, timeUpdater) {
+    setup(config, roomList, dataHandler, timeUpdater);
 
     return {
         isActive: function () {
@@ -12,7 +12,7 @@ module.exports = function (roomList, dataHandler, timeUpdater) {
     }
 };
 
-function setup(roomList, dataHandler, timeUpdater) {
+function setup(config, roomList, dataHandler, timeUpdater) {
     document.addEventListener("visibilitychange", function () {
         userActive = !document.hidden;
 
