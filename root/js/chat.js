@@ -304,14 +304,7 @@ var markdown = new Remarkable("full", {
 });
 
 Handlebars.registerHelper('markdown', function (text) {
-    var html = markdown.render(text);
-    var node = Util.html2node(html);
-
-    node.getElementsByTagName("a").forEach(function (o) {
-        o.setAttribute("target", "_blank");
-    });
-
-    return new Handlebars.SafeString(node.innerHTML);
+    return new Handlebars.SafeString(markdown.render(text));
 });
 
 dataHandler.on("open", function () {

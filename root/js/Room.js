@@ -58,6 +58,10 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
     })));
     pingNode = tabNode.querySelector(".pings");
 
+    infoNode.getElementsByTagName("a").forEach(function (o) {
+        o.setAttribute("target", "_blank");
+    });
+
     tabNode.addEventListener("click", function () {
         if (!initialPayloadSent) {
             initialPayloadSent = true;
