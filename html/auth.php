@@ -289,7 +289,8 @@
                     <i class="fa fa-font fa-2x"></i>
 
                     <h2>Markdown</h2>
-                    Write your message in markdown.
+                    Write your messages using
+                    <a href="http://daringfireball.net/projects/markdown/" target="_blank">markdown</a>.
                 </div>
 
                 <div class="feature">
