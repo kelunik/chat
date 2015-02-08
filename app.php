@@ -77,11 +77,6 @@ $host = (new Aerys\Host)
             "status" => 302,
             "header" => "Location: /messages/". $request["URI_ROUTE_ARGS"]["id"];
     })
-    ->addRoute("GET", "/message/{id:[0-9]+}.json", function($request) {
-        return [
-            "status" => 302,
-            "header" => "Location: /messages/". $request["URI_ROUTE_ARGS"]["id"] .".json";
-    })
     ->addWebsocket("/chat", $chatHandler);
 
 if (DEPLOY_HTTPS) {
