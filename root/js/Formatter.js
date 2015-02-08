@@ -71,10 +71,6 @@ function formatMessage(roomId, node, text, reply, user) {
         initReplyNode(node, reply);
     }
 
-    if (roomId === -1) {
-        return;
-    }
-
     node.getElementsByTagName("a").forEach(function (o) {
         o.setAttribute("target", "_blank");
     });
@@ -111,7 +107,7 @@ function replaceImageWithLink(img) {
 function tryExpand(roomId, node, text) {
     var match;
 
-    match = new RegExp("^(" + RegExp.quote(config.host) + "\/message\/([0-9]+))(#[0-9]+)?$").exec(text);
+    match = new RegExp("^(" + RegExp.quote(config.host) + "\/messages\/([0-9]+))(#[0-9]+)?$").exec(text);
     if (match) {
         return messageExpand.expand(roomId, node, match[1], match[1] + ".json", require("../../html/message_card.handlebars"));
     }
