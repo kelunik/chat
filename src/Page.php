@@ -139,4 +139,110 @@ class Page {
         yield "header" => "Location: /rooms/" . $q->insertId;
         yield "body" => "";
     }
+
+    public function leaveRoom ($request) {
+        $sessionId = SessionManager::getSessionId($request);
+
+        if ($sessionId === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+        }
+
+        $session = yield $this->sessionManager->getSession($sessionId);
+
+        if ($session === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+            return;
+        }
+
+        $roomId = $request["URI_ROUTE_ARGS"]["id"];
+
+        $q = yield $this->db->prepare("SELECT * FROM room_users WHERE roomId = ? && userId = ?", [
+            $roomId, $session->id
+        ]);
+
+        $roomUser = yield $q->fetchObject();
+
+        $q = yield $this->db->prepare("SELECT * FROM rooms WHERE id = ?", [
+            $roomId
+        ]);
+
+        $room = yield $q->fetchObject();
+
+        if (!$roomUser || !$room) {
+            yield "status" => 302;
+            yield "header" => "Location: /rooms";
+            yield "body" => "";
+            return;
+        }
+
+        $tpl = new Tpl(new Parsedown);
+        $tpl->load(TEMPLATE_DIR . "room_leave.php", Tpl::LOAD_PHP);
+
+        $tpl->set("isAdmin", $roomUser->role === "ADMIN");
+        $tpl->set("room", $room);
+        $tpl->set("session", $session);
+        yield "body" => $tpl->page();
+    }
+
+    public function leaveRoomSubmit ($request) {
+        $sessionId = SessionManager::getSessionId($request);
+
+        if ($sessionId === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+        }
+
+        $session = yield $this->sessionManager->getSession($sessionId);
+
+        if ($session === null) {
+            yield "status" => 302;
+            yield "header" => "Location: /login";
+            yield "body" => "";
+            return;
+        }
+
+        $token = $request["FORM"]["csrf-token"] ?? "";
+
+        if (!is_string($token) || !safe_compare($session->csrfToken, $token)) {
+            yield "status" => 401;
+            yield "body" => "";
+            return;
+        }
+
+        $roomId = $request["URI_ROUTE_ARGS"]["id"];
+
+        $q = yield $this->db->prepare("SELECT * FROM room_users WHERE roomId = ? && userId = ?", [
+            $roomId, $session->id
+        ]);
+
+        $roomUser = yield $q->fetchObject();
+
+        $q = yield $this->db->prepare("SELECT * FROM rooms WHERE id = ?", [
+            $roomId
+        ]);
+
+        $room = yield $q->fetchObject();
+
+        if (!$roomUser || !$room) {
+            yield "status" => 302;
+            yield "header" => "Location: /rooms";
+            yield "body" => "";
+            return;
+        }
+
+        if ($roomUser->role !== "ADMIN") {
+            $q = yield $this->db->prepare("DELETE FROM room_users WHERE roomId = ? && userId = ?", [
+                $roomId, $session->id
+            ]);
+        }
+
+        yield "status" => 302;
+        yield "header" => "Location: /rooms";
+        yield "body" => "";
+    }
 }

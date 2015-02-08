@@ -1,4 +1,7 @@
 <div id="room-info-{{id}}" class="room-info" data-id="{{id}}">
+    <div class="chat-menu">
+        <a href="/rooms/{{id}}/leave"><i class="fa fa-sign-out"></i></a>
+    </div>
     <h2>{{name}}</h2>
     {{#if description}}{{{markdown description}}}{{/if}}
     <div id="room-info-people-{{id}}" class="room-info-people">

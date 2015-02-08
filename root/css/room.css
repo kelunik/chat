@@ -248,3 +248,7 @@
     background-color: #ccc;
     content: "";
 }
+
+.chat-menu {
+    float: right;
+}
