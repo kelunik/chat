@@ -15,21 +15,6 @@ require __DIR__ . "/gen/version_css.php";
 require __DIR__ . "/gen/version_js.php";
 require __DIR__ . "/check_requirements.php";
 
-$manifest = file_get_contents(__DIR__ . "/root/manifest.appcache");
-$manifestResponder = function () use ($manifest) {
-    return [
-        "header" => DEVELOPMENT ? [] : [
-            "Content-Type: text/cache-manifest; charset=utf-8",
-            "Cache-Control: no-cache, no-store, must-revalidate",
-            "Pragma: no-cache",
-            "Expires: 0",
-        ],
-        "status" => DEVELOPMENT ? 410 : 200,
-        "body" => DEVELOPMENT ? "" : $manifest
-    ];
-};
-
-
 $connect = sprintf("host=%s;user=%s;pass=%s;db=%s", DB_HOST, DB_USER, DB_PASS, DB_DB);
 $db = new Pool($connect);
 $tpl = new Tpl(new Parsedown);
@@ -46,7 +31,6 @@ $host = (new Aerys\Host)
     ->setRoot(__DIR__ . "/root", [
         Root::OP_MIME_TYPES => [
             "js" => "text/javascript",
-            "appcache" => "text/cache-manifest"
         ],
         Root::OP_EXPIRES_PERIOD => 3600 * 24 * 14,
         Root::OP_AGGRESSIVE_CACHE_HEADER_ENABLED => true,
@@ -70,7 +54,6 @@ $host = (new Aerys\Host)
     ->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
     ->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
     ->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
-    ->addRoute("GET", "/manifest.appcache", $manifestResponder)
     // legacy urls
     ->addRoute("GET", "/message/{id:[0-9]+}", function($request) {
         return [

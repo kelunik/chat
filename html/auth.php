@@ -329,26 +329,6 @@
 </div>
 
 <script>
-    (function () {
-        "use strict";
-
-        var interval = setInterval(function () {
-            window.applicationCache.update();
-        }, 300000);
-
-        window.addEventListener('load', function (e) {
-            window.applicationCache.addEventListener('updateready', function (e) {
-                if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-                    if (confirm('A new version of this site is available. Load it?')) {
-                        window.location.reload();
-                    } else {
-                        window.clearInterval(interval);
-                    }
-                }
-            }, false);
-        }, false);
-    })();
-
     if (window.sessionStorage) {
         var logout = window.sessionStorage.getItem("autologout");
 
