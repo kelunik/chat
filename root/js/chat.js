@@ -265,6 +265,19 @@ dataHandler.on("close", function () {
     console.log("dataHandler::close");
 });
 
+Handlebars.registerHelper('activity-state', function (state) {
+    switch(state) {
+        case "offline":
+            return "this user is offline";
+        case "active":
+            return "this user is viewing " + config.name;
+        case "inactive":
+            return "this user has " + config.name + " open, but in background";
+        default:
+            return "the user's state is unknown, please report this as a bug";
+    }
+});
+
 Handlebars.registerHelper('datetime', function (time) {
     return moment.unix(time).toISOString();
 });

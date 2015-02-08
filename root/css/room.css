@@ -212,7 +212,7 @@
     position: relative;
 }
 
-.user-avatar::before {
+.user-activity {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -220,33 +220,19 @@
     height: 8px;
     border-radius: 50%;
     border: 2px solid #eee;
+    display: inline-block;
 }
 
-.user-avatar[data-state="active"] {
-    box-shadow: 0 0 3px #2ecc71;
-}
-
-.user-avatar[data-state="active"]::before {
+.user-activity[data-state="active"] {
     background-color: #2ecc71;
-    content: "";
 }
 
-.user-avatar[data-state="inactive"] {
-    box-shadow: 0 0 3px #ccc568;
-}
-
-.user-avatar[data-state="inactive"]::before {
+.user-activity[data-state="inactive"] {
     background-color: #ccc568;
-    content: "";
 }
 
-.user-avatar[data-state="offline"] {
-    box-shadow: 0 0 3px #ccc;
-}
-
-.user-avatar[data-state="offline"]::before {
+.user-activity[data-state="offline"] {
     background-color: #ccc;
-    content: "";
 }
 
 .chat-menu {
