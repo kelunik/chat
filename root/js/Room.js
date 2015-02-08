@@ -240,6 +240,8 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
                     notificationCenter.hideMessageIndicator();
                 }
             }
+
+            tabNode.setAttribute("data-new-messages", "0");
         },
 
         onScroll: function () {

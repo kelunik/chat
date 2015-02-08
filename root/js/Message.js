@@ -85,7 +85,7 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
         notificationCenter.showMessageIndicator();
     }
 
-    if (roomList.getCurrent() !== room) {
+    if (roomList.getCurrent() !== room || !activityObserver.isActive()) {
         var tab = document.getElementById("room-tab-" + data.roomId);
         tab.setAttribute("data-new-messages", "" + (1 * tab.getAttribute("data-new-messages") + 1));
     }
