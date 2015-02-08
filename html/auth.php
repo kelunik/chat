@@ -76,7 +76,7 @@
         }
 
         #content {
-            padding: 20px;
+            padding: 10px;
             -webkit-box-flex: 2;
             -webkit-flex: 2;
             -ms-flex: 2;
@@ -98,7 +98,7 @@
             text-decoration: none;
             font-weight: bold;
             color: #fff;
-            margin: 25px 0 5px 0;
+            margin: 35px 0 50px 0;
             padding: 20px;
             display: inline-block;
             background: rgba(0, 100, 200, .85);
