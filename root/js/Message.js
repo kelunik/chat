@@ -97,7 +97,7 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
 
     if (!activityObserver.isActive()) {
         var title = messageCount === 0 ? "" : "(" + messageCount + ") ";
-        document.title = title + " t@lkZone";
+        document.title = title + " " + config.name;
     }
 
     messageNode.querySelector(".chat-message-stars").addEventListener("click", function () {

@@ -14,8 +14,8 @@ $css["footer_link"] = "color:#666;text-decoration:none";
 <meta charset="utf-8">
 <body style="<?= $css["body"] ?>">
 <div style="<?= $css["header"] ?>">
-    You're receiving this e-mail because you were active in t@lk.<br>You can change your notification settings by
-    clicking the link at the end of this e-mail.
+    You're receiving this e-mail because you were active in <?= htmlspecialchars(APP_NAME) ?>.<br>
+    You can change your notification settings by clicking the link at the end of this e-mail.
 </div>
 <div style="<?= $css["all"] ?>">
     <div style="<?= $css["title"] ?>">

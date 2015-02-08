@@ -5,12 +5,19 @@
  * Please rename it to config.php and choose appropriate options.
  */
 
+# General
+# -------
+
+const APP_NAME = "amp-chat";
+
+
 # Debug
 # -----
 
 const DEVELOPMENT = true;
 # const DEBUG = false;
 # const MYSQL_DEBUG = true;
+
 
 # Mysql
 # -----

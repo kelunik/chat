@@ -22,7 +22,7 @@ function setup(roomList, dataHandler, timeUpdater) {
                 state: "inactive"
             });
         } else {
-            document.title = "t@lkZone";
+            document.title = config.name;
             timeUpdater.start();
             dataHandler.send("activity", {
                 state: "active"
