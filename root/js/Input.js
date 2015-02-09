@@ -450,6 +450,7 @@ function replyTo(id) {
         }
 
 
+        input.focus();
         input.selectionStart = input.selectionEnd = input.value.length;
         adjust(true);
     }
