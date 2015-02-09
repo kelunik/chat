@@ -309,7 +309,7 @@ function edit(id) {
 
     adjust(false);
     input.focus();
-    input.setAttribute("data-edit", "true");
+    input.parentNode.setAttribute("data-edit", "true");
 }
 
 function submit() {
@@ -428,7 +428,7 @@ function submit() {
 function reset() {
     editMessage = 0;
     input.value = "";
-    input.removeAttribute("data-edit");
+    input.parentNode.removeAttribute("data-edit");
     input.focus();
     adjust(false);
 }

@@ -30,6 +30,10 @@
     line-height: 0;
 }
 
+#input-holder[data-edit] {
+    background: #ff9;
+}
+
 #input {
     width: 100%;
     padding: 0;
@@ -42,10 +46,6 @@
     font-size: 14px;
     font-family: "Source Code Pro", monospace;
     overflow: hidden;
-}
-
-#input[data-edit] {
-    background: #ff9;
 }
 
 .room {
