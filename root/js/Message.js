@@ -111,18 +111,7 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
     });
 
     messageNode.querySelector(".chat-message-reply").addEventListener("click", function () {
-        var node = document.getElementById("input");
-        var value = node.value;
-
-        if (value.match(/:(\d+)( |$)/)) {
-            // TODO: Add helper function to become DOM independent
-            node.value = value.replace(/:(\d+)( |$)/, ":" + data.messageId + " ");
-        } else {
-            node.value = ":" + data.messageId + " " + node.value;
-        }
-
-        node.focus();
-        node.selectionStart = node.selectionEnd = node.value.length;
+        input.replyTo(data.messageId);
     });
 
     if (window.isTouchDevice()) {

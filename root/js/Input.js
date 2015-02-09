@@ -56,7 +56,7 @@ function setup() {
     }));
 
     input.addEventListener("keydown", function (e) {
-        var message, roomNode;
+        var message, roomNode, nodes, current;
 
         if (e.which === 37 || e.which === 39) {
             compose = true;
@@ -75,6 +75,41 @@ function setup() {
             return false;
         }
 
+        else if (e.which == 38 && e.ctrlKey) {
+            current = replyTo();
+
+            if (current) {
+                message = window.prev(messageList.get(current), ".chat-message");
+            } else {
+                nodes = document.querySelectorAll(".room-current .chat-message");
+                message = nodes.length > 1 ? nodes[nodes.length - 1] : null;
+            }
+
+            if (message) {
+                replyTo(parseInt(message.getAttribute("data-id")));
+            }
+
+            e.preventDefault();
+            return false;
+        }
+
+        else if (e.which == 40 && e.ctrlKey) {
+            current = replyTo();
+
+            if (current) {
+                message = window.next(messageList.get(current), ".chat-message");
+
+                if (message) {
+                    replyTo(parseInt(message.getAttribute("data-id")));
+                } else {
+                    replyTo(null);
+                }
+            }
+
+            e.preventDefault();
+            return false;
+        }
+
         else if (e.which == 38 && !e.shiftKey) {
             if (compose && input.value !== "") {
                 return;
@@ -83,7 +118,7 @@ function setup() {
             if (editMessage) {
                 message = window.prev(messageList.get(editMessage), ".chat-message-me");
             } else {
-                var nodes = document.querySelectorAll(".room-current .chat-message-me");
+                nodes = document.querySelectorAll(".room-current .chat-message-me");
                 message = nodes.length > 1 ? nodes[nodes.length - 1] : null;
             }
 
@@ -368,4 +403,29 @@ function reset() {
     input.removeAttribute("data-edit");
     input.focus();
     adjust(false);
+}
+
+function replyTo(id) {
+    var value = input.value;
+
+    if (arguments.length === 0) {
+        var match = /:(\d+)( |$)/.exec(value);
+        return match ? +match[1] : null;
+    } else {
+        if (id) {
+            var reply = replyTo();
+
+            if (reply) {
+                input.value = value.replace(":" + reply, ":" + id);
+            } else {
+                input.value = ":" + id + " " + input.value;
+            }
+        } else {
+            input.value = value.replace(/:(\d+)( |$)/, "");
+        }
+
+
+        input.selectionStart = input.selectionEnd = input.value.length;
+        adjust(true);
+    }
 }
