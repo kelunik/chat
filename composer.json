@@ -39,7 +39,7 @@
     },
     {
       "type": "git",
-      "url": "git@github.com:kelunik/parsedown"
+      "url": "https://github.com/kelunik/parsedown.git"
     }
   ],
   "minimum-stability": "dev",
