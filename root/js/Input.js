@@ -81,9 +81,9 @@ function setup() {
             current = replyTo();
 
             if (current) {
-                message = window.prev(messageList.get(current), ".chat-message");
+                message = window.prev(messageList.get(current), ".chat-message:not(.chat-message-me)");
             } else {
-                nodes = document.querySelectorAll(".room-current .chat-message");
+                nodes = document.querySelectorAll(".room-current .chat-message:not(.chat-message-me)");
                 message = nodes.length > 1 ? nodes[nodes.length - 1] : null;
             }
 
@@ -99,7 +99,7 @@ function setup() {
             current = replyTo();
 
             if (current) {
-                message = window.next(messageList.get(current), ".chat-message");
+                message = window.next(messageList.get(current), ".chat-message:not(.chat-message-me)");
 
                 if (message) {
                     replyTo(parseInt(message.getAttribute("data-id")));
