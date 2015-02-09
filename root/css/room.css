@@ -30,7 +30,8 @@
     line-height: 0;
 }
 
-#input-holder[data-edit] {
+#input-holder[data-edit],
+#input-holder[data-edit] #input {
     background: #ff9;
 }
 
