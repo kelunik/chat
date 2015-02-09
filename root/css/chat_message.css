@@ -276,7 +276,8 @@ pre code {
     border-radius: 3px;
 }
 
-.reply {
+.reply,
+.input-reply {
     background: rgba(0, 100, 200, .05);
     border-top: 1px solid rgba(0, 0, 0, .1);
     border-bottom: 1px solid rgba(0, 0, 0, .1);

@@ -7,6 +7,7 @@ var Autocomplete = require("./autocomplete.js"),
 
 var editMessage = 0,
     compose = false,
+    currentReplyTo = null,
     input = document.getElementById("input"),
     roomList, messageList, dataHandler, formatter;
 
@@ -239,6 +240,29 @@ function tab() {
 }
 
 function adjust(_compose) {
+    var newReplyTo = replyTo();
+    var message;
+
+    if (currentReplyTo !== newReplyTo) {
+        if (currentReplyTo) {
+            message = messageList.get(currentReplyTo);
+
+            if (message) {
+                message.classList.remove("input-reply");
+            }
+        }
+
+        if (newReplyTo) {
+            message = messageList.get(newReplyTo);
+
+            if (message) {
+                message.classList.add("input-reply");
+            }
+        }
+
+        currentReplyTo = newReplyTo;
+    }
+    
     var toScroll = [];
 
     document.querySelectorAll(".room").forEach(function (o) {
