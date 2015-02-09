@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2775f81f6fd7f26d96b24115ecb39a76",
+    "hash": "6d7edcbdfb4c8772d62b9f51676dc188",
     "packages": [
         {
             "name": "amphp/aerys",
@@ -270,7 +270,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:amphp/redis.git",
-                "reference": "7221b88a9804dfbbe2891b5cae13c8a2425a8737"
+                "reference": "9d22813a2980c4063197ce734e1c29b346a13c48"
             },
             "require": {
                 "amphp/amp": "~0.15",
@@ -304,7 +304,7 @@
             "support": {
                 "issues": "https://github.com/amphp/redis/issues"
             },
-            "time": "2015-02-02 12:37:58"
+            "time": "2015-02-08 17:58:50"
         },
         {
             "name": "daverandom/libdns",
@@ -344,8 +344,14 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:kelunik/parsedown",
-                "reference": "cb8cc57742546648bb5461e66e35a92f2f89538b"
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "65116c3cb0953447eac742aa4ea5fc4aaaa22db9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/65116c3cb0953447eac742aa4ea5fc4aaaa22db9",
+                "reference": "65116c3cb0953447eac742aa4ea5fc4aaaa22db9",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
@@ -353,6 +359,7 @@
                     "Parsedown": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -369,7 +376,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2015-02-01 23:58:24"
+            "time": "2015-02-08 23:04:08"
         },
         {
             "name": "nikic/fast-route",

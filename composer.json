@@ -36,10 +36,6 @@
     {
       "type": "git",
       "url": "git@github.com:amphp/redis.git"
-    },
-    {
-      "type": "git",
-      "url": "git@github.com:kelunik/parsedown"
     }
   ],
   "minimum-stability": "dev",
