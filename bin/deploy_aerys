@@ -4,7 +4,7 @@ if [ -z "$hardpath" ]; then
 	hardpath="$0"
 fi
 cd `dirname $hardpath`/..
-git reset --hard
+git reset origin/master --hard
 git pull
 composer install
 php deploy/deploy.php
