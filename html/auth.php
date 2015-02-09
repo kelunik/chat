@@ -109,6 +109,10 @@
             position: relative;
         }
 
+        #login:hover {
+            border-color: #004b96;
+        }
+
         #login:active,
         .pending {
             /* yeah, we need !important unfortunately */
@@ -116,6 +120,7 @@
             -ms-transform: translateY(2px) !important;
             transform: translateY(2px) !important;
             border-bottom: 1px solid #005DBA !important;
+            margin-top: 37px;
         }
 
         .pending {
