@@ -192,6 +192,10 @@ function newline() {
 
     indent = indent.replace(/(\S.*)/, "");
 
+    if (indent === "\n") {
+        indent = "";
+    }
+
     input.value = value.substring(0, start) + "\n" + indent + value.substring(end);
     input.selectionStart = input.selectionEnd = start + 1 + indent.length;
 
@@ -272,9 +276,10 @@ function adjust(_compose) {
 
     input.style.height = "0";
 
+    // TODO: Find out why we need 3px more
     var height = input.scrollHeight;
-    input.style.height = Math.max(20, height) + "px";
-    input.parentNode.style.height = Math.max(40, height) + "px";
+    input.style.height = Math.max(60, height) + "px";
+    input.parentNode.style.height = Math.max(63, height + 3) + "px";
 
     document.querySelectorAll(".room").forEach(function (o) {
         var scroll = toScroll.shift();

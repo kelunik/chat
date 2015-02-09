@@ -22,9 +22,8 @@
     flex-grow: 0;
     flex-shrink: 0;
     max-height: 50vh;
-    height: 40px;
+    height: 63px; /* TODO: Find out why we need 3px more */
     z-index: 5;
-    padding: 10px;
     border-top: 1px solid rgba(0, 0, 0, .1);
     overflow: auto;
     line-height: 0;
@@ -36,9 +35,10 @@
 }
 
 #input {
+    box-sizing: border-box;
     width: 100%;
-    padding: 0;
-    height: 40px;
+    height: 60px;
+    padding: 10px;
     line-height: 20px;
     border: 0;
     background: #fff;
