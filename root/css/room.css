@@ -18,21 +18,30 @@
     text-align: center;
 }
 
-#input {
+#input-holder {
     flex-grow: 0;
     flex-shrink: 0;
     max-height: 50vh;
     height: 40px;
+    z-index: 5;
     padding: 10px;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    overflow: auto;
+    line-height: 0;
+}
+
+#input {
+    width: 100%;
+    padding: 0;
+    height: 40px;
     line-height: 20px;
     border: 0;
-    border-top: 1px solid rgba(0, 0, 0, .1);
     background: #fff;
     margin: 0;
     resize: none;
-    z-index: 5;
     font-size: 14px;
     font-family: "Source Code Pro", monospace;
+    overflow: hidden;
 }
 
 #input[data-edit] {

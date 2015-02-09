@@ -78,7 +78,9 @@
                 </div>
             </div>
 
-            <textarea id="input" placeholder="Type here, use markdown to format your text&hellip;"></textarea>
+            <div id="input-holder">
+                <textarea id="input" placeholder="Type here, use markdown to format your text&hellip;"></textarea>
+            </div>
         </div>
 
         <div id="right-col">
