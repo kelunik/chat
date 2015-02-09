@@ -24,7 +24,8 @@ module.exports = function (_roomList, _messageList, _dataHandler) {
         tab: tab,
         edit: edit,
         submit: submit,
-        reset: reset
+        reset: reset,
+        replyTo: replyTo
     }
 };
 
@@ -262,7 +263,7 @@ function adjust(_compose) {
 
         currentReplyTo = newReplyTo;
     }
-    
+
     var toScroll = [];
 
     document.querySelectorAll(".room").forEach(function (o) {
