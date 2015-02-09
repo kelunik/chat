@@ -271,8 +271,10 @@ function adjust(_compose) {
     });
 
     input.style.height = "0";
-    input.style.height = Math.max(20, input.scrollHeight) + "px";
-    input.parentNode.style.height = Math.max(40, input.scrollHeight) + "px";
+
+    var height = input.scrollHeight;
+    input.style.height = Math.max(20, height) + "px";
+    input.parentNode.style.height = Math.max(40, height) + "px";
 
     document.querySelectorAll(".room").forEach(function (o) {
         var scroll = toScroll.shift();
