@@ -27,7 +27,7 @@
     <?php require TEMPLATE_DIR . "google_analytics.php"; ?>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Source+Code+Pro">
-    <link rel="stylesheet" href="/css/all.min.css?v=<?= CSS_VERSION ?>">
+    <link rel="stylesheet" href="/css/all.min.css?v=<?= DEVELOPMENT ? time() : CSS_VERSION ?>">
 </head>
 <body>
 <div id="page">
@@ -57,7 +57,11 @@
 
         <div id="main-col">
             <div id="load-error">
-                <i class="fa fa-exclamation-triangle" style="font-size: 100px; color: #aaa;"></i><br><br>
+                <div class="load-error-hide">
+                    <div class="loader"></div>
+                </div>
+
+                <i class="fa fa-exclamation-triangle" style="font-size: 100px;"></i><br><br>
                 Sorry, our scripts don't seem to load.<br>
                 Please try refreshing the page.
             </div>

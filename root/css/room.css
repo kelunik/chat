@@ -11,11 +11,65 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: #eee;
-    color: #888;
+    color: #666;
+    background: #eee;
     font-size: 20px;
     padding-top: 100px;
     text-align: center;
+    animation: load-error 5s linear;
+}
+
+@keyframes load-error {
+    0%, 50% {
+        color: #fff;
+        background: #fff;
+    }
+
+    100% {
+        color: #666;
+        background: #eee;
+    }
+}
+
+.load-error-hide {
+    animation: load-error-hide 5s linear;
+    opacity: 0;
+}
+
+@keyframes load-error-hide {
+    0%, 50% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 0;
+    }
+
+    80% {
+        display: none;
+    }
+}
+
+.loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -68px -18px -18px -18px;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #eee;
+    border-right: 3px solid rgb(0, 100, 200);
+    border-radius: 50%;
+    animation: loader 1.5s infinite linear;
+}
+
+@keyframes loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(359deg);
+    }
 }
 
 #input-holder {
