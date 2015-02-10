@@ -2,17 +2,24 @@
 
 namespace App;
 
+use Amp\Reactor;
+use Amp\Redis\Redis;
 use Mysql\Pool;
 use Parsedown;
 use Tpl;
 
 class Page {
     private $db;
+    private $redis;
     private $sessionManager;
 
-    public function __construct (Pool $db) {
+    public function __construct (Pool $db, Reactor $reactor) {
         $this->db = $db;
         $this->sessionManager = new SessionManager;
+        $this->redis = new Redis([
+            "host" => "127.0.0.1:6380",
+            "password" => REDIS_PASSWORD
+        ], $reactor);
     }
 
     public function handleRequest ($request) {
@@ -214,7 +221,7 @@ class Page {
             return;
         }
 
-        $roomId = $request["URI_ROUTE_ARGS"]["id"];
+        $roomId = (int) $request["URI_ROUTE_ARGS"]["id"];
 
         $q = yield $this->db->prepare("SELECT * FROM room_users WHERE roomId = ? && userId = ?", [
             $roomId, $session->id
@@ -236,9 +243,21 @@ class Page {
         }
 
         if ($roomUser->role !== "ADMIN") {
-            $q = yield $this->db->prepare("DELETE FROM room_users WHERE roomId = ? && userId = ?", [
+            yield $this->db->prepare("DELETE FROM room_users WHERE roomId = ? && userId = ?", [
                 $roomId, $session->id
             ]);
+
+            yield $this->redis->srem("room.{$roomId}.users.active", $session->id);
+            yield $this->redis->srem("room.{$roomId}.users.inactive", $session->id);
+
+            yield $this->redis->publish("chat.room", json_encode([
+                "roomId" => $roomId,
+                "type" => "user-leave",
+                "payload" => [
+                    "roomId" => $roomId,
+                    "userId" => $session->id
+                ]
+            ]));
         }
 
         yield "status" => 302;

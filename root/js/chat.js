@@ -241,6 +241,14 @@ dataHandler.on("user-join", function (type, data) {
     }
 });
 
+dataHandler.on("user-leave", function (type, data) {
+    var node = document.getElementById("room-info-" + data.roomId + "-person-" + data.userId);
+
+    if (node) {
+        node.parentNode.removeChild(node);
+    }
+});
+
 dataHandler.on("logout", function () {
     if (window.sessionStorage) {
         window.sessionStorage.setItem("autologout", "1");
@@ -266,7 +274,7 @@ dataHandler.on("close", function () {
 });
 
 Handlebars.registerHelper('activity-state', function (state) {
-    switch(state) {
+    switch (state) {
         case "offline":
             return "this user is offline";
         case "active":

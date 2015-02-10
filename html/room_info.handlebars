@@ -6,13 +6,14 @@
     {{#if description}}{{{markdown description}}}{{/if}}
     <div id="room-info-people-{{id}}" class="room-info-people">
         {{#each users}}
-            <a href="https://github.com/{{name}}" target="_blank" draggable="true"
+            <a id="room-info-{{../id}}-person-{{id}}"
+               href="https://github.com/{{name}}" target="_blank" draggable="true"
                ondragstart="event.dataTransfer.setData('text/plain', '@{{name}}')">
-                <div id="room-info-{{this.id}}-person-{{id}}"
-                     class="user-avatar"
+                <div class="user-avatar"
                      style="background-image: url('{{{avatar avatar}}}');"
                      title="{{name}}">
-                    <span class="user-activity user-activity-{{id}}" data-state="{{state}}" title="{{activity-state state}}"></span>
+                    <span class="user-activity user-activity-{{id}}" data-state="{{state}}"
+                          title="{{activity-state state}}"></span>
                 </div>
             </a>
         {{/each}}
