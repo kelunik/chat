@@ -267,10 +267,13 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
             }
         },
 
-        addUser: function (data) {
+        addUser: function (userdata) {
             // TODO: improve implementation
-            users.push(data);
-            infoNode = infos.replaceChild(infoNode, Util.html2node(template.info(users)));
+            var newNode = Util.html2node(template.info(data));
+            newNode.classList.add("room-info-current");
+            users.push(userdata);
+            data.users = users;
+            infos.replaceChild(newNode, infoNode);
         }
     };
 
