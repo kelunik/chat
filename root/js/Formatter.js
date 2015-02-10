@@ -4,13 +4,21 @@ var Util = require("./Util.js"),
     Remarkable = require("remarkable"),
     hljs = require("./vendor/highlight.js"),
     IssueLinker = require("./vendor/issue-linker.min.js"),
-    MessageExpand = require("./MessageExpand.js");
+    MessageExpand = require("./MessageExpand.js"),
+    Plugin = require("remarkable-regexp");
 
-var messageList, md, messageExpand;
+var messageList, md, messageExpand, plugin;
 
 module.exports = function (_messageList, roomList) {
     messageList = _messageList;
     messageExpand = new MessageExpand(roomList);
+    plugin = new Plugin(/@([a-z][a-z-]*)/i, function (match, utils) {
+        if (match[1] === user.name) {
+            return "<span class='ping'>" + utils.escape(match[0]) + "</span>";
+        } else {
+            return utils.escape(match[0]);
+        }
+    });
 
     md = new Remarkable("full", {
         html: false,
@@ -45,6 +53,7 @@ module.exports = function (_messageList, roomList) {
     });
 
     md.use(new IssueLinker());
+    md.use(plugin);
 
     return {
         formatMessage: formatMessage

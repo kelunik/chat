@@ -330,3 +330,12 @@ pre code {
         border-bottom: 1px solid rgba(0, 0, 0, .1);
     }
 }
+
+.ping {
+    background: #80c8ff;
+    padding: 1px 5px;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, .075);
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    font-weight: bold;
+}
