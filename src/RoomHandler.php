@@ -342,7 +342,7 @@ class RoomHandler {
             $session->id
         ]);
 
-        $query = yield $this->db->prepare("SELECT u.id, u.name, u.avatar_url FROM `users` AS u, `room_users` AS ru WHERE u.id = ru.userId && ru.roomId = ? ORDER BY u.lastActivity DESC");
+        $query = yield $this->db->prepare("SELECT u.id, u.name, u.avatar_url AS avatar FROM `users` AS u, `room_users` AS ru WHERE u.id = ru.userId && ru.roomId = ? ORDER BY u.lastActivity DESC");
         $query2 = yield $this->db->prepare("SELECT p.messageId FROM pings AS p, messages AS m WHERE p.userId = ? && p.messageId = m.id && m.roomId = ? && p.seen = 0");
 
         $rooms = [];
@@ -356,23 +356,28 @@ class RoomHandler {
             $usersActive = yield $this->redis->smembers("room.{$roomId}.users.active");
             $usersInactive = yield $this->redis->smembers("room.{$roomId}.users.inactive");
 
-            foreach (yield $queryResult->fetchAll() as $user) {
-                list($userId, $userName, $userAvatar) = $user;
+            $users = [];
 
-                if (in_array($userId, $usersActive)) {
-                    $state = "active";
-                } else if (in_array($userId, $usersInactive)) {
-                    $state = "inactive";
-                } else {
-                    $state = "offline";
+            foreach (yield $queryResult->fetchObjects() as $user) {
+                $user->id = (int) $user->id;
+                $user->state = "offline";
+                $users[$user->id] = $user;
+            }
+
+            foreach ($usersActive as $userId) {
+                $userId = (int) $userId;
+
+                if (isset($users[$userId])) {
+                    $users[$userId]->state = "active";
                 }
+            }
 
-                $users[] = [
-                    "id" => $userId,
-                    "name" => $userName,
-                    "avatar" => $userAvatar,
-                    "state" => $state
-                ];
+            foreach ($usersInactive as $userId) {
+                $userId = (int) $userId;
+
+                if (isset($users[$userId])) {
+                    $users[$userId]->state = "inactive";
+                }
             }
 
             $queryResult2 = yield $query2->execute([$session->id, $roomId]);
