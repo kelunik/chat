@@ -58,8 +58,16 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
     }
 
     else if (data.messageId < room.getFirstMessage()) {
+        var nodeBefore = roomNode.children[0];
         room.setFirstMessage(data.messageId);
-        messageNode = roomNode.insertBefore(messageNode, roomNode.firstChild);
+        messageNode = roomNode.insertBefore(messageNode, nodeBefore);
+
+        if (!nodeBefore.classList.contains("chat-message-cmd-me") &&
+            nodeBefore.getAttribute("data-author") * 1 === data.user.id &&
+            moment(nodeBefore.querySelector("time").getAttribute("datetime")).unix() - 60 < data.time
+        ) {
+            nodeBefore.classList.add("chat-message-followup");
+        }
     }
 
     else {
