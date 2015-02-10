@@ -274,6 +274,21 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
             users.push(userdata);
             data.users = users;
             infos.replaceChild(newNode, infoNode);
+        },
+
+        removeUser: function (userId) {
+            for (var i = users.length - 1; i >= 0; i--) {
+                if (users[i].id === userId) {
+                    users.splice(i, 1);
+                    break;
+                }
+            }
+
+            var node = document.getElementById("room-info-" + id + "-person-" + userId);
+
+            if (node) {
+                node.parentNode.removeChild(node);
+            }
         }
     };
 

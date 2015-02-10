@@ -380,6 +380,8 @@ class RoomHandler {
                 }
             }
 
+            $users = array_values($users);
+
             $queryResult2 = yield $query2->execute([$session->id, $roomId]);
             $pings = [];
 

@@ -242,10 +242,10 @@ dataHandler.on("user-join", function (type, data) {
 });
 
 dataHandler.on("user-leave", function (type, data) {
-    var node = document.getElementById("room-info-" + data.roomId + "-person-" + data.userId);
+    var room = roomList.get(data.roomId);
 
-    if (node) {
-        node.parentNode.removeChild(node);
+    if (room) {
+        room.removeUser(data.userId);
     }
 });
 
