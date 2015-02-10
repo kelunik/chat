@@ -77,7 +77,7 @@ function setup() {
             return false;
         }
 
-        else if (e.which == 38 && e.ctrlKey) {
+        else if (e.which === 38 && e.ctrlKey) {
             current = replyTo();
 
             if (current) {
@@ -95,7 +95,7 @@ function setup() {
             return false;
         }
 
-        else if (e.which == 40 && e.ctrlKey) {
+        else if (e.which === 40 && e.ctrlKey) {
             current = replyTo();
 
             if (current) {
@@ -112,7 +112,7 @@ function setup() {
             return false;
         }
 
-        else if (e.which == 38 && !e.shiftKey) {
+        else if (e.which === 38 && !e.shiftKey) {
             if (compose && input.value !== "") {
                 return;
             }
@@ -131,7 +131,7 @@ function setup() {
             }
         }
 
-        else if (e.which == 40 && !e.shiftKey) {
+        else if (e.which === 40 && !e.shiftKey) {
             if (compose && input.value !== "") {
                 return;
             }
@@ -148,24 +148,24 @@ function setup() {
             return false;
         }
 
-        else if (e.which == 27) { // escape
+        else if (e.which === 27) { // escape
             reset();
             e.preventDefault();
             return false;
         }
 
-        else if (e.which == 9) { // tab
-            tab();
+        else if (e.which === 9) { // tab
+            tab(e);
             e.preventDefault();
             return false;
         }
 
-        else if (e.which == 33) {
+        else if (e.which === 33) {
             roomNode = roomList.getCurrent().getNode();
             roomNode.scrollTop -= roomNode.clientHeight * .2;
         }
 
-        else if (e.which == 34) {
+        else if (e.which === 34) {
             roomNode = roomList.getCurrent().getNode();
             roomNode.scrollTop += roomNode.clientHeight * .2;
         }
@@ -202,7 +202,7 @@ function newline() {
     adjust(true);
 }
 
-function tab() {
+function tab(e) {
     var start = input.selectionStart;
     var end = input.selectionEnd;
     var value = input.value;
@@ -221,7 +221,7 @@ function tab() {
             + value.substring(start, end)
             + after.substr(0, Math.max(0, after.indexOf("\n")));
 
-        if (e.shiftKey) {
+        if (e && e.shiftKey) {
             selectStart -= /(^|\n)(\t| {0,4})/g.exec(text_to_indent)[2].length;
 
             text_to_indent = text_to_indent.replace(/(^|\n)(\t| {0,4})/g, "\n");

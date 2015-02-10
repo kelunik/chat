@@ -28,7 +28,7 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
         throw new Error("no parent dom available to add room");
     }
 
-    var id, name, description, users, pings, defaultScroll, firstMessage, lastMessage, scrollTimeout,
+    var id, name, description, users, pings, defaultScroll, firstMessage, lastMessage, scrollTimeout = 0,
         firstLoadableMessage, transcriptPending, contentNode, tabNode, infoNode, starsNode, pingNode,
         initialPayloadSent;
 
@@ -279,17 +279,14 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
 
     contentNode.addEventListener("scroll", function () {
         if (scrollTimeout === null) {
-            exports.onScroll();
-
-            scrollTimeout = window.setTimeout(function () {
-                exports.onScroll();
-            }.bind(exports), 200);
+            exports.onScroll(); // fire once immediately
+            scrollTimeout = window.setTimeout(exports.onScroll.bind(exports), 200);
         } else {
             clearTimeout(scrollTimeout);
             scrollTimeout = window.setTimeout(function () {
                 exports.onScroll();
                 scrollTimeout = null;
-            }.bind(exports), 200);
+            }, 200);
         }
     }.bind(exports));
 
