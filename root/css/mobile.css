@@ -72,4 +72,17 @@
         border-top: 0;
         z-index: 3;
     }
+
+    #room-overview {
+        flex-direction: column;
+    }
+
+    #content-fw {
+        padding: 5px;
+    }
+
+    .room-card {
+        width: auto;
+        margin: 2px 0;
+    }
 }
