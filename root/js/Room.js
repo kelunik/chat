@@ -278,6 +278,7 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
             }
 
             infos.replaceChild(newNode, infoNode);
+            infoNode = newNode;
         },
 
         removeUser: function (userId) {
