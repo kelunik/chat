@@ -1,1 +1,7 @@
-<span class="in-reply" data-id="{{messageId}}">@{{user.name}}</span>:
+<span class="in-reply" data-id="{{messageId}}">
+    {{#if highlight}}
+        <span class="ping">@{{user.name}}</span>
+    {{else}}
+        @{{user.name}}
+    {{/if}}
+</span>:

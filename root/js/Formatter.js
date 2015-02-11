@@ -88,6 +88,10 @@ function formatMessage(roomId, node, text, reply, user) {
 }
 
 function initReplyNode(node, reply) {
+    if (user.name === reply.user.name) {
+        reply.highlight = true;
+    }
+
     node.innerHTML = node.innerHTML.replace(/:\d+/, require("../../html/reply_to.handlebars")(reply));
     var replyNode = node.querySelector(".in-reply");
 
