@@ -3,7 +3,7 @@
 namespace App;
 
 use Aerys\Websocket;
-use Amp\Reactor;
+use Amp\Redis\Redis;
 use Mysql\Pool;
 
 class Chat implements Websocket {
@@ -11,9 +11,9 @@ class Chat implements Websocket {
     private $sessionManager;
     private $db;
 
-    public function __construct (Pool $db, Reactor $reactor) {
-        $this->roomHandler = new RoomHandler($db, $reactor);
-        $this->sessionManager = new SessionManager;
+    public function __construct (Pool $db, Redis $redis, Redis $pubSubListener) {
+        $this->roomHandler = new RoomHandler($db, $redis, $pubSubListener);
+        $this->sessionManager = new SessionManager($redis);
         $this->db = $db;
     }
 

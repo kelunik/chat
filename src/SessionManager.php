@@ -7,11 +7,8 @@ use Amp\Redis\Redis;
 class SessionManager {
     private $redis;
 
-    public function __construct () {
-        $this->redis = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
-        ]);
+    public function __construct (Redis $redis) {
+        $this->redis = $redis;
     }
 
     public static function getSessionId ($request) {

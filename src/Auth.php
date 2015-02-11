@@ -13,13 +13,10 @@ class Auth {
     private $redis;
     private $sessionManager;
 
-    public function __construct (Pool $db) {
+    public function __construct (Pool $db, Redis $redis) {
         $this->db = $db;
-        $this->redis = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
-        ]);
-        $this->sessionManager = new SessionManager;
+        $this->redis = $redis;
+        $this->sessionManager = new SessionManager($redis);
     }
 
     public function redirect () {

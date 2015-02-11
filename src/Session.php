@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Amp\Reactor;
 use Amp\Redis\Redis;
 use Mysql\Pool;
 
@@ -10,12 +9,9 @@ class Session {
     private $db;
     private $redis;
 
-    public function __construct (Pool $db, Reactor $reactor) {
+    public function __construct (Pool $db, Redis $redis) {
         $this->db = $db;
-        $this->redis = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
-        ], $reactor);
+        $this->redis = $redis;
     }
 
     public function getStatus ($request) {

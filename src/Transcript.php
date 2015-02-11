@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Amp\Redis\Redis;
 use DateTime;
 use Mysql\Pool;
 use Parsedown;
@@ -11,9 +12,9 @@ class Transcript {
     private $db;
     private $sessionManager;
 
-    public function __construct (Pool $db) {
+    public function __construct (Pool $db, Redis $redis) {
         $this->db = $db;
-        $this->sessionManager = new SessionManager;
+        $this->sessionManager = new SessionManager($redis);
     }
 
     public function handleRequest ($request) {

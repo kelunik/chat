@@ -2,13 +2,11 @@
 
 namespace App;
 
-use Amp\Reactor;
 use Amp\Redis\Redis;
 use Mysql\Pool;
 
 class RoomHandler {
     private $db;
-    private $reactor;
     private $redis;
     private $listener;
     private $rooms;
@@ -20,19 +18,11 @@ class RoomHandler {
     private $chatApi;
     private $active;
 
-    public function __construct (Pool $db, Reactor $reactor) {
+    public function __construct (Pool $db, Redis $redis, Redis $pubSubListener) {
         $this->db = $db;
-        $this->reactor = $reactor;
 
-        $this->redis = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
-        ], $reactor);
-
-        $this->listener = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
-        ], $reactor);
+        $this->redis = $redis;
+        $this->listener = $pubSubListener;
 
         $this->handlers = [
             "lost-push" => "onMultiMessage",
@@ -49,7 +39,7 @@ class RoomHandler {
         ];
 
         $this->clients = $this->users = $this->sessions = [];
-        $this->sessionHandler = new SessionManager();
+        $this->sessionHandler = new SessionManager($redis);
         $this->chatApi = new ChatApi($this->db, $this->redis);
         $this->active = [];
     }
