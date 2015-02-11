@@ -9,3 +9,5 @@
 /root/all.min.js.map
 
 /root/manifest.appcache
+
+*.log*

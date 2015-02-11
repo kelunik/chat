@@ -4,7 +4,7 @@
   "author": "Niklas Keller <me@kelunik.com>",
   "contributors": [],
   "scripts": {
-    "build": "browserify -t hbsfy main.js | uglifyjs > all.min.js",
+    "build": "browserify -t hbsfy main.js | uglifyjs -m -c sequences,properties,dead_code,drop_debugger,conditionals,evaluate,booleans,loops,if_return,join_vars,drop_console=true,unused=false > all.min.js",
     "watch": "watchify -t hbsfy main.js -o all.min.js --verbose"
   },
   "main": "main.js",
