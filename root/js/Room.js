@@ -272,7 +272,11 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
             users.push(userdata);
             data.users = users;
             var newNode = Util.html2node(template.info(data));
-            newNode.classList.add("room-info-current");
+
+            if (infoNode.classList.contains("room-info-current")) {
+                newNode.classList.add("room-info-current");
+            }
+
             infos.replaceChild(newNode, infoNode);
         },
 
