@@ -4,7 +4,7 @@
   "author": "Niklas Keller <me@kelunik.com>",
   "contributors": [],
   "scripts": {
-    "build": "browserify -t hbsfy main.js -p [minifyify --map /js/map.json --output map.json] -o all.min.js --debug",
+    "build": "browserify -t hbsfy main.js | uglifyjs > all.min.js",
     "watch": "watchify -t hbsfy main.js -o all.min.js --verbose"
   },
   "main": "main.js",
