@@ -16,15 +16,19 @@
     "url": "https://github.com/rdlowrey/amp-chat/issues"
   },
   "dependencies": {
+    "autolinker": "0.15.x",
+    "browserify": "8.1.x",
+    "handlebars": "2.0.x",
     "hbsfy": "2.2.x",
+    "minifyify": "6.1.x",
+    "mocha": "2.1.x",
     "moment": "2.9.x",
     "remarkable": "1.6.x",
-    "autolinker": "0.15.x"
+    "remarkable-regexp": "0.2.4",
+    "uglify-js": "2.4.x",
+    "watchify": "2.3.x"
   },
-  "devDependencies": {
-    "handlebars": "2.0.x",
-    "minifyify": "6.1.x"
-  },
+  "devDependencies": {},
   "preferGlobal": false,
   "private": true
 }

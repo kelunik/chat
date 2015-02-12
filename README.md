@@ -26,16 +26,20 @@ Later changes will have to be integrated manually, at least currently.
 
 Be sure to add at least one room to the `rooms` table, otherwise you won't have much fun.
 
-#### NodeJS & Handlebars
+#### Node
 
-Currently, we need node to precompile handlebars' templates, so they can be included into `all.min.js`.
+You'll need a few node dependencies to create our frontend bundle.
+We install `hbsfy`, `handlebars` and `mocha` globally, because we need them in `/html` and `/root/js` or for testing.
 
 > Note: Package name may differ depending on distribution.
+> Make sure, you create a symlink from nodejs to node
+> if your distro is using nodejs as binary name.
 
 ```bash
 sudo apt-get install node
-npm install -g handlebars remarkable autolinker
-cd root/js && npm install
+cd root/js
+sudo npm install
+sudo npm install -g hbsfy handlebars mocha
 ```
 
 #### Redis
