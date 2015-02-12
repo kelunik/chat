@@ -200,6 +200,8 @@ function newline() {
     input.selectionStart = input.selectionEnd = start + 1 + indent.length;
 
     adjust(true);
+
+    input.parentNode.scrollTop += 20;
 }
 
 function tab(e) {
@@ -274,12 +276,16 @@ function adjust(_compose) {
         toScroll.push(o.scrollHeight - o.scrollTop - o.clientHeight);
     });
 
+    var scroll = input.parentNode.scrollTop;
+
     input.style.height = "0";
 
     // TODO: Find out why we need 3px more
     var height = input.scrollHeight;
     input.style.height = Math.max(60, height) + "px";
     input.parentNode.style.height = Math.max(63, height + 3) + "px";
+
+    input.parentNode.scrollTop = scroll;
 
     document.querySelectorAll(".room").forEach(function (o) {
         var scroll = toScroll.shift();
