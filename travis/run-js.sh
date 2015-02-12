@@ -7,9 +7,7 @@ echo "node -v"
 node -v
 echo ""
 
-cd root/js
 npm install
-
 npm run build 2>&1 | tee js.log
 
 if grep -i error js.log > /dev/null
@@ -17,5 +15,4 @@ then
     exit 1
 fi
 
-cd test
-../../../travis/env.sh mocha
+travis/env.sh mocha root/js/test
