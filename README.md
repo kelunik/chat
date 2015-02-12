@@ -29,7 +29,6 @@ Be sure to add at least one room to the `rooms` table, otherwise you won't have 
 #### Node
 
 You'll need a few node dependencies to create our frontend bundle.
-We install `hbsfy`, `handlebars` and `mocha` globally, because we need them in `/html` and `/root/js` or for testing.
 
 > Note: Package name may differ depending on distribution.
 > Make sure, you create a symlink from nodejs to node
@@ -37,9 +36,7 @@ We install `hbsfy`, `handlebars` and `mocha` globally, because we need them in `
 
 ```bash
 sudo apt-get install node
-cd root/js
 sudo npm install
-sudo npm install -g hbsfy handlebars mocha
 ```
 
 #### Redis
