@@ -1,6 +1,6 @@
 <?php
 
-chdir(__DIR__ . "/../root/js");
+chdir(__DIR__ . "/..");
 error_reporting(E_ALL);
 date_default_timezone_set("UTC");
 
