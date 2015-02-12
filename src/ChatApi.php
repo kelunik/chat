@@ -31,6 +31,11 @@ class ChatApi {
             $roomId, $user->getId(), $messageText, $reply->messageId ?? null, $time
 		]);
 
+        // don't allow self-pings
+        if (($key = array_search($user->getId(), $pings)) !== false) {
+            unset($pings[$key]);
+        }
+
         yield $this->addPings($user, $roomId, $result->insertId, $pings);
 
         yield $this->redis->publish("chat.room", json_encode([
