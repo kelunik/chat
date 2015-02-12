@@ -59,7 +59,7 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
     })));
     pingNode = tabNode.querySelector(".pings");
 
-    infoNode.getElementsByTagName("a").forEach(function (o) {
+    infoNode.querySelector(".room-desc").getElementsByTagName("a").forEach(function (o) {
         o.setAttribute("target", "_blank");
     });
 
