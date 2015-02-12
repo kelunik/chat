@@ -5,5 +5,4 @@ env:
   - TESTS=php
   - TESTS=js
 script:
-  - [ "${TESTS}" = "php" ] && travis/run-php.sh || true
-  - [ "${TESTS]" = "js" ] && travis/run-js.sh || true
+  - bash travis/run.sh
