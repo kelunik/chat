@@ -4,6 +4,7 @@
   "author": "Niklas Keller <me@kelunik.com>",
   "contributors": [],
   "scripts": {
+    "install": "mkdir -p ../../html/node_modules && cp -r node_modules/handlebars ../../html/node_modules/handlebars && cp -r node_modules/hbsfy ../../html/node_modules/hbsfy",
     "build": "browserify -t hbsfy main.js | uglifyjs -m -c sequences,properties,dead_code,drop_debugger=false,conditionals,evaluate,booleans,loops,if_return,join_vars,drop_console=false,unused=false > all.min.js",
     "watch": "watchify -t hbsfy main.js -o all.min.js --verbose"
   },

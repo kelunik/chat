@@ -8,10 +8,14 @@ node -v
 echo ""
 
 cd root/js
-sudo npm install
-sudo npm install -g hbsfy handlebars mocha
+npm install
 
-npm run build
+npm run build 2>&1 | tee js.log
+
+if grep -i error js.log > /dev/null
+then
+    exit 1
+fi
 
 cd test
 ../../../travis/env.sh mocha

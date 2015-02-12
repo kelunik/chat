@@ -11,3 +11,6 @@
 /root/manifest.appcache
 
 *.log*
+*node_modules*
+
+/php
