@@ -1,0 +1,9 @@
+language: php
+versions:
+  - 5.6
+env:
+  - TESTS=php
+  - TESTS=js
+script:
+  - [ "${TESTS}" = "php" ] && travis/run-php.sh || true
+  - [ "${TESTS]" = "js" ] && travis/run-js.sh || true
