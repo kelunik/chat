@@ -49,9 +49,11 @@ redis-server config/redis.conf
 
 #### Github OAuth
 
-Register a new [github application](https://github.com/settings/applications) and put the created "Client ID" and "Client Secret" into your config/config.php.
+Register a new [github application](https://github.com/settings/applications) and put the created "Client ID" and "Client Secret" into your config/config.php (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`).
 
 ## Starting the server
+
+Make sure to configure the IP and PORT the chat is supposed to run on in config/config.php (`DEPLOY_DOMAIN`, `DEPLOY_PORT`).
 
 Current development recommendation is to start the server using the following command:
 
