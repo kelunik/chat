@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Amp\Reactor;
 use Amp\Redis\Redis;
 use Mysql\Pool;
 use Parsedown;
@@ -13,13 +12,10 @@ class Page {
     private $redis;
     private $sessionManager;
 
-    public function __construct (Pool $db, Reactor $reactor) {
+    public function __construct (Pool $db, Redis $redis) {
         $this->db = $db;
-        $this->sessionManager = new SessionManager;
-        $this->redis = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
-        ], $reactor);
+        $this->redis = $redis;
+        $this->sessionManager = new SessionManager($redis);
     }
 
     public function handleRequest ($request) {

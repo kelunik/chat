@@ -8,6 +8,7 @@ use App\Session;
 use App\Settings;
 use App\Transcript;
 use Mysql\Pool;
+use Amp\Redis\Redis;
 
 require __DIR__ . "/vendor/autoload.php";
 require __DIR__ . "/general_config.php";
@@ -18,12 +19,21 @@ require __DIR__ . "/check_requirements.php";
 $connect = sprintf("host=%s;user=%s;pass=%s;db=%s", DB_HOST, DB_USER, DB_PASS, DB_DB);
 $db = new Pool($connect);
 $tpl = new Tpl(new Parsedown);
-$authHandler = new Auth($db, $tpl);
-$chatHandler = new Chat($db, \Amp\getReactor());
-$pageHandler = new Page($db, \Amp\getReactor());
-$transcriptHandler = new Transcript($db);
-$sessionHandler = new Session($db, \Amp\getReactor());
-$settingsHandler = new Settings($db);
+$redis = new Redis([
+            "host" => "127.0.0.1:6380",
+            "password" => REDIS_PASSWORD
+], \Amp\getReactor());
+$pubSub = new Redis([
+            "host" => "127.0.0.1:6380",
+            "password" => REDIS_PASSWORD
+], \Amp\getReactor());
+
+$authHandler = new Auth($db, $redis);
+$chatHandler = new Chat($db, $redis, $pubSub);
+$pageHandler = new Page($db, $redis);
+$transcriptHandler = new Transcript($db, $redis);
+$sessionHandler = new Session($db, $redis);
+$settingsHandler = new Settings($db, $redis);
 
 $host = (new Aerys\Host)
     ->setPort(DEPLOY_PORT)
