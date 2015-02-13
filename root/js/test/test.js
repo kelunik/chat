@@ -1,9 +1,16 @@
-var assert = require("assert");
+var expect = require("chai").expect;
+require("mocha-jsdom")();
 
-describe('nothing', function () {
-    describe('#nothing()', function () {
-        it('should test nothing', function () {
+describe('String', function () {
+    describe('#startsWith()', function () {
+        it('should return true for "foobar".startsWith("foo")', function () {
+            require("../extend.js");
+            expect("foobar".startsWith("foo")).to.be.true;
+        });
 
-        })
+        it('should return false for "foobar".startsWith("bar")', function () {
+            require("../extend.js");
+            expect("foobar".startsWith("foo")).to.be.true;
+        });
     })
 });

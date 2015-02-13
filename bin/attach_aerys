@@ -1,2 +1,3 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
 sudo -u root screen -r `cat /var/run/aerys.pid`

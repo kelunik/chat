@@ -18,13 +18,18 @@
   "dependencies": {
     "autolinker": "0.15.x",
     "browserify": "8.1.x",
+    "chai": "^2.0.0",
     "handlebars": "2.0.x",
     "hbsfy": "2.2.x",
+    "jsdom": "^3.1.1",
     "minifyify": "6.1.x",
     "mocha": "2.1.x",
+    "mocha-jsdom": "^0.2.0",
+    "mocha-sinon": "^1.1.4",
     "moment": "2.9.x",
     "remarkable": "1.6.x",
     "remarkable-regexp": "0.2.4",
+    "sinon": "^1.12.2",
     "uglify-js": "2.4.x",
     "watchify": "2.3.x"
   },
