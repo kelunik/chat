@@ -28,7 +28,7 @@ module.exports = function(hljs) {
       'vfprintf vprintf vsprintf'
   };
   return {
-    aliases: ['c', 'h', 'c++', 'h++'],
+    aliases: ['c', 'cc', 'h', 'c++', 'h++', 'hpp'],
     keywords: CPP_KEYWORDS,
     illegal: '</',
     contains: [
@@ -72,6 +72,11 @@ module.exports = function(hljs) {
         // recognized as a function definition
         beginKeywords: 'new throw return',
         relevance: 0
+      },
+      // https://github.com/isagalaev/highlight.js/issues/690
+      {
+        begin: /\belse\s+if\b/,
+        keywords: 'else if'
       },
       {
         className: 'function',
