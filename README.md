@@ -47,6 +47,10 @@ amp-chat relies heavily on [redis](http://redis.io). I'll need to install it and
 redis-server config/redis.conf
 ```
 
+#### Github OAuth
+
+Register a new [github application](https://github.com/settings/applications) and put the created "Client ID" and "Client Secret" into your config/config.php.
+
 ## Starting the server
 
 Current development recommendation is to start the server using the following command:
