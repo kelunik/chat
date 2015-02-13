@@ -49,7 +49,8 @@ redis-server config/redis.conf
 
 #### Github OAuth
 
-Register a new [github application](https://github.com/settings/applications) and put the created "Client ID" and "Client Secret" into your config/config.php (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`).
+Register a new [GitHub application](https://github.com/settings/applications) and put the created "Client ID" and "Client Secret" into your config/config.php (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`).
+Configure the "Authorization callback URL" in your newly registered GitHub to your applications root url and the suffix "/oauth/github", e.g. "http://192.168.1.1:8080/oauth/github".
 
 ## Starting the server
 
