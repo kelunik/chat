@@ -12,7 +12,7 @@ var messageList, md, messageExpand, plugin;
 module.exports = function (_messageList, roomList) {
     messageList = _messageList;
     messageExpand = new MessageExpand(roomList);
-    plugin = new Plugin(/@([a-z][a-z-]*)/i, function (match, utils) {
+    plugin = new Plugin(/@([a-z][a-z0-9-]*)/i, function (match, utils) {
         if (match[1] === user.name) {
             return "<span class='ping'>" + utils.escape(match[0]) + "</span>";
         } else {
