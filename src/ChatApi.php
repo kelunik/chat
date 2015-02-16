@@ -66,7 +66,7 @@ class ChatApi {
     private function getPings ($roomId, $messageText) {
         $users = [];
 
-        if (preg_match_all("~@([a-z][a-z-]*)~i", $messageText, $matches, PREG_SET_ORDER)) {
+        if (preg_match_all("~@([a-z][a-z0-9-]*)~i", $messageText, $matches, PREG_SET_ORDER)) {
             foreach ($matches as $match) {
                 $users[$match[1]] = $match[1];
             }
