@@ -50,6 +50,7 @@ class Page {
             yield "status" => 302;
             yield "header" => "Location: /login";
             yield "body" => "";
+            return;
         }
 
         $session = yield $this->sessionManager->getSession($sessionId);
@@ -78,6 +79,7 @@ class Page {
             yield "status" => 302;
             yield "header" => "Location: /login";
             yield "body" => "";
+            return;
         }
 
         $session = yield $this->sessionManager->getSession($sessionId);
@@ -102,6 +104,7 @@ class Page {
             yield "status" => 302;
             yield "header" => "Location: /login";
             yield "body" => "";
+            return;
         }
 
         $session = yield $this->sessionManager->getSession($sessionId);
@@ -150,6 +153,7 @@ class Page {
             yield "status" => 302;
             yield "header" => "Location: /login";
             yield "body" => "";
+            return;
         }
 
         $session = yield $this->sessionManager->getSession($sessionId);
@@ -198,6 +202,7 @@ class Page {
             yield "status" => 302;
             yield "header" => "Location: /login";
             yield "body" => "";
+            return;
         }
 
         $session = yield $this->sessionManager->getSession($sessionId);
