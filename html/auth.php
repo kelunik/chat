@@ -21,7 +21,8 @@
             font-family: Lato, sans-serif;
             margin: 0;
             min-height: 100vh;
-            background: #fff;
+            background: #fff url(/img/cover.jpg) center;
+            background-size: cover;
         }
 
         #page {
@@ -48,7 +49,7 @@
 
         #nav {
             padding: 15px 0;
-            background: #eee;
+            background: rgba(255, 255, 255, .5);
             text-align: center;
             line-height: 60px;
             border-bottom: 1px solid rgba(0, 0, 0, .05);
@@ -154,7 +155,7 @@
             border-top: 1px solid rgba(0, 0, 0, .1);
             padding: 10px;
             font-size: 13px;
-            color: #666;
+            color: #444;
             font-weight: bold;
             text-align: center;
         }
