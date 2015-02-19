@@ -43,6 +43,14 @@
                 <?php foreach ($rooms as $room): ?>
                     <div class="room-card">
                         <div class="room-card-title">
+                            <span style="float: right; color: #777; font-size: 12px;">
+                                <?php if ($room->users > 1 || $room->users == 0): ?>
+                                    <?= $room->users ?>&nbsp;&nbsp;<i class="fa fa-users fa-fw"></i>
+                                <?php else: ?>
+                                    <?= $room->users ?>&nbsp;&nbsp;<i class="fa fa-user fa-fw"></i>
+                                <?php endif; ?>
+                            </span>
+
                             <a href="/rooms/<?= $room->id ?>">
                                 <?= htmlspecialchars($room->name) ?>
                             </a>

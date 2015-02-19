@@ -39,7 +39,7 @@ class Page {
 
         $tpl = new Tpl(new Parsedown);
         $tpl->load(TEMPLATE_DIR . "chat.php", Tpl::LOAD_PHP);
-        $tpl->set('session', $session);
+        $tpl->set("session", $session);
         yield "body" => $tpl->page();
     }
 
@@ -62,7 +62,7 @@ class Page {
             return;
         }
 
-        $q = yield $this->db->query("SELECT * FROM rooms");
+        $q = yield $this->db->query("SELECT r.*, (SELECT COUNT(*) FROM room_users WHERE roomId = r.id) AS users FROM rooms AS r");
         $rooms = yield $q->fetchObjects();
 
         $tpl = new Tpl(new Parsedown);
