@@ -62,7 +62,7 @@ class Page {
             return;
         }
 
-        $q = yield $this->db->query("SELECT r.*, (SELECT COUNT(*) FROM room_users WHERE roomId = r.id) AS users FROM rooms AS r");
+        $q = yield $this->db->query("SELECT r.*, (SELECT COUNT(*) FROM room_users WHERE roomId = r.id) AS users FROM rooms AS r ORDER BY users DESC");
         $rooms = yield $q->fetchObjects();
 
         $tpl = new Tpl(new Parsedown);

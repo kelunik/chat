@@ -24,12 +24,20 @@
 <body>
 <div id="page">
     <div id="nav">
-        <picture>
-            <source srcset="/img/logo_40x40.png, img/logo_40x40x2.png 2x">
-            <img src="/img/logo_40x40.png" alt="logo">
-        </picture>
+        <div id="nav-inner">
+            <div class="flex-left">
+                <picture>
+                    <source srcset="/img/logo_40x40.png, img/logo_40x40x2.png 2x">
+                    <img src="/img/logo_40x40.png" alt="logo" width="40" height="40">
+                </picture>
 
-        <h1><?= htmlspecialchars(APP_NAME) ?></h1>
+                <h1><?= htmlspecialchars(APP_NAME) ?></h1>
+            </div>
+
+            <div class="flex-right">
+                <?= htmlspecialchars($session->name) ?>
+            </div>
+        </div>
     </div>
 
     <?php
@@ -57,10 +65,19 @@
                         </div>
 
                         <div class="room-card-desc">
-                            <?= htmlspecialchars($room->description) /* $md->parse($room->description) */ ?>
+                            <?php if (!empty($room->description)): ?>
+                                <?= htmlspecialchars(preg_replace("~(\\.\\s*)+~", ". ", str_replace("\n", ".", $room->description))) ?>
+                            <?php else: ?>
+                                <i style="color: #999;">no description</i>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
+
+                <!-- placeholders to cards in last line don't grow larger than other cards -->
+                <div class="room-card"></div>
+                <div class="room-card"></div>
+                <div class="room-card"></div>
             </div>
 
             <div class="info">
