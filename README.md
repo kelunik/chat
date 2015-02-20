@@ -4,11 +4,10 @@
 
 ### Basic Repository
 
-If you're not familiar with composer, please read their [introduction](https://getcomposer.org/doc/00-intro.md).
+If you're not familiar with composer, please read [their introduction](https://getcomposer.org/doc/00-intro.md).
 
 ```bash
-git clone git@github.com/rdlowrey/amp-chat
-cd amp-chat
+git clone git@github.com/kelunik/amp-chat && cd amp-chat
 composer install
 ```
 
@@ -35,13 +34,13 @@ You'll need a few node dependencies to create our frontend bundle.
 > if your distro is using nodejs as binary name.
 
 ```bash
-sudo apt-get install node
-sudo npm install
+sudo apt-get install npm
+npm install
 ```
 
 #### Redis
 
-amp-chat relies heavily on [redis](http://redis.io). I'll need to install it and start it with the following command:
+amp-chat relies heavily on [redis](http://redis.io). You'll need to install it and start it with the following command:
 
 ```bash
 redis-server config/redis.conf
@@ -49,8 +48,9 @@ redis-server config/redis.conf
 
 #### Github OAuth
 
-Register a new [GitHub application](https://github.com/settings/applications) and put the created "Client ID" and "Client Secret" into your config/config.php (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`).
-Configure the "Authorization callback URL" in your newly registered GitHub to your applications root url and the suffix "/oauth/github", e.g. "http://192.168.1.1:8080/oauth/github".
+Register a new [GitHub application](https://github.com/settings/applications) and put the created "Client ID" and "Client Secret" into your `config/config.php` (`GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`).
+
+Configure the "Authorization callback URL" in your registered GitHub Application to your application's root URL and the suffix `/oauth/github`, e.g. `http://localhost:8080/oauth/github`.
 
 ## Starting the server
 
