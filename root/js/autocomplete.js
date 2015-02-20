@@ -51,14 +51,19 @@ function setup(inputId, displayId, suggestCallback, template) {
     });
 
     inputNode.addEventListener("input", function () {
-        var text = inputNode.value;
         var cursor = inputNode.selectionStart;
+        var text = inputNode.value.substr(0, cursor);
+        var lineBreak = text.lastIndexOf("\n");
 
-        var before = text.substr(0, cursor);
-        var wordBreak = before.lastIndexOf(" ");
+        if (lineBreak > -1) {
+            var lines = text.split("\n");
+            text = lines[lines.length - 1];
+        }
+
+        var wordBreak = text.lastIndexOf(" ");
 
         if (wordBreak > -1) {
-            var words = before.split(" ");
+            var words = text.split(" ");
             text = words[words.length - 1];
         }
 
