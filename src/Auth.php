@@ -96,29 +96,24 @@ class Auth {
         if (yield $result->rowCount()) {
             yield $result->fetch();
         } else {
-            try {
-                $user = yield $api->queryUser();
-                $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `avatar_url` FROM `users` WHERE `name` = ?", [$user->login]);
+            $user = yield $api->queryUser();
+            $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `avatar_url` FROM `users` WHERE `name` = ?", [$user->login]);
 
-                if (yield $result->rowCount()) {
-                    yield $this->db->prepare("UPDATE `users` SET `github_token` = ? WHERE `name` = ?", [$api->getToken(), $user->login]);
-                    yield $result->fetch();
+            if (yield $result->rowCount()) {
+                yield $this->db->prepare("UPDATE `users` SET `github_token` = ? WHERE `name` = ?", [$api->getToken(), $user->login]);
+                yield $result->fetch();
+            } else {
+                $mail = yield $api->queryPrimaryMail();
+
+                $result = yield $this->db->prepare("INSERT INTO `users` (`name`, `mail`, `github_token`, `avatar_url`) VALUES (?, ?, ?, ?)", [
+                    $user->login, $mail, $api->getToken(), $user->avatar_url
+                ]);
+
+                if ($result) {
+                    yield [$result->insertId, $user->login, $mail, $user->avatar_url];
                 } else {
-                    $mail = yield $api->queryPrimaryMail();
-
-                    $result = yield $this->db->prepare("INSERT INTO `users` (`name`, `mail`, `github_token`, `avatar_url`) VALUES (?, ?, ?, ?)", [
-                        $user->login, $mail, $api->getToken(), $user->avatar_url
-                    ]);
-
-                    if ($result) {
-                        yield [$result->insertId, $user->login, $mail, $user->avatar_url];
-                    } else {
-                        error_log("Couldn't insert new user: {$user->login} / {$mail}");
-                        yield;
-                    }
+                    error_log("Couldn't insert new user: {$user->login} / {$mail}");
                 }
-            } catch (Exception $e) {
-                yield;
             }
         }
     }
