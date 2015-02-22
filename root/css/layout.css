@@ -7,9 +7,9 @@
     flex-grow: 0;
     flex-shrink: 0;
     width: 180px;
-    background: #222228;
-    border-right: 1px solid rgba(0, 0, 0, .5);
+    background: #eee;
     position: relative;
+    border-right: 1px solid rgba(0, 0, 0, .1);
 }
 
 #main-col {
@@ -18,11 +18,8 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 8px rgba(0, 0, 0, .1);
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-bottom: 0;
-    border-top: 0;
+    border-right: 1px solid rgba(0, 0, 0, .15);
     background: #fefefe;
-    margin-left: 5px;
 }
 
 #right-col {
@@ -33,13 +30,13 @@
     background: #f6f6f6;
     display: flex;
     flex-flow: column;
-    padding-left: 5px;
 }
 
 #room-infos, #stars {
     box-shadow: 0 0 8px rgba(0, 0, 0, .1);
     border: 1px solid rgba(0, 0, 0, .15);
     border-right: 0;
+    border-left: 0;
     background: #fefefe;
 }
 

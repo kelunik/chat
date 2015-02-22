@@ -124,15 +124,16 @@
 .room-tab {
     line-height: 20px;
     padding: 6px 10px;
-    color: rgba(255, 255, 255, .7);
+    color: #333;
     font-weight: bold;
     font-size: 13px;
     cursor: pointer;
     user-select: none;
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;
-    border-left: 2px solid transparent;
+    border-right: 1px solid transparent;
     position: relative;
+    margin-right: -1px;
 }
 
 .room-tab[data-new-messages]:not([data-new-messages="0"])::after {
@@ -196,7 +197,6 @@
     line-height: 16px;
     font-size: 12px;
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, .1);
     position: absolute;
     right: 35px;
     top: 50%;
@@ -207,24 +207,18 @@
     animation-name: newmessages;
 }
 
+.room-tab-current .pings[data-pings]:not([data-pings="0"])::after {
+    background: rgba(255, 255, 255, .9);
+    color: #333333;
+}
+
 .room-tab-current {
-    color: rgba(255, 255, 255, .95);
-    background: rgba(0, 0, 0, .25);
+    color: #fff;
+    background: rgba(0, 100, 200, .85);
     cursor: default;
     border-top: 1px solid rgba(0, 0, 0, .1);
     border-bottom: 1px solid rgba(0, 0, 0, .1);
-    border-left: 2px solid rgba(0, 100, 200, .85);
-}
-
-.room-tab-current::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    left: -2px;
-    top: -1px;
-    bottom: -1px;
-    width: 3px;
-    background: rgba(0, 100, 200, .85);
+    border-right: 1px solid rgba(0, 0, 0, .1);
 }
 
 .room-info {

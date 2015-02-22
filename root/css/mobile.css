@@ -4,6 +4,12 @@
         display: block;
     }
 
+    #user {
+        background: rgb(0, 100, 200);
+        color: white;
+        font-weight: bold;
+    }
+
     #chat {
         flex-flow: column;
     }
@@ -26,11 +32,22 @@
 
     #room-tabs {
         position: absolute;
-        background: #222228;
+        background: #fafafa;
         z-index: 50;
         top: 50px;
         left: -1px;
         right: -1px;
+        max-height: calc(100vh - 50px);
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .room-tab {
+        line-height: 28px;
+    }
+
+    .room-tab:hover, .room-tab:active {
+        background: rgba(0, 100, 200, .3);
     }
 
     #mobile-menu-switch-checkbox:not(:checked) + #left-col {

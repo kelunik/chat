@@ -12,6 +12,8 @@ template = {
     stars: require("../../html/stars.handlebars")
 };
 
+var mobileMenuSwitch = document.getElementById("mobile-menu-switch-checkbox");
+
 module.exports = function (data, _messageList, _roomList, _activityObserver, _dataHandler, _notificationCenter) {
     messageList = _messageList;
     roomList = _roomList;
@@ -64,6 +66,8 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
     });
 
     tabNode.addEventListener("click", function () {
+        mobileMenuSwitch.checked = false;
+
         if (!initialPayloadSent) {
             initialPayloadSent = true;
 
