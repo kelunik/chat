@@ -17,7 +17,6 @@ module.exports = function (_roomList, _messageList, _dataHandler) {
     dataHandler = _dataHandler;
     formatter = new Formatter(messageList, roomList);
     setup();
-    reset();
 
     return {
         newline: newline,
@@ -30,10 +29,6 @@ module.exports = function (_roomList, _messageList, _dataHandler) {
 };
 
 function setup() {
-    if (!window.isTouchDevice()) {
-        input.focus();
-    }
-
     new Autocomplete("input", "autocomplete", function (name) {
         name = name.toLowerCase();
 
@@ -175,6 +170,8 @@ function setup() {
             roomNode.scrollTop = roomNode.scrollHeight;
         }
     });
+
+    reset(window.isTouchDevice());
 }
 
 function newline() {
@@ -436,12 +433,15 @@ function submit() {
     }
 }
 
-function reset() {
+function reset(nofocus) {
     editMessage = 0;
     input.value = "";
     input.parentNode.removeAttribute("data-edit");
-    input.focus();
     adjust(false);
+
+    if (!nofocus) {
+        input.focus()
+    }
 }
 
 function replyTo(id) {
