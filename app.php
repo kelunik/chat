@@ -1,14 +1,15 @@
 <?php
 
 use Aerys\Root\Root;
+use Amp\Redis\Redis;
 use App\Auth;
 use App\Chat;
 use App\Page;
+use App\Search;
 use App\Session;
 use App\Settings;
 use App\Transcript;
 use Mysql\Pool;
-use Amp\Redis\Redis;
 
 require __DIR__ . "/vendor/autoload.php";
 require __DIR__ . "/general_config.php";
@@ -20,12 +21,12 @@ $connect = sprintf("host=%s;user=%s;pass=%s;db=%s", DB_HOST, DB_USER, DB_PASS, D
 $db = new Pool($connect);
 $tpl = new Tpl(new Parsedown);
 $redis = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
+    "host" => "127.0.0.1:6380",
+    "password" => REDIS_PASSWORD
 ], \Amp\getReactor());
 $pubSub = new Redis([
-            "host" => "127.0.0.1:6380",
-            "password" => REDIS_PASSWORD
+    "host" => "127.0.0.1:6380",
+    "password" => REDIS_PASSWORD
 ], \Amp\getReactor());
 
 $authHandler = new Auth($db, $redis);
@@ -34,6 +35,7 @@ $pageHandler = new Page($db, $redis);
 $transcriptHandler = new Transcript($db, $redis);
 $sessionHandler = new Session($db, $redis);
 $settingsHandler = new Settings($db, $redis);
+$searchHandler = new Search($db, $redis);
 
 $host = (new Aerys\Host)
     ->setPort(DEPLOY_PORT)
@@ -63,12 +65,13 @@ $host = (new Aerys\Host)
     ->addRoute("GET", "/messages/{id:[0-9]+}.json", [$transcriptHandler, "messageJson"])
     ->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
     ->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
+    ->addRoute("GET", "/search/rooms", [$searchHandler, "rooms"])
     ->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
     // legacy urls
-    ->addRoute("GET", "/message/{id:[0-9]+}", function($request) {
+    ->addRoute("GET", "/message/{id:[0-9]+}", function ($request) {
         return [
             "status" => 302,
-            "header" => "Location: /messages/". $request["URI_ROUTE_ARGS"]["id"]
+            "header" => "Location: /messages/" . $request["URI_ROUTE_ARGS"]["id"]
         ];
     })
     ->addWebsocket("/chat", $chatHandler);

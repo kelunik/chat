@@ -3,7 +3,6 @@
 namespace App;
 
 use Amp\Redis\Redis;
-use Exception;
 use Mysql\Pool;
 use Parsedown;
 use Tpl;
@@ -25,7 +24,20 @@ class Auth {
         yield "body" => "";
     }
 
-    public function handleRequest () {
+    public function handleRequest ($request) {
+        $sessionId = SessionManager::getSessionId($request);
+
+        if ($sessionId !== null) {
+            $session = yield $this->sessionManager->getSession($sessionId);
+
+            if ($session !== null) {
+                yield "status" => 302;
+                yield "header" => "Location: /rooms";
+                yield "body" => "";
+                return;
+            }
+        }
+
         $tpl = new Tpl(new Parsedown);
         $tpl->load(TEMPLATE_DIR . "auth.php", Tpl::LOAD_PHP);
 

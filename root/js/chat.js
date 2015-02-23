@@ -429,3 +429,19 @@ document.getElementById("ping-clear-all").addEventListener("click", function () 
         });
     });
 });
+
+document.getElementById("room-search").addEventListener("click", function () {
+    this.parentNode.classList.add("room-search-open");
+    this.querySelector("#room-search-input").focus();
+});
+
+document.getElementById("room-search-input").addEventListener("keydown", function (e) {
+    if (e.which === 27) {
+        document.getElementById("room-search").parentNode.classList.remove("room-search-open");
+        setTimeout(function () {
+            this.value = "";
+        }.bind(this), 250);
+    } else if (e.which === 13) {
+        window.location = "/search/rooms?q=" + encodeURIComponent(this.value);
+    }
+});

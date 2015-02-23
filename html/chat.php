@@ -52,6 +52,17 @@
                     </button>
                 </form>
             </div>
+
+            <div class="sidebar-title">
+                <div id="room-search">
+                    <i class="fa fa-search"></i>
+
+                    <input type="text" id="room-search-input">
+                </div>
+
+                Rooms
+            </div>
+
             <div id="room-tabs"></div>
         </div>
 
