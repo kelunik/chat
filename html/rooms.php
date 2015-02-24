@@ -51,7 +51,7 @@
                 <?php foreach ($rooms as $room): ?>
                     <div class="room-card">
                         <div class="room-card-title">
-                            <span style="float: right; color: #777; font-size: 12px;">
+                            <span class="room-card-title-icons">
                                 <?php if ($room->users > 1 || $room->users == 0): ?>
                                     <?= $room->users ?>&nbsp;&nbsp;<i class="fa fa-users fa-fw"></i>
                                 <?php else: ?>
