@@ -101,5 +101,6 @@
     .room-card {
         width: auto;
         margin: 2px 0;
+        flex-basis: auto;
     }
 }

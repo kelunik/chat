@@ -1,6 +1,7 @@
 #chat {
     display: flex;
     height: 100vh;
+    overflow: hidden;
 }
 
 #left-col {
@@ -200,6 +201,7 @@
     max-width: 970px;
     text-align: left;
     margin: 0 auto;
+    padding: 0 15px;
 }
 
 .flex-left {
