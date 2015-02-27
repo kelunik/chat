@@ -93,7 +93,7 @@ class Auth {
 
             yield "status" => 302;
             yield "header" => "Location: /rooms";
-            yield "header" => ("Set-Cookie: aerys_sess=" . $sessionId["client"] . "; PATH=/; httpOnly");
+            yield "header" => ("Set-Cookie: aerys_sess=" . $sessionId["client"] . "; PATH=/; httpOnly" . (DEPLOY_HTTPS ? "; secure" : ""));
             yield "body" => "";
         } else {
             yield "status" => 302;
@@ -151,7 +151,7 @@ class Auth {
                     "payload" => "",
                 ]));
                 yield $this->redis->del("session.{$sessionId}");
-                yield "header" => "Set-Cookie: aerys_sess=; PATH=/"; // TODO: Add negative expire
+                yield "header" => ("Set-Cookie: aerys_sess=; PATH=/; httpOnly" . (DEPLOY_HTTPS ? "; secure" : "") . "; EXPIRES=" . gmdate("D, d M Y H:i:s T", 0));
                 yield "status" => 302;
                 yield "header" => "Location: /login";
                 yield "body" => "";
