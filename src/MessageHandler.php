@@ -7,7 +7,7 @@ class MessageHandler {
         $query = <<<SQL
 SELECT
 	m.id, m.roomId, m.userId,
-	u.name AS userName, u.avatar_url AS userAvatar,
+	u.name AS userName, u.githubId AS userAvatar,
 	m.text, m.edited, m.time,
 	stars.count AS stars, ms.userId AS starred,
 	m.replyTo AS replyMessageId,

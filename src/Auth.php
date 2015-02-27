@@ -76,7 +76,7 @@ class Auth {
 
         if (yield $api->fetchToken($request["QUERY"]["code"])) {
             $login = yield $this->getLoginData($api);
-            list($id, $username, $mail, $avatar_url) = $login;
+            list($id, $username, $mail, $githubId) = $login;
 
             $sessionId = Security::generateSession();
             $token = Security::generateToken();
@@ -85,7 +85,7 @@ class Auth {
                 "id" => $id,
                 "name" => $username,
                 "mail" => $mail,
-                "avatar" => $avatar_url,
+                "avatar" => "https://avatars.githubusercontent.com/u/{$githubId}?v=3",
                 "csrfToken" => $token
             ]);
 
@@ -103,26 +103,26 @@ class Auth {
     }
 
     private function getLoginData (GithubApi $api) {
-        $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `avatar_url` FROM `users` WHERE `github_token` = ?", [$api->getToken()]);
+        $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `githubId` FROM `users` WHERE `githubToken` = ?", [$api->getToken()]);
 
         if (yield $result->rowCount()) {
             yield $result->fetch();
         } else {
             $user = yield $api->queryUser();
-            $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `avatar_url` FROM `users` WHERE `name` = ?", [$user->login]);
+            $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `githubId` FROM `users` WHERE `githubId` = ?", [$user->id]);
 
             if (yield $result->rowCount()) {
-                yield $this->db->prepare("UPDATE `users` SET `github_token` = ? WHERE `name` = ?", [$api->getToken(), $user->login]);
+                yield $this->db->prepare("UPDATE `users` SET `githubToken` = ? WHERE `githubId` = ?", [$api->getToken(), $user->id]);
                 yield $result->fetch();
             } else {
                 $mail = yield $api->queryPrimaryMail();
 
-                $result = yield $this->db->prepare("INSERT INTO `users` (`name`, `mail`, `github_token`, `avatar_url`) VALUES (?, ?, ?, ?)", [
-                    $user->login, $mail, $api->getToken(), $user->avatar_url
+                $result = yield $this->db->prepare("INSERT INTO `users` (`name`, `mail`, `githubToken`, `githubId`) VALUES (?, ?, ?, ?)", [
+                    $user->login, $mail, $api->getToken(), $user->id
                 ]);
 
                 if ($result) {
-                    yield [$result->insertId, $user->login, $mail, $user->avatar_url];
+                    yield [$result->insertId, $user->login, $mail, $user->id];
                 } else {
                     error_log("Couldn't insert new user: {$user->login} / {$mail}");
                 }

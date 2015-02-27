@@ -234,19 +234,19 @@ class ChatApi {
 
     private function getReply ($messageText) {
         if (preg_match("~^:([0-9]+) ~", $messageText, $match)) {
-            $result = yield $this->db->prepare("SELECT m.id, u.id, u.name, u.avatar_url FROM users AS u, messages AS m WHERE u.id = m.userId && m.id = ?", [
+            $result = yield $this->db->prepare("SELECT m.id, u.id, u.name, u.githubId FROM users AS u, messages AS m WHERE u.id = m.userId && m.id = ?", [
                 $match[1]
             ]);
 
             if (yield $result->rowCount()) {
-                list($messageId, $userId, $username, $avatar) = yield $result->fetch();
+                list($messageId, $userId, $username, $githubId) = yield $result->fetch();
 
                 yield (object) [
                     "messageId" => (int) $match[1],
                     "user" => (object) [
                         "id" => (int) $userId,
                         "name" => $username,
-                        "avatar" => $avatar
+                        "avatar" => "https://avatars.githubusercontent.com/u/{$githubId}?v=3"
                     ]
                 ];
             }

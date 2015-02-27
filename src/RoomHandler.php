@@ -332,7 +332,7 @@ class RoomHandler {
             $session->id
         ]);
 
-        $query = yield $this->db->prepare("SELECT u.id, u.name, u.avatar_url AS avatar FROM `users` AS u, `room_users` AS ru WHERE u.id = ru.userId && ru.roomId = ? ORDER BY u.lastActivity DESC");
+        $query = yield $this->db->prepare("SELECT u.id, u.name, u.githubId AS avatar FROM `users` AS u, `room_users` AS ru WHERE u.id = ru.userId && ru.roomId = ? ORDER BY u.lastActivity DESC");
         $query2 = yield $this->db->prepare("SELECT p.messageId FROM pings AS p, messages AS m WHERE p.userId = ? && p.messageId = m.id && m.roomId = ? && p.seen = 0");
 
         $rooms = [];

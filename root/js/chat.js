@@ -295,7 +295,11 @@ Handlebars.registerHelper('dateformat', function (time) {
 });
 
 Handlebars.registerHelper('avatar', function (url) {
-    return url + "&s=" + Math.round(window.devicePixelRatio * 30);
+    if (isNaN(url)) {
+        return url + "&s=" + Math.round(window.devicePixelRatio * 30);
+    } else {
+        return "https://avatars.githubusercontent.com/u/" + url + "?v=3&s=" + Math.round(window.devicePixelRatio * 30);
+    }
 });
 
 Handlebars.registerHelper('pluralize', function (number, single, plural) {

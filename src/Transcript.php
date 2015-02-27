@@ -66,7 +66,7 @@ class Transcript {
             return;
         }
 
-        $q = yield $this->db->prepare("SELECT m.id, m.roomId, m.userId, u.name AS userName, u.avatar_url AS userAvatar, m.text, m.edited, m.time, (SELECT COUNT(1) FROM `message_stars` AS ms WHERE ms.messageId = m.id) AS stars FROM `messages` AS m, `users` AS u, `room_users` AS ru, (SELECT `id`, `time` FROM messages WHERE id = ?) AS parent WHERE m.userId = ru.userId && ru.userId = u.id && m.roomId = ru.roomId && m.time > parent.time - 1440 && m.time < parent.time + 1440 && m.roomId = ? ORDER BY m.id ASC", [
+        $q = yield $this->db->prepare("SELECT m.id, m.roomId, m.userId, u.name AS userName, u.githubId AS userAvatar, m.text, m.edited, m.time, (SELECT COUNT(1) FROM `message_stars` AS ms WHERE ms.messageId = m.id) AS stars FROM `messages` AS m, `users` AS u, `room_users` AS ru, (SELECT `id`, `time` FROM messages WHERE id = ?) AS parent WHERE m.userId = ru.userId && ru.userId = u.id && m.roomId = ru.roomId && m.time > parent.time - 1440 && m.time < parent.time + 1440 && m.roomId = ? ORDER BY m.id ASC", [
             $messageId, $message->roomId
         ]);
 
