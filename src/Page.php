@@ -65,6 +65,10 @@ class Page {
         $q = yield $this->db->query("SELECT r.*, (SELECT COUNT(*) FROM room_users WHERE roomId = r.id) AS users FROM rooms AS r ORDER BY users DESC");
         $rooms = yield $q->fetchObjects();
 
+        foreach ($rooms as &$room) {
+            $room->description = preg_replace("~(\\.\\s+)+~", ". ", str_replace("\n", ".", $room->description));
+        }
+
         $tpl = new Tpl(new Parsedown);
         $tpl->load(TEMPLATE_DIR . "rooms.php", Tpl::LOAD_PHP);
         $tpl->set("rooms", $rooms);

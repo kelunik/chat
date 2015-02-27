@@ -246,7 +246,7 @@ class ChatApi {
                     "user" => (object) [
                         "id" => (int) $userId,
                         "name" => $username,
-                        "avatar" => "https://avatars.githubusercontent.com/u/{$githubId}?v=3"
+                        "avatar" => $githubId
                     ]
                 ];
             }

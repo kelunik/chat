@@ -6,7 +6,7 @@ date_default_timezone_set("UTC");
 
 $output = __DIR__ . "/../root/js/all.min.js";
 
-print shell_exec("npm run build");
+print shell_exec("make dist");
 
 $time = filemtime($output);
 $config = "<?php const JS_VERSION = {$time};";

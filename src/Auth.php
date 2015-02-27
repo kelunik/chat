@@ -85,7 +85,7 @@ class Auth {
                 "id" => $id,
                 "name" => $username,
                 "mail" => $mail,
-                "avatar" => "https://avatars.githubusercontent.com/u/{$githubId}?v=3",
+                "avatar" => $githubId,
                 "csrfToken" => $token
             ]);
 

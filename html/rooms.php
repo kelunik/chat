@@ -40,52 +40,11 @@
         </div>
     </div>
 
-    <?php
-    $md = new Parsedown;
-    $md->setMarkupEscaped(true);
-    ?>
-
     <div id="content">
-        <div id="content-fw">
-            <div id="room-overview">
-                <?php foreach ($rooms as $room): ?>
-                    <div class="room-card">
-                        <div class="room-card-title">
-                            <span class="room-card-title-icons">
-                                <?php if ($room->users > 1 || $room->users == 0): ?>
-                                    <?= $room->users ?>&nbsp;&nbsp;<i class="fa fa-users fa-fw"></i>
-                                <?php else: ?>
-                                    <?= $room->users ?>&nbsp;&nbsp;<i class="fa fa-user fa-fw"></i>
-                                <?php endif; ?>
-                            </span>
-
-                            <a href="/rooms/<?= $room->id ?>">
-                                <?= htmlspecialchars($room->name) ?>
-                            </a>
-                        </div>
-
-                        <div class="room-card-desc">
-                            <?php if (!empty($room->description)): ?>
-                                <?= htmlspecialchars(preg_replace("~(\\.\\s*)+~", ". ", str_replace("\n", ".", $room->description))) ?>
-                            <?php else: ?>
-                                <i style="color: #999;">no description</i>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-
-                <!-- placeholders to cards in last line don't grow larger than other cards -->
-                <div class="room-card"></div>
-                <div class="room-card"></div>
-                <div class="room-card"></div>
-            </div>
-
-            <div class="info">
-                Couldn't find a room that suits you?&nbsp;&nbsp;
-                <a href="/rooms/new">Create a new one.</a>
-            </div>
-        </div>
+        <div id="content-fw"></div>
     </div>
 </div>
+<script>var data = <?= json_encode($rooms) ?>;</script>
+<script src="/js/room_overview_bundle.js"></script>
 </body>
 </html>

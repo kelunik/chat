@@ -1,0 +1,43 @@
+<div id="room-overview">
+    {{#each this}}
+        <div class="room-card">
+            <div class="room-card-title">
+                <span class="room-card-title-icons">
+                    {{#ifCond users ">" 1}}
+                        {{users}}&nbsp;&nbsp;<i class="fa fa-users fa-fw"></i>
+                    {{/ifCond}}
+
+                    {{#ifCond users "==" 0}}
+                        {{users}}&nbsp;&nbsp;<i class="fa fa-users fa-fw"></i>
+                    {{/ifCond}}
+
+                    {{#ifCond users "==" 1}}
+                        {{users}}&nbsp;&nbsp;<i class="fa fa-user fa-fw"></i>
+                    {{/ifCond}}
+                </span>
+
+                <a href="/rooms/{{id}}">
+                    {{name}}
+                </a>
+            </div>
+
+            <div class="room-card-desc">
+                {{#if description}}
+                    {{markdown description}}
+                {{else}}
+                    <i style="color: #999;">no description</i>
+                {{/if}}
+            </div>
+        </div>
+    {{/each}}
+
+    <!-- placeholders to cards in last line don't grow larger than other cards -->
+    <div class="room-card"></div>
+    <div class="room-card"></div>
+    <div class="room-card"></div>
+</div>
+
+<div class="info">
+    Couldn't find a room that suits you?&nbsp;&nbsp;
+    <a href="/rooms/new">Create a new one.</a>
+</div>

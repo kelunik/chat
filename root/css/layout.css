@@ -284,6 +284,11 @@
     color: #777;
 }
 
+.room-card-desc p {
+    padding: 0;
+    margin: 0;
+}
+
 .room-card:empty {
     height: 0;
     border: 0;
