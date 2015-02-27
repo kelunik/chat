@@ -10,6 +10,7 @@
 
 /root/manifest.appcache
 
+*.pid
 *.log
 node_modules
 
