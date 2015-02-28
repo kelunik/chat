@@ -112,6 +112,7 @@ module.exports = function (roomList, dataHandler) {
                 cnt += room.getPingCount();
             });
 
+            console.log(cnt + " pings");
             favicon.badge(cnt);
         },
 

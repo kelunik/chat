@@ -115,6 +115,7 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
         var messageId = exports.popPing();
 
         if (!messageId) {
+            alert("please report this alert!");
             return;
         }
 
@@ -122,8 +123,6 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
         dataHandler.send("ping", {
             messageId: messageId
         });
-        pingNode.setAttribute("data-pings", pings.length + "");
-        notificationCenter.onPingChange();
     }.bind(this));
 
     var exports = {
