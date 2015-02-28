@@ -191,7 +191,7 @@ dataHandler.on("transcript", function (type, data) {
 dataHandler.on("ping", function (type, data) {
     var room = roomList.get(data.roomId);
     room.addPing(data.messageId);
-    notificationCenter.showNotification("New Message in " + room.getName(), "You were mentioned by @" + data.user.name + ".", data.user.avatar + "&s=80");
+    notificationCenter.showNotification("New Message in " + room.getName(), "You were mentioned by @" + data.user.name + ".", "https://avatars.githubusercontent.com/u/" + data.user.avatar + "?v=3&s=80");
 });
 
 dataHandler.on("ping-clear", function (type, data) {

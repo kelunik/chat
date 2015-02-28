@@ -115,11 +115,11 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
         var messageId = exports.popPing();
 
         if (!messageId) {
-            alert("please report this alert!");
             return;
         }
 
         messageList.highlight(messageId);
+
         dataHandler.send("ping", {
             messageId: messageId
         });
@@ -171,6 +171,7 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
         },
 
         clearPing: function (id) {
+            console.log(id, pings);
             for (var i = pings.length - 1; i >= 0; i--) {
                 if (pings[i] === id) {
                     pings.splice(i, 1);
@@ -181,7 +182,7 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
         },
 
         popPing: function () {
-            return pings.shift();
+            return pings.length > 0 ? pings[0] : null;
         },
 
         getFirstMessage: function () {

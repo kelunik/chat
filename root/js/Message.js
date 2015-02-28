@@ -73,15 +73,15 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
     else {
         // TODO: Test this code...
 
-        var last = roomNode.lastChild;
+        var curr = roomNode.children.length - 1;
 
-        while (last.previousSibling) {
-            if (last.previousSibling.getAttribute("data-id") * 1 < data.id) {
-                roomNode.insertBefore(messageNode, last);
+        while (curr - 1 >= 0) {
+            if (roomNode.children[curr - 1].getAttribute("data-id") * 1 < data.messageId) {
+                roomNode.insertBefore(messageNode, roomNode.children[curr]);
                 break;
             }
 
-            last = last.previousSibling;
+            curr--;
         }
 
         showIndicator = true;
