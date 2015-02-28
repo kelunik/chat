@@ -21,7 +21,30 @@ module.exports = function (roomList, dataHandler) {
     displayNotification = function (title, message, customIcon) {
         var image = new Image(80, 80);
         image.crossOrigin = "Anonymous";
+
+        var timeout = setTimeout(function () {
+            image.onload = function () {
+
+            };
+
+            var notification = new Notification(title, {
+                tag: "message",
+                icon: "/img/logo_40x40x2.png",
+                lang: "en_US",
+                dir: "ltr",
+                body: message
+            });
+
+            // Firefox closes notifications after 4 seconds,
+            // let's do this in other browsers, too.
+            notification.onshow = function () {
+                setTimeout(notification.close.bind(notification), 5000);
+            };
+        }, 3000);
+
         image.onload = function () {
+            clearTimeout(timeout);
+
             var icon;
 
             if (customIcon in userImages) {
@@ -49,6 +72,7 @@ module.exports = function (roomList, dataHandler) {
                 setTimeout(notification.close.bind(notification), 5000);
             };
         };
+
         image.src = customIcon;
     }.bind(this);
 
