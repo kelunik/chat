@@ -68,6 +68,7 @@
     right: 0;
     height: 100vh;
     overflow-y: scroll;
+    background: #fff;
 }
 
 @media only screen and (max-width: 1023px) {
