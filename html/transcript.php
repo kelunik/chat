@@ -9,34 +9,28 @@
     <link rel="stylesheet" href="/css/all.min.css?v=<?= CSS_VERSION ?>">
 
     <?php require TEMPLATE_DIR . "google_analytics.php"; ?>
+
+    <script>
+        var trelloKey = "<?=TRELLO_KEY?>";
+
+        var user = {
+            id: <?= (int) ($session->id ?? 0) ?>,
+            name: "<?= htmlspecialchars($session->name ?? "") ?>",
+            avatar: "<?= htmlspecialchars($session->avatar ?? 0) ?>"
+        };
+
+        var config = {
+            name: "<?= htmlspecialchars(APP_NAME) ?>",
+            host: "<?= htmlspecialchars(DEPLOY_URL) ?>",
+            websocketUrl: "<?=DEPLOY_HTTPS ? "wss" : "ws"?>://<?=DEPLOY_AUTHORITY?>/chat"
+        };
+
+        window.csrfToken = "<?=htmlspecialchars($session->csrfToken ?? "")?>";
+    </script>
 </head>
 <body>
-<div id="transcript">
-    <?php foreach ($messages as $message): ?>
-        <div id="<?= $message->id ?>" class="chat-message" data-id="<?= $message->id ?>"
-             data-author="<?= $message->userId ?>">
-            <div class="chat-message-user">
-                <img src="<?= $message->userAvatar ?>"
-                     width="30px"
-                     height="30px">
-            </div>
-
-            <div class="chat-message-content">
-                <div class="chat-message-meta">
-                    <!-- TODO: show edit -->
-                    <a href="/user/<?= $message->userId ?>">
-                        <?= htmlentities($message->userName) ?>
-                    </a> –
-                    <time class="chat-message-time" datetime="<?= date('c', $message->time) ?>"></time>
-                </div>
-			<span class="right">
-				<i class="chat-message-stars fa" data-stars="<?= $message->stars ?>"></i>
-			</span>
-
-                <div class="chat-message-text"><?= $message->messageText ?></div>
-            </div>
-        </div>
-    <?php endforeach; ?>
-</div>
+<div id="transcript"></div>
 </body>
+<script>var data = <?= json_encode($messages) ?>;</script>
+<script src="/js/transcript_bundle.js"></script>
 </html>

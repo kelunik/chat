@@ -60,20 +60,13 @@ $host = (new Aerys\Host)
     ->addRoute("GET", "/rooms/{id:[0-9]+}/leave", [$pageHandler, "leaveRoom"])
     ->addRoute("POST", "/rooms/{id:[0-9]+}/leave", [$pageHandler, "leaveRoomSubmit"])
     ->addRoute("GET", "/rooms/{id:[0-9]+}", [$pageHandler, "handleRequest"])
-    ->addRoute("GET", "/rooms/{id:[0-9]+}/transcript/{year:[0-9]+}/{month:[0-9]+}/{day:[0-9]+}", [$transcriptHandler, "handleRequest"])
     ->addRoute("GET", "/messages/{id:[0-9]+}", [$transcriptHandler, "handleMessageRequest"])
     ->addRoute("GET", "/messages/{id:[0-9]+}.json", [$transcriptHandler, "messageJson"])
     ->addRoute("GET", "/settings", [$settingsHandler, "showSettings"])
     ->addRoute("POST", "/settings", [$settingsHandler, "saveSettings"])
     ->addRoute("GET", "/search/rooms", [$searchHandler, "rooms"])
     ->addRoute("GET", "/session/status", [$sessionHandler, "getStatus"])
-    // legacy urls
-    ->addRoute("GET", "/message/{id:[0-9]+}", function ($request) {
-        return [
-            "status" => 302,
-            "header" => "Location: /messages/" . $request["URI_ROUTE_ARGS"]["id"]
-        ];
-    })
+    ->addRoute("GET", "/transcripts/{id:[0-9]+}/{year:[0-9]+}/{month:[0-9]+}/{day:[0-9]+}", [$transcriptHandler, "handleRequest"])
     ->addWebsocket("/chat", $chatHandler);
 
 if (DEPLOY_HTTPS) {

@@ -95,7 +95,7 @@ function initReplyNode(node, reply) {
     node.innerHTML = node.innerHTML.replace(/:\d+/, require("../../html/reply_to.handlebars")(reply));
     var replyNode = node.querySelector(".in-reply");
 
-    if (replyNode) {
+    if (replyNode && messageList) {
         replyNode.onclick = function () {
             messageList.highlight(parseInt(this.getAttribute("data-id")));
         };

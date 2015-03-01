@@ -29,9 +29,11 @@ function expand(roomId, node, linkedUrl, requestUrl, template) {
                 var html = template(data);
                 node.parentNode.replaceChild(util.html2node(html), node);
 
-                var room = roomList.get(roomId);
-                if (room.isDefaultScroll()) {
-                    room.scrollToBottom();
+                if (roomList) {
+                    var room = roomList.get(roomId);
+                    if (room.isDefaultScroll()) {
+                        room.scrollToBottom();
+                    }
                 }
             } catch (e) {
                 // couldn't load card, just skip that

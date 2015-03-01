@@ -23,7 +23,14 @@ class Transcript {
         $month = $request["URI_ROUTE_ARGS"]["month"];
         $day = $request["URI_ROUTE_ARGS"]["day"];
 
-        $start = (new DateTime("{$year}-{$month}-{$day}"))->getTimestamp();
+        try {
+            $start = (new DateTime("{$year}-{$month}-{$day}"))->getTimestamp();
+        } catch (\Exception $e) {
+            yield "status" => 400;
+            yield "body" => "<h1>bad request - error while parsing date</h1>";
+            return;
+        }
+
         $end = $start + 86400;
 
         $tpl = new Tpl(new Parsedown);
@@ -35,16 +42,13 @@ class Transcript {
             $session = yield $this->sessionManager->getSession($sessionId);
         }
 
-        $q = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ? && time >= ? && time < ?"), [$roomId, $start, $end, isset($session) ? $session->id : -1]);
+        $data = [$roomId, $start, $end, isset($session) ? $session->id : -1];
+        $q = yield $this->db->prepare(MessageHandler::buildQuery("roomId = ? && time >= ? && time < ?"), $data);
 
         $messages = [];
 
-        $md = new Parsedown;
-        $md->setMarkupEscaped(true);
-
-        foreach (yield $q->fetchObjects() as $message) {
-            $message->messageText = htmlspecialchars($message->text); // $md->text($message->text);
-            $messages[] = $message;
+        foreach (yield $q->fetchAll() as $message) {
+            $messages[] = $this->createMessage($message, true);
         }
 
         $tpl->set("messages", $messages);
@@ -60,7 +64,7 @@ class Transcript {
         $q = yield $this->db->prepare("SELECT roomId FROM messages WHERE id = ?", [$messageId]);
         $message = yield $q->fetchObject();
 
-        if(!$message) {
+        if (!$message) {
             yield "status" => 404;
             yield "body" => "";
             return;
@@ -72,9 +76,9 @@ class Transcript {
 
         $messages = [];
 
-        foreach (yield $q->fetchObjects() as $message) {
-            $message->messageText = htmlspecialchars($message->text); // (new Parsedown())->parse($message->text);
-            $messages[] = $message;
+        foreach (yield $q->fetchAll() as $message) {
+            $message = array_merge($message, ["0", null, "0", ""]);
+            $messages[] = $this->createMessage($message, true);
         }
 
         $tpl->set("messages", $messages);
@@ -125,5 +129,32 @@ class Transcript {
 
         yield "header" => "Content-Type: application/json";
         yield "body" => json_encode($message, $indent);
+    }
+
+    private function createMessage ($message, $seen = false) {
+        list($messageId, $roomId, $userId, $userName, $userAvatar, $text, $edit, $time, $stars, $starred, $replyTo, $replyToUserId, $replyToUserName) = $message;
+
+        return [
+            "messageId" => $messageId,
+            "roomId" => $roomId,
+            "messageText" => $text,
+            "user" => [
+                "id" => $userId,
+                "name" => $userName,
+                "avatar" => $userAvatar
+            ],
+            "stars" => (int) $stars,
+            "starred" => (boolean) $starred,
+            "time" => $time,
+            "edit-time" => $edit > 0 ? $edit : null,
+            "seen" => $seen,
+            "reply" => isset($replyTo) ? [
+                "messageId" => (int) $replyTo,
+                "user" => [
+                    "id" => (int) $replyToUserId,
+                    "name" => $replyToUserName
+                ]
+            ] : null
+        ];
     }
 }
