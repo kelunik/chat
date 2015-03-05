@@ -42,17 +42,7 @@
             <img class="ac-header-app-logo" src="/img/logo_40x40x2.png" width="40" height="40">
         </a>
 
-        <span class="ac-header-button ac-header-title">
-            <span class="ac-header-title-main">
-                Room Title
-            </span>
-
-            <span class="ac-header-title-sub">
-                <span class="ac-room-online">X online</span>
-                <span class="ac-header-title-sub-sep">/</span>
-                <span class="ac-room-count">Y members</span>
-            </span>
-        </span>
+        <span class="ac-header-button ac-header-title" id="header-title"></span>
 
         <span class="ac-header-label ac-header-shrinkable"></span>
 
@@ -127,9 +117,6 @@
         </div>
 
         <div id="right-col">
-            <div id="room-infos">
-
-            </div>
             <div id="stars">
 
             </div>

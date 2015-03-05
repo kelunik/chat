@@ -31,6 +31,7 @@ function expand(roomId, node, linkedUrl, requestUrl, template) {
 
                 if (roomList) {
                     var room = roomList.get(roomId);
+
                     if (room.isDefaultScroll()) {
                         room.scrollToBottom();
                     }

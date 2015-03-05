@@ -7,10 +7,11 @@ var Util = require("./Util.js"),
     MessageExpand = require("./MessageExpand.js"),
     Plugin = require("remarkable-regexp");
 
-var messageList, md, messageExpand, plugin;
+var roomList, md, messageExpand, plugin;
 
-module.exports = function (_messageList, roomList) {
-    messageList = _messageList;
+module.exports = function (_roomList) {
+    roomList = _roomList;
+
     messageExpand = new MessageExpand(roomList);
     plugin = new Plugin(/@([a-z][a-z0-9-]*)/i, function (match, utils) {
         if (match[1] === user.name) {
@@ -95,9 +96,13 @@ function initReplyNode(node, reply) {
     node.innerHTML = node.innerHTML.replace(/:\d+/, require("../../html/reply_to.handlebars")(reply));
     var replyNode = node.querySelector(".in-reply");
 
-    if (replyNode && messageList) {
+    if (replyNode) {
         replyNode.onclick = function () {
-            messageList.highlight(parseInt(this.getAttribute("data-id")));
+            var message = roomList.getCurrent().getMessageList().get(reply.messageId);
+
+            if (message) {
+                message.highlight();
+            }
         };
     }
 }

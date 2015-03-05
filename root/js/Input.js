@@ -9,13 +9,12 @@ var editMessage = 0,
     compose = false,
     currentReplyTo = null,
     input = document.getElementById("input"),
-    roomList, messageList, dataHandler, formatter;
+    roomList, dataHandler, formatter;
 
-module.exports = function (_roomList, _messageList, _dataHandler) {
+module.exports = function (_roomList, _dataHandler) {
     roomList = _roomList;
-    messageList = _messageList;
     dataHandler = _dataHandler;
-    formatter = new Formatter(messageList, roomList);
+    formatter = new Formatter(roomList);
     setup();
 
     return {
@@ -76,7 +75,7 @@ function setup() {
             current = replyTo();
 
             if (current) {
-                message = window.prev(messageList.get(current), ".chat-message:not(.chat-message-me)");
+                message = window.prev(roomList.getCurrent().getMessageList().get(current), ".chat-message:not(.chat-message-me)");
             } else {
                 nodes = document.querySelectorAll(".room-current .chat-message:not(.chat-message-me)");
                 message = nodes.length > 1 ? nodes[nodes.length - 1] : null;
@@ -94,7 +93,7 @@ function setup() {
             current = replyTo();
 
             if (current) {
-                message = window.next(messageList.get(current), ".chat-message:not(.chat-message-me)");
+                message = window.next(roomList.getCurrent().getMessageList().get(current), ".chat-message:not(.chat-message-me)");
 
                 if (message) {
                     replyTo(parseInt(message.getAttribute("data-id")));
@@ -113,7 +112,7 @@ function setup() {
             }
 
             if (editMessage) {
-                message = window.prev(messageList.get(editMessage), ".chat-message-me");
+                message = window.prev(roomList.getCurrent().getMessageList().get(editMessage), ".chat-message-me");
             } else {
                 nodes = document.querySelectorAll(".room-current .chat-message-me");
                 message = nodes.length > 1 ? nodes[nodes.length - 1] : null;
@@ -131,7 +130,7 @@ function setup() {
                 return;
             }
 
-            message = editMessage ? window.next(messageList.get(editMessage), ".chat-message-me") : null;
+            message = editMessage ? window.next(roomList.getCurrent().getMessageList().get(editMessage), ".chat-message-me") : null;
 
             if (message) {
                 edit(parseInt(message.getAttribute("data-id")));
@@ -249,7 +248,7 @@ function adjust(_compose) {
 
     if (currentReplyTo !== newReplyTo) {
         if (currentReplyTo) {
-            message = messageList.get(currentReplyTo);
+            message = roomList.getCurrent().getMessageList().get(currentReplyTo);
 
             if (message) {
                 message.classList.remove("input-reply");
@@ -257,7 +256,7 @@ function adjust(_compose) {
         }
 
         if (newReplyTo) {
-            message = messageList.get(newReplyTo);
+            message = roomList.getCurrent().getMessageList().get(newReplyTo);
 
             if (message) {
                 message.classList.add("input-reply");
@@ -293,7 +292,7 @@ function adjust(_compose) {
 }
 
 function edit(id) {
-    var message = messageList.get(id);
+    var message = roomList.getCurrent().getMessageList().get(id).getNode();
 
     if (moment(message.querySelector("time").getAttribute("datetime")).unix() < moment().unix() - 300) {
         alert("You can't edit messages older than 5 minutes!");
@@ -337,7 +336,7 @@ function submit() {
     var roomNode = roomList.getCurrent().getNode();
 
     if (editMessage) {
-        var messageNode = messageList.get(editMessage);
+        var messageNode = roomList.getCurrent().getMessageList().get(editMessage);
 
         if (text === messageNode.getAttribute("data-text")) {
             reset();
@@ -400,7 +399,7 @@ function submit() {
         var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
         pings.forEach(function (messageId) {
-            var msg = messageList.get(messageId);
+            var msg = roomList.getCurrent().getMessageList().get(messageId);
 
             if (!msg) {
                 return;

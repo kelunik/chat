@@ -1,8 +1,8 @@
 "use strict";
 
-var rooms = {}, current;
-
 module.exports = function () {
+    var rooms = {}, current;
+
     return {
         add: function (room) {
             rooms[room.getId()] = room;
@@ -12,29 +12,16 @@ module.exports = function () {
             return current;
         },
 
+        setCurrent: function (id) {
+            current = rooms[id];
+        },
+
         forEach: function (callback) {
             for (var id in rooms) {
                 if (rooms.hasOwnProperty(id)) {
                     callback(rooms[id], id);
                 }
             }
-        },
-
-        focus: function (id, skipEvent) {
-            skipEvent = skipEvent || false;
-
-            var room = rooms[id];
-            current = room;
-
-            if (!room) {
-                return;
-            }
-
-            if (!skipEvent) {
-                room.getTabNode().dispatchEvent(new Event('click'));
-            }
-
-            room.onComeBack();
         },
 
         has: function (id) {

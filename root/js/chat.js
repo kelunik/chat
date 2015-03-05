@@ -12,7 +12,6 @@ var ActivityObserver = require("./ActivityObserver.js"),
     Input = require("./Input.js"),
     LongPress = require("./longpress.js"),
     Message = require("./Message.js"),
-    MessageList = require("./Messages.js"),
     NotificationCenter = require("./NotificationCenter.js"),
     Remarkable = require("remarkable"),
     Room = require("./Room.js"),
@@ -26,10 +25,9 @@ var dataHandler = new DataHandler(config.websocketUrl);
 var roomList = new RoomList();
 var timeUpdater = new TimeUpdater();
 var activityObserver = new ActivityObserver(config, roomList, dataHandler, timeUpdater);
-var messageList = new MessageList(roomList);
 var notificationCenter = new NotificationCenter(roomList, dataHandler);
-var input = new Input(roomList, messageList, dataHandler);
-var formatter = new Formatter(messageList, roomList);
+var input = new Input(roomList, dataHandler);
+var formatter = new Formatter(roomList);
 
 var initialLoad = true;
 
@@ -42,7 +40,8 @@ dataHandler.on("message", function (type, data) {
         node.parentNode.removeChild(node);
     }
 
-    new Message(data, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
+    var msg = new Message(data, input, roomList, activityObserver, dataHandler, notificationCenter);
+    roomList.get(data.roomId).getMessageList().insert(msg);
 
     if (data.user.id === user.id && data.reply) {
         notificationCenter.clearPing(data.reply.messageId)
@@ -50,7 +49,7 @@ dataHandler.on("message", function (type, data) {
 });
 
 dataHandler.on("message-edit", function (type, data) {
-    var message = messageList.get(data.messageId);
+    var message = roomList.getCurrent().getMessageList().get(data.messageId);
     var text = data.text;
 
     if (message === null) {
@@ -151,13 +150,17 @@ dataHandler.on("stars", function (type, data) {
 });
 
 dataHandler.on("transcript", function (type, data) {
+    console.log("transcript loaded…");
+
     var room = roomList.get(data.roomId);
     room.setTranscriptPending(false);
     var node = room.getNode();
     var tempScroll = node.scrollHeight - node.scrollTop;
+    var messageList = room.getMessageList();
 
     data.messages.forEach(function (message) {
-        new Message(message, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
+        var msg = new Message(message, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
+        messageList.insert(msg);
     });
 
     if (data.messages.length > 0) {
@@ -213,10 +216,11 @@ dataHandler.on("whereami", function (type, data) {
                 return;
             }
 
-            roomList.add(new Room(room, messageList, roomList, activityObserver, dataHandler, notificationCenter));
+            var r = new Room(room, roomList, activityObserver, dataHandler, notificationCenter);
+            roomList.add(r);
 
             if (roomId === room.id) {
-                roomList.focus(roomId);
+                r.focus();
             }
         }.bind(this));
     }

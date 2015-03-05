@@ -1,112 +1,55 @@
 "use strict";
 
 var Util = require("./Util");
+var MessageList = require("./MessageList");
 
-var rooms, tabs, infos, stars, template;
-var messageList, roomList, activityObserver, dataHandler, notificationCenter;
+var roomList, activityObserver, dataHandler, notificationCenter;
 
-template = {
+var template = {
     content: require("../../html/room.handlebars"),
     tab: require("../../html/room_tab.handlebars"),
-    info: require("../../html/room_info.handlebars"),
-    stars: require("../../html/stars.handlebars")
+    stars: require("../../html/stars.handlebars"),
+    title: require("../../html/header_title.handlebars")
 };
 
-var mobileMenuSwitch = document.getElementById("mobile-menu-switch-checkbox");
-
-module.exports = function (data, _messageList, _roomList, _activityObserver, _dataHandler, _notificationCenter) {
-    messageList = _messageList;
+module.exports = function (data, _roomList, _activityObserver, _dataHandler, _notificationCenter) {
     roomList = _roomList;
     activityObserver = _activityObserver;
     dataHandler = _dataHandler;
     notificationCenter = _notificationCenter;
 
-    rooms = rooms || document.getElementById("rooms");
-    tabs = tabs || document.getElementById("room-tabs");
-    infos = infos || document.getElementById("room-infos");
-    stars = stars || document.getElementById("stars");
-
-    if (!rooms || !tabs) {
-        throw new Error("no parent dom available to add room");
-    }
-
     var id, name, description, users, pings, defaultScroll, firstMessage, lastMessage, scrollTimeout = 0,
         firstLoadableMessage, transcriptPending, contentNode, tabNode, infoNode, starsNode, pingNode,
-        initialPayloadSent;
+        initialPayloadSent, messageList;
 
     id = data.id;
     name = data.name;
     description = data.description;
-    users = data.users;
     pings = data.pings;
     defaultScroll = true;
     scrollTimeout = null;
-    firstMessage = null;
-    lastMessage = null;
     firstLoadableMessage = null;
     transcriptPending = false;
     initialPayloadSent = false;
 
-    contentNode = rooms.appendChild(Util.html2node(template.content(id)));
-    contentNode = document.getElementById("room-" + id);
-    tabNode = tabs.appendChild(Util.html2node(template.tab({
+    contentNode = Util.html2node(template.content(id));
+    document.getElementById("rooms").appendChild(contentNode);
+
+    messageList = new MessageList(contentNode);
+
+    tabNode = Util.html2node(template.tab({
         id: id,
         name: name
-    })));
-    tabNode = document.getElementById("room-tab-" + id);
-    infoNode = infos.appendChild(Util.html2node(template.info(data)));
-    infoNode = document.getElementById("room-info-" + id);
+    }));
+    document.getElementById("room-tabs").appendChild(tabNode);
+
     starsNode = stars.appendChild(Util.html2node(template.stars({
         roomId: id
     })));
     pingNode = tabNode.querySelector(".pings");
 
-    infoNode.querySelector(".room-desc").getElementsByTagName("a").forEach(function (o) {
-        o.setAttribute("target", "_blank");
-    });
-
     tabNode.addEventListener("click", function () {
-        mobileMenuSwitch.checked = false;
-
-        if (!initialPayloadSent) {
-            initialPayloadSent = true;
-
-            dataHandler.send("transcript", {
-                roomId: id,
-                direction: "older",
-                messageId: firstMessage || -1
-            });
-
-            dataHandler.send("stars", {
-                roomId: id
-            });
-        }
-
-        document.getElementsByClassName("room-current").forEach(function (o) {
-            o.classList.remove("room-current");
-        });
-
-        document.getElementsByClassName("room-tab-current").forEach(function (o) {
-            o.classList.remove("room-tab-current");
-        });
-
-        document.getElementsByClassName("stars-current").forEach(function (o) {
-            o.classList.remove("stars-current");
-        });
-
-        document.getElementsByClassName("room-info-current").forEach(function (o) {
-            o.classList.remove("room-info-current");
-        });
-
-        contentNode.classList.add("room-current");
-        tabNode.classList.add("room-tab-current");
-        starsNode.classList.add("stars-current");
-        infoNode.classList.add("room-info-current");
-
-        roomList.focus(id, true);
-        tabNode.setAttribute("data-new-messages", "0");
-
-        window.history.replaceState(null, "", "/rooms/" + id);
+        exports.focus();
     }.bind(this));
 
     pingNode.setAttribute("data-pings", pings.length + "");
@@ -118,7 +61,13 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
             return;
         }
 
-        messageList.highlight(messageId);
+        var message = messageList.get(messageId);
+
+        if (message) {
+            message.highlight();
+        } else {
+            window.open("/messages/" + messageId + "#" + messageId);
+        }
 
         dataHandler.send("ping", {
             messageId: messageId
@@ -185,20 +134,8 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
             return pings.length > 0 ? pings[0] : null;
         },
 
-        getFirstMessage: function () {
-            return firstMessage;
-        },
-
-        getLastMessage: function () {
-            return lastMessage;
-        },
-
-        setFirstMessage: function (value) {
-            firstMessage = value;
-        },
-
-        setLastMessage: function (value) {
-            lastMessage = value;
+        getMessageList: function () {
+            return messageList;
         },
 
         noMoreMessages: function () {
@@ -298,6 +235,54 @@ module.exports = function (data, _messageList, _roomList, _activityObserver, _da
             if (node) {
                 node.parentNode.removeChild(node);
             }
+        },
+
+        focus: function () {
+            document.getElementsByClassName("room-current").forEach(function (o) {
+                o.classList.remove("room-current");
+            });
+
+            document.getElementsByClassName("room-tab-current").forEach(function (o) {
+                o.classList.remove("room-tab-current");
+            });
+
+            document.getElementsByClassName("stars-current").forEach(function (o) {
+                o.classList.remove("stars-current");
+            });
+
+            contentNode.classList.add("room-current");
+            tabNode.classList.add("room-tab-current");
+            starsNode.classList.add("stars-current");
+
+            tabNode.setAttribute("data-new-messages", "0");
+            window.history.replaceState(null, "", "/rooms/" + id);
+
+            roomList.setCurrent(id);
+
+            var title = document.getElementById("header-title");
+            title.innerHTML = template.title({
+                name: name,
+                memberinfo: {
+                    online: 0,
+                    count: 42
+                }
+            });
+
+            if (!initialPayloadSent) {
+                initialPayloadSent = true;
+
+                dataHandler.send("transcript", {
+                    roomId: id,
+                    direction: "older",
+                    messageId: firstMessage || -1
+                });
+
+                dataHandler.send("stars", {
+                    roomId: id
+                });
+            }
+
+            this.onComeBack();
         }
     };
 

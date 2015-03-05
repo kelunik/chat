@@ -4,135 +4,51 @@ var Formatter = require("./Formatter.js"),
     moment = require("moment"),
     Util = require("./Util.js");
 
-var template, formatter;
+var formatter;
+var template = require("../../html/chat_message.handlebars");
 
-module.exports = function (data, input, messageList, roomList, activityObserver, dataHandler, notificationCenter) {
-    var id, room, roomNode, messageNode;
-
-    template = {
-        chat: require("../../html/chat_message.handlebars")
-    };
-
+module.exports = function (data, input, messageList, roomList, activityObserver, dataHandler) {
     formatter = formatter || new Formatter(messageList, roomList);
 
-    var showIndicator = false;
+    var id = data.messageId;
+    var room = data.roomId;
+    var text = data.messageText;
+    var starred = data.starred;
 
-    id = data.messageId;
-
-    room = roomList.get(data.roomId);
-    roomNode = room.getNode();
-
-    messageNode = Util.html2node(template.chat(data));
-    messageNode.setAttribute("data-text", data.messageText);
+    var node = Util.html2node(template(data));
 
     if (data.user.id === user.id) {
-        messageNode.classList.add("chat-message-me");
+        node.classList.add("chat-message-me");
     }
 
-    formatter.formatMessage(room.getId(), messageNode.querySelector(".chat-message-text"), data.messageText, data.reply, data.user);
-    messageNode.querySelector("time").textContent = moment.unix(data.time).fromNow();
-    messageNode.querySelector("time").setAttribute("title", moment.unix(data.time).format("LLL"));
-    messageNode.querySelector("time").parentNode.href = "/messages/" + data.messageId + "#" + data.messageId;
+    formatter.formatMessage(room, node.querySelector(".chat-message-text"), text, data.reply, data.user);
 
-    if (room.getFirstMessage() === null || room.getLastMessage() === null) {
-        room.setFirstMessage(data.messageId);
-        room.setLastMessage(data.messageId);
-        messageNode = roomNode.appendChild(messageNode);
-        showIndicator = true;
-    }
+    node.querySelector("time").textContent = moment.unix(data.time).fromNow();
+    node.querySelector("time").setAttribute("title", moment.unix(data.time).format("LLL"));
+    node.querySelector("time").parentNode.href = "/messages/" + id + "#" + id;
 
-    else if (data.messageId > room.getLastMessage()) {
-        var prev = messageList.get(room.getLastMessage());
+    node.querySelector(".chat-message-stars").addEventListener("click", function () {
+        starred = !starred;
 
-        if (prev && !prev.classList.contains("chat-message-cmd-me") &&
-            prev.getAttribute("data-author") == data.user.id &&
-            moment(prev.querySelector("time").getAttribute("datetime")).unix() > data.time - 60
-        ) {
-            messageNode.classList.add("chat-message-followup");
-        }
+        var event = starred ? "star" : "unstar";
+        this.setAttribute("data-starred", starred ? "1" : "0");
 
-        room.setLastMessage(data.messageId);
-        messageNode = roomNode.appendChild(messageNode);
-
-        showIndicator = true;
-    }
-
-    else if (data.messageId < room.getFirstMessage()) {
-        var nodeBefore = roomNode.children[0];
-        room.setFirstMessage(data.messageId);
-        messageNode = roomNode.insertBefore(messageNode, nodeBefore);
-
-        if (!nodeBefore.classList.contains("chat-message-cmd-me") &&
-            nodeBefore.getAttribute("data-author") * 1 === data.user.id &&
-            moment(nodeBefore.querySelector("time").getAttribute("datetime")).unix() - 60 < data.time
-        ) {
-            nodeBefore.classList.add("chat-message-followup");
-        }
-    }
-
-    else {
-        // TODO: Test this code...
-
-        var curr = roomNode.children.length - 1;
-
-        while (curr - 1 >= 0) {
-            if (roomNode.children[curr - 1].getAttribute("data-id") * 1 < data.messageId) {
-                roomNode.insertBefore(messageNode, roomNode.children[curr]);
-                break;
-            }
-
-            curr--;
-        }
-
-        showIndicator = true;
-    }
-
-    if (room.shouldScroll()) {
-        room.scrollToBottom();
-    } else if (room === roomList.getCurrent() && showIndicator) {
-        notificationCenter.showMessageIndicator();
-    }
-
-    if (roomList.getCurrent() !== room || !activityObserver.isActive()) {
-        var tab = document.getElementById("room-tab-" + data.roomId);
-        tab.setAttribute("data-new-messages", "" + (1 * tab.getAttribute("data-new-messages") + 1));
-    }
-
-    var messageCount = 0;
-    document.getElementsByClassName("room-tab").forEach(function (o) {
-        messageCount += (+o.getAttribute("data-new-messages") || 0);
-    });
-
-    if (!activityObserver.isActive()) {
-        var title = messageCount === 0 ? "" : "(" + messageCount + ") ";
-        document.title = title + " " + config.name;
-    }
-
-    messageNode.querySelector(".chat-message-stars").addEventListener("click", function () {
-        var star = this.getAttribute("data-starred") === "0";
-        this.setAttribute("data-starred", star ? "1" : "0");
-
-        var event = star ? "star" : "unstar";
         dataHandler.send(event, {
-            messageId: data.messageId
+            messageId: id
         });
     });
 
-    messageNode.querySelector(".chat-message-reply").addEventListener("click", function () {
-        input.replyTo(data.messageId);
+    node.querySelector(".chat-message-reply").addEventListener("click", function () {
+        input.replyTo(id);
     });
 
-    if (window.isTouchDevice()) {
-        messageNode.classList.add("unselectable");
-    }
-
     if (data.user.id === user.id) {
-        messageNode.addEventListener("longpress", function () {
+        node.addEventListener("longpress", function () {
             input.edit(data.messageId);
         });
     }
 
-    messageNode.addEventListener("mouseenter", function () {
+    node.addEventListener("mouseenter", function () {
         var nodes = document.querySelectorAll(".chat-message[data-reply='" + id + "']");
 
         nodes.forEach(function (node) {
@@ -143,26 +59,22 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
             var message = messageList.get(data.reply.messageId);
 
             if (message) {
-                message.classList.add("reply");
+                message.getNode().classList.add("reply");
             }
         }
     });
 
-    messageNode.addEventListener("mouseleave", function () {
+    node.addEventListener("mouseleave", function () {
         var nodes = document.querySelectorAll(".reply");
 
         nodes.forEach(function (node) {
             node.classList.remove("reply");
         });
-
-        if (data.reply) {
-            var message = messageList.get(data.reply.messageId);
-
-            if (message) {
-                message.classList.remove("reply");
-            }
-        }
     });
+
+    if (window.isTouchDevice()) {
+        node.classList.add("unselectable");
+    }
 
     return {
         getId: function () {
@@ -171,6 +83,39 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
 
         getRoom: function () {
             return room;
+        },
+
+        getAuthorId: function () {
+            return data.user.id;
+        },
+
+        getTime: function () {
+            return data.time;
+        },
+
+        getNode: function () {
+            return node;
+        },
+
+        highlight: function () {
+            var pos = message.offsetTop;
+            var height = message.clientHeight;
+
+            if (pos < node.parentNode.scrollTop) {
+                node.parentNode.scrollTop = pos;
+            }
+
+            else if (pos + height > node.parentNode.scrollTop + node.parentNode.clientHeight) {
+                node.parentNode.scrollTop = pos + height - node.parentNode.clientHeight;
+            }
+
+            // TODO: use css class
+
+            message.style.backgroundColor = "#b33636";
+
+            setTimeout(function () {
+                message.style.backgroundColor = "";
+            }, 1000);
         }
     }
 };
