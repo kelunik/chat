@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head lang="en">
+<head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars(APP_NAME) ?></title>
 
