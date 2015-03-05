@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <title><?= htmlspecialchars(APP_NAME) ?></title>
     <meta charset="utf-8">

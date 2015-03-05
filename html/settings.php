@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <title>Settings – t@lk</title>
     <meta charset="utf-8">

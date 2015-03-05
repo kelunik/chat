@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="/manifest.appcache">
+<html lang="en">
 <head lang="en">
     <meta charset="UTF-8">
     <title><?= htmlspecialchars(APP_NAME) ?></title>

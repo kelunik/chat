@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <title><?= htmlspecialchars(APP_NAME) ?></title>
     <meta charset="utf-8">
@@ -45,7 +45,8 @@
         <div id="content-fw">
             <form action="/rooms/new" method="post">
                 <div>
-                    <i class="fa fa-info-circle pull-left"></i>Please review the list of existing rooms before creating a new one.
+                    <i class="fa fa-info-circle pull-left"></i>Please review the list of existing rooms before creating
+                    a new one.
                 </div>
 
                 <table>
