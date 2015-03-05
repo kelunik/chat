@@ -31,28 +31,56 @@
 </head>
 <body>
 <div id="page">
-    <div id="chat">
-        <input class="no-display" id="mobile-menu-switch-checkbox" type="checkbox">
+    <input class="no-display" id="mobile-menu-switch-checkbox" type="checkbox">
 
-        <div id="left-col">
-            <div id="user">
-                <label class="mobile-only" id="mobile-menu-switch" for="mobile-menu-switch-checkbox">
-                    <i class="fa fa-fw fa-navicon fa-lg"></i>
-                </label>
+    <div class="ac-header" id="header">
+        <!-- <label class="ac-header-button mobile-only" id="mobile-menu-switch" for="mobile-menu-switch-checkbox">
+            <i class="fa fa-fw fa-navicon"></i>
+        </label> -->
 
-                <span id="current-user"><?= htmlspecialchars($session->name) ?></span>
+        <a class="ac-header-button ac-header-app" href="/">
+            <img class="ac-header-app-logo" src="/img/logo_40x40x2.png" width="40" height="40">
+        </a>
 
-				<span id="ping-clear-all" title="clear all pings">
-					<i class="fa fa-magic"></i>
-				</span>
+        <span class="ac-header-button ac-header-title">
+            <span class="ac-header-title-main">
+                Room Title
+            </span>
 
-                <form id="logout" action="/logout" method="post">
-                    <button type="submit" class="button-no-style" title="logout">
-                        <i class="fa fa-power-off"></i>
-                    </button>
-                </form>
+            <span class="ac-header-title-sub">
+                <span class="ac-room-online">X online</span>
+                <span class="ac-header-title-sub-sep">/</span>
+                <span class="ac-room-count">Y members</span>
+            </span>
+        </span>
+
+        <span class="ac-header-label ac-header-shrinkable"></span>
+
+        <span class="ac-header-sep"></span>
+
+        <span class="ac-header-label" id="current-user"><?= htmlspecialchars($session->name) ?></span>
+
+        <span class="ac-header-button" id="ping-clear-all" title="clear all pings">
+            <i class="fa fa-magic"></i>
+        </span>
+
+        <form class="ac-header-button" id="logout" action="/logout" method="POST">
+            <button type="submit" class="button-no-style" title="logout">
+                <i class="fa fa-power-off"></i>
+            </button>
+        </form>
+
+        <form class="ac-header-label" action="/search" method="GET">
+            <div class="ac-header-search">
+                <input class="ac-header-search-text" type="search" role="search" name="q"
+                       placeholder="search messages…" autocomplete="off">
+                <button class="ac-header-search-button" type="submit"><i class="fa fa-search fa-fw"></i></button>
             </div>
+        </form>
+    </div>
 
+    <div id="chat">
+        <div id="left-col">
             <div class="sidebar-title">
                 <div id="room-search">
                     <i class="fa fa-search"></i>
