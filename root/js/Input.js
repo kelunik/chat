@@ -52,7 +52,7 @@ function setup() {
     }));
 
     input.addEventListener("keydown", function (e) {
-        var message, roomNode, nodes, current;
+        var message, roomNode, nodes, current, msgNode;
 
         if (e.which === 37 || e.which === 39) {
             compose = true;
@@ -75,7 +75,7 @@ function setup() {
             current = replyTo();
 
             if (current) {
-                message = window.prev(roomList.getCurrent().getMessageList().get(current), ".chat-message:not(.chat-message-me)");
+                message = window.prev(roomList.getCurrent().getMessageList().get(current).getNode(), ".chat-message:not(.chat-message-me)");
             } else {
                 nodes = document.querySelectorAll(".room-current .chat-message:not(.chat-message-me)");
                 message = nodes.length > 1 ? nodes[nodes.length - 1] : null;
@@ -93,7 +93,11 @@ function setup() {
             current = replyTo();
 
             if (current) {
-                message = window.next(roomList.getCurrent().getMessageList().get(current), ".chat-message:not(.chat-message-me)");
+                try {
+                    message = window.next(roomList.getCurrent().getMessageList().get(current).getNode(), ".chat-message:not(.chat-message-me)");
+                } catch (e) {
+                    // ...
+                }
 
                 if (message) {
                     replyTo(parseInt(message.getAttribute("data-id")));
@@ -112,8 +116,6 @@ function setup() {
             }
 
             if (editMessage) {
-                var msgNode;
-
                 roomList.forEach(function (room) {
                     var msg = room.getMessageList().get(editMessage);
 
@@ -139,8 +141,6 @@ function setup() {
             if (compose && input.value !== "") {
                 return;
             }
-
-            var msgNode = null;
 
             roomList.forEach(function (room) {
                 var msg = room.getMessageList().get(editMessage);
@@ -271,7 +271,7 @@ function adjust(_compose) {
             message = roomList.getCurrent().getMessageList().get(currentReplyTo);
 
             if (message) {
-                message.classList.remove("input-reply");
+                message.getNode().classList.remove("input-reply");
             }
         }
 
@@ -279,7 +279,7 @@ function adjust(_compose) {
             message = roomList.getCurrent().getMessageList().get(newReplyTo);
 
             if (message) {
-                message.classList.add("input-reply");
+                message.getNode().classList.add("input-reply");
             }
         }
 
