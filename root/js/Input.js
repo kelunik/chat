@@ -112,7 +112,7 @@ function setup() {
             }
 
             if (editMessage) {
-                var msgNode = null;
+                var msgNode;
 
                 roomList.forEach(function (room) {
                     var msg = room.getMessageList().get(editMessage);
@@ -427,7 +427,7 @@ function submit() {
                 return;
             }
 
-            var rec = msg.getBoundingClientRect();
+            var rec = msg.getNode().getBoundingClientRect();
 
             if (rec.top >= 0 && rec.top < h || rec.bottom > 0 && rec.bottom <= h) {
                 dataHandler.send("ping", {

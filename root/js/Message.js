@@ -56,7 +56,7 @@ module.exports = function (data, input, roomList, activityObserver, dataHandler)
         });
 
         if (data.reply) {
-            var message = messageList.get(data.reply.messageId);
+            var message = roomList.getCurrent().getMessageList().get(data.reply.messageId);
 
             if (message) {
                 message.getNode().classList.add("reply");

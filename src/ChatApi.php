@@ -32,7 +32,7 @@ class ChatApi {
 		]);
 
         // don't allow self-pings
-        if (($key = array_search($user->getId(), $pings)) !== false) {
+        if (!DEVELOPMENT && ($key = array_search($user->getId(), $pings)) !== false) {
             unset($pings[$key]);
         }
 
