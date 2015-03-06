@@ -118,8 +118,8 @@ module.exports = function (data, input, roomList, activityObserver, dataHandler)
         },
 
         highlight: function () {
-            var pos = message.offsetTop;
-            var height = message.clientHeight;
+            var pos = node.offsetTop;
+            var height = node.clientHeight;
 
             if (pos < node.parentNode.scrollTop) {
                 node.parentNode.scrollTop = pos;
@@ -131,10 +131,10 @@ module.exports = function (data, input, roomList, activityObserver, dataHandler)
 
             // TODO: use css class
 
-            message.style.backgroundColor = "#b33636";
+            node.style.backgroundColor = "#b33636";
 
             setTimeout(function () {
-                message.style.backgroundColor = "";
+                node.style.backgroundColor = "";
             }, 1000);
         }
     }

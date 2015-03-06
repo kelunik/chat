@@ -162,7 +162,7 @@ dataHandler.on("transcript", function (type, data) {
 
     data.messages.forEach(function (message) {
         var msg = new Message(message, input, roomList, activityObserver, dataHandler);
-        messageList.insert(msg);
+        messageList.insert(msg, true);
     });
 
     if (data.messages.length > 0) {

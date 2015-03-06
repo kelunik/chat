@@ -30,7 +30,7 @@ module.exports = function (node, newMessageNode, activityObserver) {
             }
         },
 
-        insert: function (message) {
+        insert: function (message, old) {
             var shouldScroll = node.scrollTop === node.scrollHeight - node.clientHeight && node.classList.contains("room-current");
 
             var id = message.getId();
@@ -87,7 +87,7 @@ module.exports = function (node, newMessageNode, activityObserver) {
 
             if (shouldScroll) {
                 node.scrollTop = node.scrollHeight;
-            } else {
+            } else if (!old) {
                 newMessageNode.setAttribute("data-new-messages", ++newMessages);
                 activityObserver.onNewMessageChange();
             }
