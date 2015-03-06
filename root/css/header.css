@@ -59,7 +59,7 @@
 .ac-header-title {
     display: flex;
     flex-direction: column;
-    padding: 4px 15px;
+    padding: 4px 25px;
 }
 
 .ac-header-title-main {
@@ -152,13 +152,12 @@
 }
 
 .ac-header-member {
-    border: 2px solid rgba(255, 255, 255, .2);
     border-radius: 50%;
     display: inline-block;
     width: 30px;
     height: 30px;
     margin: 2px 2px 4px 2px;
-    padding: 1px;
+    padding: 3px;
     vertical-align: middle;
 }
 
@@ -171,4 +170,18 @@
     background: #fafafa no-repeat center;
     background-size: 30px;
     position: relative;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .2);
 }
+
+.ac-header-member-avatar::after {
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    content: "";
+    border-radius: 50%;
+    box-shadow: 0 0 1px 1px #3674B3 inset;
+    opacity: .8;
+}
+

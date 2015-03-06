@@ -277,8 +277,9 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    border: 2px solid #eee;
+    border: 2px solid rgba(255, 255, 255, .8);
     display: inline-block;
+    z-index: 2;
 }
 
 .user-activity[data-state="active"] {
