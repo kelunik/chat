@@ -371,8 +371,7 @@ function submit() {
 
         messageNode.classList.add("chat-message-pending");
         messageNode.setAttribute("data-token", tempId);
-
-        formatter.formatMessage(roomId, messageNode.querySelector(".chat-message-text"), text, null, user);
+        msg.setText(text);
 
         dataHandler.send("message-edit", {
             messageId: editMessage,

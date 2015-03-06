@@ -62,7 +62,6 @@ dataHandler.on("message-edit", function (type, data) {
         message.classList.remove("chat-message-pending");
         message.classList.remove("chat-message-cmd-me");
         message.setAttribute("data-token", "");
-        message.setAttribute("data-text", text);
 
         formatter.formatMessage(room.getId(), message.querySelector(".chat-message-text"), text, data.reply, data.user);
 
