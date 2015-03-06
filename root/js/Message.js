@@ -131,7 +131,7 @@ module.exports = function (data, input, roomList, activityObserver, dataHandler)
 
             // TODO: use css class
 
-            node.style.backgroundColor = "#b33636";
+            node.style.backgroundColor = "#ff9";
 
             setTimeout(function () {
                 node.style.backgroundColor = "";
