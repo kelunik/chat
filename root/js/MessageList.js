@@ -2,10 +2,18 @@
 
 var moment = require("moment");
 
-module.exports = function (node) {
-    var firstMessage, lastMessage, messages = {}, messageCount = 0;
+module.exports = function (node, newMessageNode, activityObserver) {
+    var firstMessage, lastMessage, messages = {}, messageCount = 0, newMessages = 0;
 
     return {
+        getFirstMessage: function () {
+            return firstMessage;
+        },
+
+        getLastMessage: function () {
+            return lastMessage;
+        },
+
         get: function (id) {
             if (id in messages) {
                 return messages[id];
@@ -23,7 +31,7 @@ module.exports = function (node) {
         },
 
         insert: function (message) {
-            var shouldScroll = node.scrollTop === node.scrollHeight - node.clientHeight;
+            var shouldScroll = node.scrollTop === node.scrollHeight - node.clientHeight && node.classList.contains("room-current");
 
             var id = message.getId();
 
@@ -79,11 +87,18 @@ module.exports = function (node) {
 
             if (shouldScroll) {
                 node.scrollTop = node.scrollHeight;
+            } else {
+                newMessageNode.setAttribute("data-new-messages", ++newMessages);
+                activityObserver.onNewMessageChange();
             }
 
             messages[id] = message;
 
             messageCount++;
+        },
+
+        getNewMessageCount: function () {
+            return newMessages;
         }
     }
 };

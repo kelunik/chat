@@ -8,7 +8,17 @@ module.exports = function (config, roomList, dataHandler, timeUpdater) {
     return {
         isActive: function () {
             return userActive;
-        }
+        },
+
+        onNewMessageChange: function() {
+            var cnt = 0;
+
+            roomList.forEach(function (room) {
+                cnt += room.getMessageList().getNewMessageCount();
+            });
+
+            document.title = "[" + cnt + "] " + config.name;
+        },
     }
 };
 

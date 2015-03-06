@@ -37,13 +37,13 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
     contentNode = Util.html2node(template.content(id));
     document.getElementById("rooms").appendChild(contentNode);
 
-    messageList = new MessageList(contentNode);
-
     tabNode = Util.html2node(template.tab({
         id: id,
         name: name
     }));
     document.getElementById("room-tabs").appendChild(tabNode);
+
+    messageList = new MessageList(contentNode, tabNode, activityObserver);
 
     starsNode = stars.appendChild(Util.html2node(template.stars({
         roomId: id
@@ -204,7 +204,7 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
                 dataHandler.send("transcript", {
                     roomId: id,
                     direction: "older",
-                    messageId: firstMessage
+                    messageId: messageList.getFirstMessage()
                 });
             }
         },

@@ -31,7 +31,6 @@ function expand(node, linkedUrl, requestUrl, template) {
                 node.parentNode.replaceChild(replace, node);
 
                 if (shouldScroll) {
-                    console.log(roomNode.scrollTop, roomNode.scrollHeight);
                     roomNode.scrollTop = roomNode.scrollHeight;
                 }
             } catch (e) {
