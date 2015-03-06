@@ -9,7 +9,8 @@ var template = {
     content: require("../../html/room.handlebars"),
     tab: require("../../html/room_tab.handlebars"),
     stars: require("../../html/stars.handlebars"),
-    title: require("../../html/header_title.handlebars")
+    title: require("../../html/header_title.handlebars"),
+    users: require("../../html/header_users.handlebars")
 };
 
 module.exports = function (data, _roomList, _activityObserver, _dataHandler, _notificationCenter) {
@@ -25,6 +26,7 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
     id = data.id;
     name = data.name;
     description = data.description;
+    users = data.users;
     pings = data.pings;
     defaultScroll = true;
     scrollTimeout = null;
@@ -120,7 +122,6 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
         },
 
         clearPing: function (id) {
-            console.log(id, pings);
             for (var i = pings.length - 1; i >= 0; i--) {
                 if (pings[i] === id) {
                     pings.splice(i, 1);
@@ -209,17 +210,12 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
         },
 
         addUser: function (userdata) {
-            // TODO: improve implementation
-            users.push(userdata);
-            data.users = users;
-            var newNode = Util.html2node(template.info(data));
+            users.unshift(userdata);
 
-            if (infoNode.classList.contains("room-info-current")) {
-                newNode.classList.add("room-info-current");
+            if (roomList.getCurrent() === this) {
+                var u = document.getElementById("header-users");
+                u.innerHTML = template.users(users);
             }
-
-            infos.replaceChild(newNode, infoNode);
-            infoNode = newNode;
         },
 
         removeUser: function (userId) {
@@ -230,10 +226,9 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
                 }
             }
 
-            var node = document.getElementById("room-info-" + id + "-person-" + userId);
-
-            if (node) {
-                node.parentNode.removeChild(node);
+            if (roomList.getCurrent() === this) {
+                var u = document.getElementById("header-users");
+                u.innerHTML = template.users(users);
             }
         },
 
@@ -267,6 +262,9 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
                     count: 42
                 }
             });
+
+            var users = document.getElementById("header-users");
+            users.innerHTML = template.users(data.users);
 
             if (!initialPayloadSent) {
                 initialPayloadSent = true;

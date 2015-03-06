@@ -44,7 +44,7 @@
 
         <span class="ac-header-button ac-header-title" id="header-title"></span>
 
-        <span class="ac-header-label ac-header-shrinkable"></span>
+        <span class="ac-header-label ac-header-shrinkable" id="header-users"></span>
 
         <span class="ac-header-sep"></span>
 
