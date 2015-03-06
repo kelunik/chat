@@ -51,6 +51,7 @@ module.exports = function (data, _roomList, _activityObserver, _dataHandler, _no
     pingNode = tabNode.querySelector(".pings");
 
     tabNode.addEventListener("click", function () {
+        document.getElementById("mobile-menu-switch-checkbox").checked = false;
         exports.focus();
     }.bind(this));
 

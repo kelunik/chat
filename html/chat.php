@@ -31,12 +31,10 @@
 </head>
 <body>
 <div id="page">
-    <input class="no-display" id="mobile-menu-switch-checkbox" type="checkbox">
-
     <div class="ac-header" id="header">
-        <!-- <label class="ac-header-button mobile-only" id="mobile-menu-switch" for="mobile-menu-switch-checkbox">
+        <label class="ac-header-button mobile-only" id="mobile-menu-switch" for="mobile-menu-switch-checkbox">
             <i class="fa fa-fw fa-navicon"></i>
-        </label> -->
+        </label>
 
         <a class="ac-header-button ac-header-app" href="/">
             <img class="ac-header-app-logo" src="/img/logo_40x40x2.png" width="40" height="40">
@@ -60,7 +58,7 @@
             </button>
         </form>
 
-        <form class="ac-header-label" action="/search" method="GET">
+        <form class="ac-header-label" action="/search" method="GET" id="search">
             <div class="ac-header-search">
                 <input class="ac-header-search-text" type="search" role="search" name="q"
                        placeholder="search messages…" autocomplete="off">
@@ -70,6 +68,8 @@
     </div>
 
     <div id="chat">
+        <input class="no-display" id="mobile-menu-switch-checkbox" type="checkbox">
+
         <div id="left-col">
             <div class="sidebar-title">
                 <div id="room-search">
