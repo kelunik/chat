@@ -23,6 +23,8 @@ module.exports = function (node) {
         },
 
         insert: function (message) {
+            var shouldScroll = node.scrollTop === node.scrollHeight - node.clientHeight;
+
             var id = message.getId();
 
             if (id in messages) {
@@ -66,7 +68,7 @@ module.exports = function (node) {
                 var curr = node.children.length - 1;
 
                 while (curr - 1 >= 0) {
-                    if (node.children[curr - 1].getAttribute("data-id") * 1 < data.messageId) {
+                    if (node.children[curr - 1].getAttribute("data-id") * 1 < id) {
                         node.insertBefore(message.getNode(), node.children[curr]);
                         break;
                     }
@@ -74,6 +76,12 @@ module.exports = function (node) {
                     curr--;
                 }
             }
+
+            if (shouldScroll) {
+                node.scrollTop = node.scrollHeight;
+            }
+
+            messages[id] = message;
 
             messageCount++;
         }

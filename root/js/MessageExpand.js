@@ -1,17 +1,14 @@
 "use strict";
 
-var util = require("./Util"),
-    roomList;
+var Util = require("./Util");
 
-module.exports = function (_roomList) {
-    roomList = _roomList;
-
+module.exports = function () {
     return {
         expand: expand
     };
 };
 
-function expand(roomId, node, linkedUrl, requestUrl, template) {
+function expand(node, linkedUrl, requestUrl, template) {
     var link, req;
 
     link = document.createElement("a");
@@ -25,16 +22,17 @@ function expand(roomId, node, linkedUrl, requestUrl, template) {
     req.onload = function () {
         if (this.status === 200) {
             try {
+                var roomNode = node.parentNode.parentNode.parentNode;
+                var shouldScroll = roomNode.scrollTop === roomNode.scrollHeight - roomNode.clientHeight;
                 var data = JSON.parse(this.response.toString());
                 var html = template(data);
-                node.parentNode.replaceChild(util.html2node(html), node);
 
-                if (roomList) {
-                    var room = roomList.get(roomId);
+                var replace = Util.html2node(html);
+                node.parentNode.replaceChild(replace, node);
 
-                    if (room.isDefaultScroll()) {
-                        room.scrollToBottom();
-                    }
+                if (shouldScroll) {
+                    console.log(roomNode.scrollTop, roomNode.scrollHeight);
+                    roomNode.scrollTop = roomNode.scrollHeight;
                 }
             } catch (e) {
                 // couldn't load card, just skip that

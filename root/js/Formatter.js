@@ -12,7 +12,7 @@ var roomList, md, messageExpand, plugin;
 module.exports = function (_roomList) {
     roomList = _roomList;
 
-    messageExpand = new MessageExpand(roomList);
+    messageExpand = new MessageExpand;
     plugin = new Plugin(/@([a-z][a-z0-9-]*)/i, function (match, utils) {
         if (match[1] === user.name) {
             return "<span class='ping'>" + utils.escape(match[0]) + "</span>";
@@ -63,7 +63,7 @@ module.exports = function (_roomList) {
 
 function formatMessage(roomId, node, text, reply, user) {
     if (roomId > 0) {
-        var result = tryExpand(roomId, node, text);
+        var result = tryExpand(node, text);
 
         if (result) {
             return result;
@@ -122,18 +122,18 @@ function replaceImageWithLink(img) {
     img.parentNode.replaceChild(link, img);
 }
 
-function tryExpand(roomId, node, text) {
+function tryExpand(node, text) {
     var match;
 
     match = new RegExp("^(" + RegExp.quote(config.host) + "\/messages\/([0-9]+))(#[0-9]+)?$").exec(text);
     if (match) {
-        return messageExpand.expand(roomId, node, match[1], match[1] + ".json", require("../../html/message_card.handlebars"));
+        return messageExpand.expand(node, match[1], match[1] + ".json", require("../../html/message_card.handlebars"));
     }
 
     match = /^(https:\/\/trello\.com\/c\/([0-9a-z]+))(\/.*)?$/i.exec(text);
     if (match) {
         var reqUrl = "https://api.trello.com/1/card/" + match[2] + "?key=" + trelloKey;
-        return messageExpand.expand(roomId, node, match[1], reqUrl, require("../../html/trello_card.handlebars"));
+        return messageExpand.expand(node, match[1], reqUrl, require("../../html/trello_card.handlebars"));
     }
 
     return false;

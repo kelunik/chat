@@ -112,7 +112,17 @@ function setup() {
             }
 
             if (editMessage) {
-                message = window.prev(roomList.getCurrent().getMessageList().get(editMessage), ".chat-message-me");
+                var msgNode = null;
+
+                roomList.forEach(function (room) {
+                    var msg = room.getMessageList().get(editMessage);
+
+                    if (msg) {
+                        msgNode = msg.getNode();
+                    }
+                });
+
+                message = window.prev(msgNode, ".chat-message-me");
             } else {
                 nodes = document.querySelectorAll(".room-current .chat-message-me");
                 message = nodes.length > 1 ? nodes[nodes.length - 1] : null;
@@ -130,7 +140,17 @@ function setup() {
                 return;
             }
 
-            message = editMessage ? window.next(roomList.getCurrent().getMessageList().get(editMessage), ".chat-message-me") : null;
+            var msgNode = null;
+
+            roomList.forEach(function (room) {
+                var msg = room.getMessageList().get(editMessage);
+
+                if (msg) {
+                    msgNode = msg.getNode();
+                }
+            });
+
+            message = editMessage ? window.next(msgNode, ".chat-message-me") : null;
 
             if (message) {
                 edit(parseInt(message.getAttribute("data-id")));
@@ -292,7 +312,12 @@ function adjust(_compose) {
 }
 
 function edit(id) {
-    var message = roomList.getCurrent().getMessageList().get(id).getNode();
+    var msg = roomList.getCurrent().getMessageList().get(id);
+    var message = msg ? msg.getNode() : null;
+
+    if (!message) {
+        return;
+    }
 
     if (moment(message.querySelector("time").getAttribute("datetime")).unix() < moment().unix() - 300) {
         alert("You can't edit messages older than 5 minutes!");
@@ -301,7 +326,7 @@ function edit(id) {
 
     editMessage = id;
 
-    input.value = message.getAttribute("data-text");
+    input.value = msg.getText();
 
     var caretPos = input.value.length;
     if (input.createTextRange) {
@@ -336,9 +361,10 @@ function submit() {
     var roomNode = roomList.getCurrent().getNode();
 
     if (editMessage) {
-        var messageNode = roomList.getCurrent().getMessageList().get(editMessage);
+        var msg = roomList.getCurrent().getMessageList().get(editMessage);
+        var messageNode = msg.getNode();
 
-        if (text === messageNode.getAttribute("data-text")) {
+        if (text === msg.getText()) {
             reset();
             return;
         }
@@ -353,10 +379,6 @@ function submit() {
             text: text,
             tempId: tempId
         });
-
-        if (roomList.getCurrent().shouldScroll()) {
-            roomList.getCurrent().scrollToBottom();
-        }
 
         ga('send', 'event', 'chat', 'edit');
     } else {

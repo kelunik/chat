@@ -40,7 +40,7 @@ dataHandler.on("message", function (type, data) {
         node.parentNode.removeChild(node);
     }
 
-    var msg = new Message(data, input, roomList, activityObserver, dataHandler, notificationCenter);
+    var msg = new Message(data, input, roomList, activityObserver, dataHandler);
     roomList.get(data.roomId).getMessageList().insert(msg);
 
     if (data.user.id === user.id && data.reply) {
@@ -49,29 +49,31 @@ dataHandler.on("message", function (type, data) {
 });
 
 dataHandler.on("message-edit", function (type, data) {
-    var message = roomList.getCurrent().getMessageList().get(data.messageId);
-    var text = data.text;
+    roomList.forEach(function (room) {
+        var msg = room.getMessageList().get(data.messageId);
+        var text = data.text;
 
-    if (message === null) {
-        return; // just ignore that
-    }
+        if (!msg) {
+            return; // just ignore that
+        }
 
-    message.classList.remove("chat-message-pending");
-    message.classList.remove("chat-message-cmd-me");
-    message.setAttribute("data-token", "");
-    message.setAttribute("data-text", text);
+        var message = msg.getNode();
 
-    var roomId = messageList.get(data.messageId).parentNode.getAttribute("data-id") * 1;
+        message.classList.remove("chat-message-pending");
+        message.classList.remove("chat-message-cmd-me");
+        message.setAttribute("data-token", "");
+        message.setAttribute("data-text", text);
 
-    formatter.formatMessage(roomId, message.querySelector(".chat-message-text"), text, data.reply, data.user);
+        formatter.formatMessage(room.getId(), message.querySelector(".chat-message-text"), text, data.reply, data.user);
 
-    if (data.error) {
-        alert(data.error);
-        console.log(data.error);
-        return;
-    }
+        if (data.error) {
+            alert(data.error);
+            console.log(data.error);
+            return;
+        }
 
-    message.querySelector(".chat-message-meta").setAttribute("data-edit", data.time);
+        message.querySelector(".chat-message-meta").setAttribute("data-edit", data.time);
+    });
 
     if (data.user.id === user.id && data.reply) {
         notificationCenter.clearPing(data.reply.messageId);
@@ -87,7 +89,7 @@ dataHandler.on("message-edit", function (type, data) {
 
 dataHandler.on("missed-query", function (type, data) {
     data.messages.forEach(function (o) {
-        new Message(o, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
+        new Message(o, input, roomList, activityObserver, dataHandler);
     });
 
     if (data.init) {
@@ -96,18 +98,20 @@ dataHandler.on("missed-query", function (type, data) {
 });
 
 dataHandler.on("star", function (type, data) {
-    var msg = messageList.get(data.messageId);
+    roomList.forEach(function (room) {
+        var messageList = room.getMessageList();
+        var msg = messageList.get(data.messageId);
 
-    if (msg) {
-        var node = msg.querySelector(".chat-message-stars");
-        node.setAttribute("data-stars", data.stars);
+        if (msg) {
+            msg.setStars(data.stars);
 
-        if (data.user === user.id) {
-            node.setAttribute("data-starred", data.action == "star" ? "1" : "0");
+            if (data.user === user.id) {
+                msg.setStarred(data.action === "star");
+            }
         }
-    }
+    });
 
-    msg = document.getElementById("message-starred-" + data.messageId);
+    var msg = document.getElementById("message-starred-" + data.messageId);
 
     if (msg) {
         if (data.stars === 0) {
@@ -115,7 +119,7 @@ dataHandler.on("star", function (type, data) {
         } else {
             msg.setAttribute("data-stars", data.stars);
 
-            if (data.user == user.id) {
+            if (data.user === user.id) {
                 msg.setAttribute("data-starred", data.action == "star" ? "1" : "0");
             }
         }
@@ -150,8 +154,6 @@ dataHandler.on("stars", function (type, data) {
 });
 
 dataHandler.on("transcript", function (type, data) {
-    console.log("transcript loaded…");
-
     var room = roomList.get(data.roomId);
     room.setTranscriptPending(false);
     var node = room.getNode();
@@ -159,7 +161,7 @@ dataHandler.on("transcript", function (type, data) {
     var messageList = room.getMessageList();
 
     data.messages.forEach(function (message) {
-        var msg = new Message(message, input, messageList, roomList, activityObserver, dataHandler, notificationCenter);
+        var msg = new Message(message, input, roomList, activityObserver, dataHandler);
         messageList.insert(msg);
     });
 
@@ -208,8 +210,7 @@ dataHandler.on("whereami", function (type, data) {
     var roomId = 1 * path.substr(7);
 
     if (data.length === 0) {
-        // TODO: Show room search
-        window.location = "/rooms/1";
+        window.location = "/rooms";
     } else {
         data.forEach(function (room) {
             if (roomList.has(room.id)) {

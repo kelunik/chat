@@ -7,8 +7,8 @@ var Formatter = require("./Formatter.js"),
 var formatter;
 var template = require("../../html/chat_message.handlebars");
 
-module.exports = function (data, input, messageList, roomList, activityObserver, dataHandler) {
-    formatter = formatter || new Formatter(messageList, roomList);
+module.exports = function (data, input, roomList, activityObserver, dataHandler) {
+    formatter = formatter || new Formatter(roomList);
 
     var id = data.messageId;
     var room = data.roomId;
@@ -85,6 +85,10 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
             return room;
         },
 
+        getText: function () {
+            return text;
+        },
+
         getAuthorId: function () {
             return data.user.id;
         },
@@ -95,6 +99,22 @@ module.exports = function (data, input, messageList, roomList, activityObserver,
 
         getNode: function () {
             return node;
+        },
+
+        setText: function (value) {
+            formatter.formatMessage(room, node.querySelector(".chat-message-text"), value, data.reply, data.user);
+            text = value;
+        },
+
+        setStars: function (value) {
+            var starNode = node.querySelector(".chat-message-stars");
+            starNode.setAttribute("data-stars", value);
+        },
+
+        setStarred: function (value) {
+            var starNode = node.querySelector(".chat-message-stars");
+            starNode.setAttribute("data-starred", value ? "1" : "0");
+            starred = value;
         },
 
         highlight: function () {
