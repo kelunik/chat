@@ -92,3 +92,32 @@ input {
     border: 1px solid rgba(0, 0, 0, .05);
     margin: 8px;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ddd;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #677b92;
+    border-left: 1px solid #ccc;
+    transition: all 1s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #3674B3;
+}
+
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: rgba(0, 0, 0, .2);
+}
