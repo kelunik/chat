@@ -94,18 +94,17 @@ input {
 }
 
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
     height: 16px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #ddd;
+    background-color: rgba(0, 0, 0, .05);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #677b92;
-    border-left: 1px solid #ccc;
-    transition: all 1s;
+    background-color: #7493b3;
+    border: 1px solid rgba(0, 0, 0, .05);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -119,5 +118,5 @@ input {
 }
 
 ::-webkit-scrollbar-corner {
-    background-color: rgba(0, 0, 0, .2);
+    background-color: transparent;
 }
