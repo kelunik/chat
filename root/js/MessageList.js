@@ -87,7 +87,9 @@ module.exports = function (node, newMessageNode, activityObserver) {
 
             if (shouldScroll) {
                 node.scrollTop = node.scrollHeight;
-            } else if (!old) {
+            }
+
+            if (!old && !activityObserver.isActive()) {
                 newMessageNode.setAttribute("data-new-messages", ++newMessages);
                 activityObserver.onNewMessageChange();
             }
