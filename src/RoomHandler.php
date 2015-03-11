@@ -379,6 +379,16 @@ class RoomHandler {
                 $pings[] = $user[0];
             }
 
+            usort($users, function ($a, $b) {
+                if ($a->state < $b->state) {
+                    return -1;
+                } else if ($a->state > $b->state) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
             $rooms[] = [
                 "id" => $roomId,
                 "name" => $roomName,
