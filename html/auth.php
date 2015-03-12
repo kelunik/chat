@@ -103,8 +103,8 @@
         }
 
         #logout-notice {
-            padding: 20px 20px;
-            margin: 0 auto;
+            padding: 20px;
+            margin: -20px auto 5px auto;
             background-color: #FFF3AE;
             border: 1px solid rgba(0, 0, 0, .1);
             border-radius: 3px 3px;
@@ -261,10 +261,6 @@
         </div>
     </div>
 
-    <div id="logout-container">
-        <div id="logout-notice">Your session has been terminated.</div>
-    </div>
-
     <div class="cover">
         <div class="cover-content">
             <h1><?= htmlspecialchars(APP_NAME) ?></h1>
@@ -286,6 +282,10 @@
                     this.classList.add("pending");
                 });
             </script>
+
+            <div id="logout-container">
+                <div id="logout-notice">Your session has been terminated.</div>
+            </div>
 
             <div id="features">
                 <div class="feature">
