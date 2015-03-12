@@ -42,4 +42,14 @@ Handlebars.registerHelper('markdown', function (text) {
     return new Handlebars.SafeString(markdown.render(text));
 });
 
+Handlebars.registerHelper("str2color", function (str) {
+    var hash = 3;
+
+    for (var i = 0; i < str.length; i++) {
+        hash = hash * 3 + str.charCodeAt(i);
+    }
+
+    return "hsl(" + (hash % 360) + ", 90%, 75%)";
+});
+
 document.getElementById("content-fw").innerHTML = require("../../html/room_overview.handlebars")(data);

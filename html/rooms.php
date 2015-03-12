@@ -23,21 +23,20 @@
 </head>
 <body>
 <div id="page">
-    <div id="nav">
-        <div id="nav-inner">
-            <div class="flex-left">
-                <picture>
-                    <source srcset="/img/logo_40x40.png, img/logo_40x40x2.png 2x">
-                    <img src="/img/logo_40x40.png" alt="logo" width="40" height="40">
-                </picture>
+    <div class="ac-header" id="header">
+        <a class="ac-header-button ac-header-app" href="/">
+            <img class="ac-header-app-logo" src="/img/logo_40x40x2.png" width="40" height="40">
+        </a>
 
-                <h1><?= htmlspecialchars(APP_NAME) ?></h1>
-            </div>
+        <span class="ac-header-sep"></span>
 
-            <div class="flex-right">
-                <?= htmlspecialchars($session->name) ?>
-            </div>
-        </div>
+        <span class="ac-header-label" id="current-user"><?= htmlspecialchars($session->name) ?></span>
+
+        <form class="ac-header-button" id="logout" action="/logout" method="POST">
+            <button type="submit" class="button-no-style" title="logout">
+                <i class="fa fa-power-off"></i>
+            </button>
+        </form>
     </div>
 
     <div id="content">

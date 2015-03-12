@@ -223,8 +223,7 @@
 
 #content-fw {
     margin: 0 auto;
-    padding: 15px 0;
-    max-width: 1000px;
+    padding: 15px;
 }
 
 #room-overview {
@@ -234,29 +233,40 @@
 }
 
 .room-card {
-    margin: 8px 4px 0 4px;
-    width: 200px;
-    flex: 1 0 200px;
-    border-top: 2px solid rgba(0, 0, 0, .05);
+    margin: 10px;
+    width: 250px;
+    flex: 1 0 250px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    border-radius: 2px;
+    background-color: #fff;
+    display: block;
 }
 
 .room-card-title {
+    display: block;
     border-radius: 3px 3px 0 0;
-    padding: 16px 10px 4px 10px;
+    padding: 16px 10px;
     word-break: break-all;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     font-size: 16px;
     line-height: 20px;
-    color: #777; /* color of ellipsis */
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    background: url(/img/pattern/001.png) center;
 }
 
-.room-card-title a {
-    font-weight: normal;
+.room-card-icons-left {
+    float: left;
+    color: #777;
+    font-size: 12px;
+    line-height: 20px;
+    display: inline-block;
 }
 
-.room-card-title-icons {
+.room-card-icons-right {
     float: right;
     color: #777;
     font-size: 12px;
@@ -264,20 +274,32 @@
     display: inline-block;
 }
 
-.room-card-title-icons .fa {
+.room-card-icons-left .fa {
+    margin-right: 5px;
     color: #999;
 }
 
-.room-card-desc {
-    padding: 4px 10px 12px 10px;
-    word-break: break-all;
+.room-card-icons-right .fa {
+    margin-left: 5px;
+    color: #999;
+}
+
+.room-card-desc, .room-card-footer {
+    padding: 10px 10px 5px 10px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     color: #777;
 }
 
+.room-card-footer {
+    padding: 0 10px 10px 10px;
+}
+
 .room-card-desc p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     padding: 0;
     margin: 0;
 }

@@ -1,8 +1,24 @@
 <div id="room-overview">
     {{#each this}}
         <div class="room-card">
-            <div class="room-card-title">
-                <span class="room-card-title-icons">
+            <a class="room-card-title" href="/rooms/{{id}}" style="background-color: {{str2color name}};">
+                {{name}}
+            </a>
+
+            <div class="room-card-desc">
+                {{#if description}}
+                    {{markdown description}}
+                {{else}}
+                    <i style="color: #999;">no description</i>
+                {{/if}}
+            </div>
+
+            <div class="room-card-footer">
+                <span class="room-card-icons-left">
+                    <i class="fa fa-comments"></i> {{messageCount}}
+                </span>
+
+                <span class="room-card-icons-right">
                     {{#ifCond users ">" 1}}
                         {{users}}&nbsp;&nbsp;<i class="fa fa-users fa-fw"></i>
                     {{/ifCond}}
@@ -15,18 +31,6 @@
                         {{users}}&nbsp;&nbsp;<i class="fa fa-user fa-fw"></i>
                     {{/ifCond}}
                 </span>
-
-                <a href="/rooms/{{id}}">
-                    {{name}}
-                </a>
-            </div>
-
-            <div class="room-card-desc">
-                {{#if description}}
-                    {{markdown description}}
-                {{else}}
-                    <i style="color: #999;">no description</i>
-                {{/if}}
             </div>
         </div>
     {{/each}}
