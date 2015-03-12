@@ -7,7 +7,7 @@
     <?php require TEMPLATE_DIR . "head_meta.php"; ?>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Pacifico|Lato">
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/all.min.css">
 
     <style>
         * {
@@ -17,12 +17,11 @@
         }
 
         html, body {
-            font-size: 15px;
+            font-size: 13px;
             font-family: Lato, sans-serif;
             margin: 0;
             min-height: 100vh;
-            background: #fff url(/img/cover.jpg) center;
-            background-size: cover;
+            background: #fff;
         }
 
         #page {
@@ -47,37 +46,7 @@
             color: rgb(0, 100, 200);
         }
 
-        #nav {
-            padding: 15px 0;
-            background: rgba(255, 255, 255, .5);
-            text-align: center;
-            line-height: 60px;
-            border-bottom: 1px solid rgba(0, 0, 0, .05);
-            -webkit-box-flex: 0;
-            -webkit-flex: 0 0 auto;
-            -ms-flex: 0 0 auto;
-            flex: 0 0 auto;
-        }
-
-        #nav img {
-            vertical-align: middle;
-            display: inline-block;
-        }
-
-        h1 {
-            font-family: 'Pacifico', sans-serif;
-            font-weight: normal;
-            font-size: 26px;
-            line-height: 60px;
-            margin: 0 0 0 20px;
-            padding: 0;
-            vertical-align: middle;
-            display: inline-block;
-            color: #333;
-        }
-
         #content {
-            padding: 10px;
             -webkit-box-flex: 2;
             -webkit-flex: 2;
             -ms-flex: 2;
@@ -99,19 +68,19 @@
             text-decoration: none;
             font-weight: bold;
             color: #fff;
-            margin: 35px 0 50px 0;
+            margin: -35px 0 50px 0;
             padding: 20px;
             display: inline-block;
-            background: rgba(0, 100, 200, .85);
+            background: rgba(0, 100, 200, 1);
             border-radius: 3px;
             line-height: 20px;
-            border: 1px solid #005DBA;
-            border-bottom: 3px solid #005DBA;
+            border: 1px solid #0052a3;
+            border-bottom: 3px solid #0052a3;
             position: relative;
         }
 
         #login:hover {
-            border-color: #004b96;
+            border-color: #004080;
         }
 
         #login:active,
@@ -120,18 +89,17 @@
             -webkit-transform: translateY(2px) !important;
             -ms-transform: translateY(2px) !important;
             transform: translateY(2px) !important;
-            border-bottom: 1px solid #005DBA !important;
-            margin-top: 37px;
+            border-bottom: 1px solid #004080 !important;
+            margin-bottom: 52px !important;
         }
 
         .pending {
-            opacity: .6;
+            background: rgb(55, 155, 255) !important;
         }
 
         #logout-container {
             text-align: center;
             line-height: 0;
-            margin-top: 20px;
         }
 
         #logout-notice {
@@ -158,44 +126,6 @@
             color: #444;
             font-weight: bold;
             text-align: center;
-        }
-
-        #top {
-            background: rgba(0, 100, 200, .85);
-            border-bottom: 1px solid rgba(0, 0, 0, .2);
-            line-height: 35px;
-            color: #eee;
-            font-size: 13px;
-            font-weight: bold;
-            padding: 0 20px;
-        }
-
-        #top-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .flex {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-pack: justify;
-            -webkit-justify-content: space-between;
-            -ms-flex-pack: justify;
-            justify-content: space-between;
-        }
-
-        .flex-left: {
-            -webkit-align-self: flex-start;
-            -ms-flex-item-align: start;
-            align-self: flex-start;
-        }
-
-        .flex-right {
-            -webkit-align-self: flex-end;
-            -ms-flex-item-align: end;
-            align-self: flex-end;
         }
 
         #features {
@@ -246,34 +176,117 @@
         .text-center {
             text-align: center;
         }
+
+        h1 {
+            font-family: 'Pacifico', sans-serif;
+            font-weight: normal;
+            line-height: 50px;
+            padding: 0;
+            vertical-align: middle;
+            display: inline-block;
+            /* TODO: Why do we need this? */
+            margin: -3px 80px 0 40px;
+            color: #fafafa;
+            font-size: 50px;
+            text-shadow: 0 0 15px rgba(0, 0, 0, .2);
+        }
+
+        .ac-header {
+            display: block;
+            background-color: rgba(0, 0, 0, .05);
+            border-bottom: 1px solid rgba(0, 0, 0, .05);
+            z-index: 2;
+        }
+
+        .ac-header-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        .cover {
+            background: url(/img/login-cover.jpg) center no-repeat;
+            background-size: cover;
+            height: 200px;
+            margin-top: -50px;
+            display: flex;
+            padding-top: 50px;
+        }
+
+        .cover-content {
+            margin: auto;
+        }
+
+        .logo {
+            vertical-align: middle;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .logo {
+                width: 100px;
+                height: 100px;
+                padding-bottom: 30px;
+            }
+
+            h1 {
+                display: none;
+            }
+
+            #login {
+                margin-bottom: 15px;
+            }
+
+            #login:active,
+            .pending {
+                margin-bottom: 17px !important;
+            }
+
+            #features {
+                margin-bottom: 25px;
+            }
+        }
     </style>
 
     <?php require TEMPLATE_DIR . "google_analytics.php"; ?>
 </head>
 <body>
 <div id="page">
-    <div id="top">
-        <div id="top-inner" class="flex">
-            <div class="flex-left"></div>
-            <div class="flex-right">version <?= GIT_COMMIT_ID ?></div>
+    <div class="ac-header" id="header">
+        <div class="ac-header-inner">
+            <span class="ac-header-sep"></span>
+
+            <span class="ac-header-label">
+                version <?= GIT_COMMIT_ID ?>
+            </span>
         </div>
-    </div>
-
-    <div id="nav">
-        <picture>
-            <source srcset="/img/logo_60x60.png, img/logo_60x60x2.png 2x">
-            <img src="/img/logo_60x60.png" alt="logo">
-        </picture>
-
-        <h1><?= htmlspecialchars(APP_NAME) ?></h1>
     </div>
 
     <div id="logout-container">
         <div id="logout-notice">Your session has been terminated.</div>
     </div>
 
+    <div class="cover">
+        <div class="cover-content">
+            <h1><?= htmlspecialchars(APP_NAME) ?></h1>
+            <img class="logo" src="/img/logo.png" width="110" height="110">
+        </div>
+    </div>
+
     <div id="content">
         <div id="content-inner">
+            <div class="text-center">
+                <a href="/login/github" id="login">
+                    <i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
+                </a>
+            </div>
+
+            <script>
+                document.getElementById("login").addEventListener("click", function (e) {
+                    this.querySelector("span").innerHTML = "Signing in&hellip;";
+                    this.classList.add("pending");
+                });
+            </script>
+
             <div id="features">
                 <div class="feature">
                     <i class="fa fa-font fa-2x"></i>
@@ -297,19 +310,6 @@
                     Star messages so they get more attention.
                 </div>
             </div>
-
-            <div class="text-center">
-                <a href="/login/github" id="login">
-                    <i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>
-                </a>
-            </div>
-
-            <script>
-                document.getElementById("login").addEventListener("click", function (e) {
-                    this.querySelector("span").innerHTML = "Signing in&hellip;";
-                    this.classList.add("pending");
-                });
-            </script>
         </div>
     </div>
 

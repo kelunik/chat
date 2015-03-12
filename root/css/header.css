@@ -1,11 +1,13 @@
 .ac-header {
-    height: 50px;
+    height: 51px;
+    line-height: 50px;
     padding: 0 10px;
     box-sizing: border-box;
     background-color: #3674B3;
     border-bottom: 1px solid rgba(0, 0, 0, .2);
     user-select: none;
     display: flex;
+    font-size: 0;
 }
 
 .ac-header-shrinkable {
@@ -23,6 +25,7 @@
     font-weight: bold;
     color: #fafafa;
     overflow: hidden;
+    font-size: 13px;
 }
 
 .ac-header-label {
@@ -92,6 +95,9 @@
 
 .ac-header-app-logo {
     vertical-align: middle;
+    display: inline-block;
+    /* TODO: Why do we need this? */
+    margin-top: -3px;
 }
 
 .ac-header-search {
