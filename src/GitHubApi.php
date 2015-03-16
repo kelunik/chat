@@ -8,55 +8,13 @@ use Amp\Artax\Request;
 use Amp\Artax\Response;
 use Amp\Future;
 
-class GithubApi {
+class GitHubApi {
+    const ACCESS_TOKEN_URI = "https://github.com/login/oauth/access_token";
+
     private $client;
-    private $token;
 
-    public function __construct ($token) {
-        $this->token = $token;
-        $this->client = new Client();
-    }
-
-    public function getToken () {
-        return $this->token;
-    }
-
-    public function fetchToken ($code) {
-        $body = (new FormBody())
-            ->addField("client_id", GITHUB_CLIENT_ID)
-            ->addField("client_secret", GITHUB_CLIENT_SECRET)
-            ->addField("code", $code);
-
-        $request = (new Request())
-            ->setMethod("POST")
-            ->setUri("https://github.com/login/oauth/access_token")
-            ->setHeader("Accept", "application/json")
-            ->setBody($body);
-
-        $future = new Future;
-
-        $this->client->request($request)->when(function ($error, Response $response = null) use ($future) {
-            if ($error) {
-                $future->fail($error);
-            } else {
-                if ($response->getStatus() !== 200) {
-                    $future->fail(new GithubApiException(sprintf(
-                        "bad status code: %s %s", $response->getStatus(), $response->getReason()
-                    )));
-                } else {
-                    $data = json_decode($response->getBody());
-
-                    if (isset($data->access_token)) {
-                        $this->token = $data->access_token;
-                        $future->succeed($data->access_token);
-                    } else {
-                        $future->fail(new GithubApiException("No Token: " . $data->error));
-                    }
-                }
-            }
-        });
-
-        return $future;
+    public function __construct (Client $client) {
+        $this->client = $client;
     }
 
     private function query ($path, $token = null) {

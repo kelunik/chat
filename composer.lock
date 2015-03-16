@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6d7edcbdfb4c8772d62b9f51676dc188",
+    "hash": "8f5c8f0b869e3a7422d6e824a3458524",
     "packages": [
         {
             "name": "amphp/aerys",
@@ -12,16 +12,13 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys.git",
-                "reference": "defe9ae21c2161fab555263a8f272fa179a60fdc"
+                "reference": "954fd499d79f3452aede975af8af7ccb263aff09"
             },
             "require": {
-                "amphp/amp": "~0.15.0",
+                "amphp/amp": "~0.16.0",
                 "nikic/fast-route": "~0.1",
                 "php": ">=5.5.0",
                 "rdlowrey/auryn": "~0.14"
-            },
-            "require-dev": {
-                "amphp/artax": "dev-master"
             },
             "bin": [
                 "bin/aerys"
@@ -70,20 +67,20 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-02-07 18:25:14"
+            "time": "2015-02-16 18:52:44"
         },
         {
             "name": "amphp/amp",
-            "version": "v0.15.3",
+            "version": "v0.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "5a39ec6730c8af07f24a4dd153a5e0455323e254"
+                "reference": "446e09a95d8fe5d4368802f7b126095c5e54415c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/5a39ec6730c8af07f24a4dd153a5e0455323e254",
-                "reference": "5a39ec6730c8af07f24a4dd153a5e0455323e254",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/446e09a95d8fe5d4368802f7b126095c5e54415c",
+                "reference": "446e09a95d8fe5d4368802f7b126095c5e54415c",
                 "shasum": ""
             },
             "require": {
@@ -129,7 +126,7 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2015-01-22 01:16:07"
+            "time": "2015-02-18 14:59:48"
         },
         {
             "name": "amphp/artax",
@@ -137,18 +134,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/artax.git",
-                "reference": "6aecdad900213aed7fae4c77aef09608079ee364"
+                "reference": "0650526ebfa13d95477cf68a9a88a2bff31f3492"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/artax/zipball/6aecdad900213aed7fae4c77aef09608079ee364",
-                "reference": "6aecdad900213aed7fae4c77aef09608079ee364",
+                "url": "https://api.github.com/repos/amphp/artax/zipball/efa2fb8828c2858430697d065cf13bb9c3c98fb9",
+                "reference": "0650526ebfa13d95477cf68a9a88a2bff31f3492",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.15.0",
+                "amphp/amp": "~0.16.0",
                 "php": ">=5.4.0",
-                "rdlowrey/nbsock": "~0.5.0"
+                "rdlowrey/nbsock": "~0.6.0"
             },
             "type": "library",
             "extra": {
@@ -182,25 +179,25 @@
                 "parallel",
                 "rest"
             ],
-            "time": "2015-01-24 02:40:12"
+            "time": "2015-02-16 04:28:41"
         },
         {
             "name": "amphp/dns",
-            "version": "v0.4.0",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/dns.git",
-                "reference": "aaf718e1284d420f52545ee1cbc631b893141da8"
+                "reference": "e4578f504a855078b339e3a4d6da7f4e1f8f4723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/dns/zipball/aaf718e1284d420f52545ee1cbc631b893141da8",
-                "reference": "aaf718e1284d420f52545ee1cbc631b893141da8",
+                "url": "https://api.github.com/repos/amphp/dns/zipball/e4578f504a855078b339e3a4d6da7f4e1f8f4723",
+                "reference": "e4578f504a855078b339e3a4d6da7f4e1f8f4723",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.15.0",
-                "daverandom/libdns": "~0.2",
+                "amphp/amp": "~0.16.0",
+                "daverandom/libdns": "~1.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -235,7 +232,7 @@
                 "dns",
                 "resolve"
             ],
-            "time": "2014-12-08 17:07:24"
+            "time": "2015-02-18 16:18:40"
         },
         {
             "name": "amphp/mysql",
@@ -243,11 +240,14 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:amphp/mysql.git",
-                "reference": "076169aa6abf0d345d85f74e0f5a7207d729b675"
+                "reference": "efddc156b2e5f0a8adf98bfa6d249b4132f793e8"
             },
             "require": {
-                "amphp/amp": "~0.15",
-                "rdlowrey/nbsock": "~0.5"
+                "amphp/amp": "~0.16",
+                "rdlowrey/nbsock": "~0.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4.0"
             },
             "type": "library",
             "autoload": {
@@ -262,7 +262,7 @@
                 }
             ],
             "description": "description_text",
-            "time": "2015-01-17 19:36:19"
+            "time": "2015-02-17 23:03:34"
         },
         {
             "name": "amphp/redis",
@@ -270,10 +270,10 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:amphp/redis.git",
-                "reference": "9d22813a2980c4063197ce734e1c29b346a13c48"
+                "reference": "4aaf93104984f874749177a1542b5104f43f1cdf"
             },
             "require": {
-                "amphp/amp": "~0.15",
+                "amphp/amp": "~0.16",
                 "rdlowrey/nbsock": "~0.5"
             },
             "require-dev": {
@@ -304,20 +304,20 @@
             "support": {
                 "issues": "https://github.com/amphp/redis/issues"
             },
-            "time": "2015-02-08 17:58:50"
+            "time": "2015-03-14 14:06:41"
         },
         {
             "name": "daverandom/libdns",
-            "version": "v0.2.1",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DaveRandom/LibDNS.git",
-                "reference": "f94f92f3fa8b2776ff2593c87d93d87480efeb73"
+                "reference": "1f4c7fc8f187c8e56c5df39b28f4689c65f5077f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DaveRandom/LibDNS/zipball/f94f92f3fa8b2776ff2593c87d93d87480efeb73",
-                "reference": "f94f92f3fa8b2776ff2593c87d93d87480efeb73",
+                "url": "https://api.github.com/repos/DaveRandom/LibDNS/zipball/1f4c7fc8f187c8e56c5df39b28f4689c65f5077f",
+                "reference": "1f4c7fc8f187c8e56c5df39b28f4689c65f5077f",
                 "shasum": ""
             },
             "require": {
@@ -337,7 +337,7 @@
             "keywords": [
                 "dns"
             ],
-            "time": "2013-11-28 15:57:15"
+            "time": "2015-02-18 11:30:51"
         },
         {
             "name": "erusev/parsedown",
@@ -379,17 +379,116 @@
             "time": "2015-02-08 23:04:08"
         },
         {
-            "name": "nikic/fast-route",
-            "version": "v0.3.0",
+            "name": "ircmaxell/random-lib",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nikic/FastRoute.git",
-                "reference": "57a2aec2d597f166c4139e44953bc42b7eaf9e54"
+                "url": "https://github.com/ircmaxell/RandomLib.git",
+                "reference": "0eaad991c1756842f26dfbcbc6effcabb5003d0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/57a2aec2d597f166c4139e44953bc42b7eaf9e54",
-                "reference": "57a2aec2d597f166c4139e44953bc42b7eaf9e54",
+                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/0eaad991c1756842f26dfbcbc6effcabb5003d0a",
+                "reference": "0eaad991c1756842f26dfbcbc6effcabb5003d0a",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/security-lib": "1.0.*@dev",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "RandomLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Library For Generating Secure Random Numbers",
+            "homepage": "https://github.com/ircmaxell/PHP-RandomLib",
+            "keywords": [
+                "cryptography",
+                "random",
+                "random-numbers",
+                "random-strings"
+            ],
+            "time": "2013-07-30 17:40:57"
+        },
+        {
+            "name": "ircmaxell/security-lib",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/SecurityLib.git",
+                "reference": "fd6f940455ad6481455544b741c9aca3a2455f87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/SecurityLib/zipball/fd6f940455ad6481455544b741c9aca3a2455f87",
+                "reference": "fd6f940455ad6481455544b741c9aca3a2455f87",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SecurityLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Base Security Library",
+            "homepage": "https://github.com/ircmaxell/SecurityLib",
+            "time": "2015-02-04 19:31:56"
+        },
+        {
+            "name": "nikic/fast-route",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/FastRoute.git",
+                "reference": "f26a8f7788f25c0e3e9b1579d38d7ccab2755320"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/f26a8f7788f25c0e3e9b1579d38d7ccab2755320",
+                "reference": "f26a8f7788f25c0e3e9b1579d38d7ccab2755320",
                 "shasum": ""
             },
             "require": {
@@ -419,7 +518,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2014-11-26 18:36:25"
+            "time": "2015-02-26 15:33:07"
         },
         {
             "name": "rdlowrey/auryn",
@@ -481,20 +580,20 @@
         },
         {
             "name": "rdlowrey/nbsock",
-            "version": "v0.5.0",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rdlowrey/nbsock.git",
-                "reference": "ac6e021f32e7960a17530cdf16cb98c932497695"
+                "reference": "a13e3f22a3446311a69ab7e4b128c07711db508a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rdlowrey/nbsock/zipball/ac6e021f32e7960a17530cdf16cb98c932497695",
-                "reference": "ac6e021f32e7960a17530cdf16cb98c932497695",
+                "url": "https://api.github.com/repos/rdlowrey/nbsock/zipball/a13e3f22a3446311a69ab7e4b128c07711db508a",
+                "reference": "a13e3f22a3446311a69ab7e4b128c07711db508a",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.15.0",
+                "amphp/amp": "~0.16.0",
                 "amphp/dns": "~0.4.0",
                 "php": ">=5.4.0"
             },
@@ -529,7 +628,7 @@
                 "tcp",
                 "tls"
             ],
-            "time": "2014-12-08 17:19:17"
+            "time": "2015-02-18 16:23:30"
         },
         {
             "name": "swiftmailer/swiftmailer",

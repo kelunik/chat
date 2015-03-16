@@ -4,6 +4,7 @@ use Aerys\Root\Root;
 use Amp\Redis\Redis;
 use App\Auth;
 use App\Chat;
+use App\Log\Logger;
 use App\Page;
 use App\Search;
 use App\Session;
@@ -29,7 +30,8 @@ $pubSub = new Redis([
     "password" => REDIS_PASSWORD
 ], \Amp\getReactor());
 
-$authHandler = new Auth($db, $redis);
+$logger = new Logger($redis);
+$authHandler = new Auth($db, $redis, $logger);
 $chatHandler = new Chat($db, $redis, $pubSub);
 $pageHandler = new Page($db, $redis);
 $transcriptHandler = new Transcript($db, $redis);
