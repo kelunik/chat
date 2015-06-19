@@ -1,167 +1,159 @@
 <?php
 
-namespace App;
+namespace App\Presentation;
 
+use Aerys\Request;
+use Aerys\Response;
+use Aerys\Session;
 use Amp\Artax\Client as Artax;
+use Amp\Mysql\Pool;
 use Amp\Redis\Client as Redis;
 use App\Auth\OAuth\GitHub;
+use App\Auth\OAuth\OAuthException;
 use App\Auth\OAuth\StackExchange;
-use App\Log\Logger;
-use App\Security\OAuthCsrfToken;
-use App\Session\SessionInterface;
+use App\GitHubApi;
 use LogicException;
-use Mysql\Pool;
-use Parsedown;
-use RandomLib\Generator;
-use Tpl;
 
 class Auth {
     private $db;
     private $artax;
     private $redis;
-    private $logger;
-    private $sessionManager;
-    private $generator;
 
-    public function __construct (Pool $db, Redis $redis, Artax $artax, Logger $logger, SessionManager $sessionManager, Generator $generator) {
+    public function __construct (Pool $db, Redis $redis, Artax $artax) {
         $this->db = $db;
         $this->artax = $artax;
         $this->redis = $redis;
-        $this->logger = $logger;
-        $this->sessionManager = $sessionManager;
-        $this->generator = $generator;
     }
 
-    public function logIn ($request) {
-        /** @var SessionInterface $session */
-        $session = yield from $this->sessionManager->get($request);
+    public function logIn (Request $request, Response $response) {
+        /** @var Session $session */
+        $session = yield (new Session($request))->read();
 
-        if ($session->get("loggedIn")) {
-            return [
-                "status" => 302,
-                "header" => [
-                    "Location: /rooms",
-                    $session->getCookieHeader()
-                ]
-            ];
+        if ($session->get("login")) {
+            $response->setStatus(302);
+            $response->setHeader("location", "/rooms");
+            $response->send("");
+
+            return;
         }
 
-        $tpl = new Tpl(new Parsedown);
-        $tpl->load(TEMPLATE_DIR . "auth.php", Tpl::LOAD_PHP);
-
-        return [
-            "body" => $tpl->page(),
-            "header" => $session->getCookieHeader()
-        ];
+        $response->send("<h2>Login</h2><form action='/sign-in/github' method='post'><button type='submit'>github</button></form>");
     }
 
-    public function doLogIn ($request) {
-        /** @var SessionInterface $session */
-        $session = yield from $this->sessionManager->get($request);
+    public function doLogInRedirect (Request $request, Response $response, array $args) {
+        $session = yield (new Session($request))->open();
 
-        if ($session->get("loggedIn")) {
-            return [
-                "status" => 302,
-                "header" => [
-                    "Location: /rooms",
-                    $session->getCookieHeader()
-                ]
-            ];
-        }
+        $token = base64_encode(random_bytes(24));
+        $session->set("token:oauth", $token);
 
-        $providerString = $request["URI_ROUTE_ARGS"]["provider"];
+        yield $session->save();
 
-        switch ($providerString) {
-            case "github":
-                $provider = new GitHub($this->artax);
-                break;
-            case "stackexchange":
-                $provider = new StackExchange($this->artax);
-                break;
-            default:
-                throw new LogicException("unknown provider: " . $providerString);
-        }
+        $provider = $this->getProviderFromString($args["provider"]);
+        $url = $provider->getAuthorizeRedirectUrl($token);
 
-        if (!isset($request["QUERY"]["code"])) {
-            return [
-                "status" => 400
-            ];
-        }
-
-        $token = new OAuthCsrfToken($this->generator, $session);
-
-        if (!$token->validate($request["QUERY"]["state"] ?? "")) {
-            return [
-                "status" => 400,
-                "header" => $session->getCookieHeader()
-            ];
-        }
-
-        $accessToken = yield from $provider->processAuthorizeResponse($request["QUERY"]["code"]);
-
-        return [
-            "body" => "not available..."
-        ];
+        $response->setStatus(302);
+        $response->setHeader("location", $url);
+        $response->send("");
     }
 
-    private function getLoginData (GithubApi $api) {
-        $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `githubId` FROM `users` WHERE `githubToken` = ?", [$api->getToken()]);
+    public function doLogIn (Request $request, Response $response, array $args) {
+        $session = yield (new Session($request))->read();
 
-        if (yield $result->rowCount()) {
-            yield $result->fetch();
+        $provider = $this->getProviderFromString($args["provider"]);
+        $token = $session->get("token:oauth");
+
+        $get = $request->getQueryVars();
+
+        $code = isset($get["code"]) && is_string($get["code"]) ? $get["code"] : "";
+        $state = isset($get["state"]) && is_string($get["state"]) ? $get["state"] : "";
+
+        if (empty($code) || empty($state) || empty($token) || !hash_equals($token, $state)) {
+            $response->setStatus(400);
+            $response->setHeader("aerys-generic-response", "enable");
+            $response->send("");
+
+            return;
+        }
+
+        try {
+            $accessToken = yield from $provider->getAccessTokenFromCode($code);
+        } catch (OAuthException $e) {
+            $response->setStatus(403);
+            $response->setHeader("aerys-generic-response", "enable");
+            $response->send("");
+
+            return;
+        }
+
+        $identity = yield from $provider->getIdentity($accessToken);
+
+        if (!$identity) {
+            $response->setStatus(403);
+            $response->setHeader("aerys-generic-response", "enable");
+            $response->send("");
+
+            return;
+        }
+
+        $query = yield $this->db->prepare("SELECT userId FROM oauth WHERE provider = ? AND identity = ?", [
+            $args["provider"], $identity
+        ]);
+
+        $response->setStatus(302);
+        $user = yield $query->fetchObject();
+        yield $session->open();
+
+        if ($user) {
+            $session->set("login", $user->userId);
+            $session->set("loginTime", time());
+            $response->setHeader("location", "/");
         } else {
-            $user = yield $api->queryUser();
-            $result = yield $this->db->prepare("SELECT `id`, `name`, `mail`, `githubId` FROM `users` WHERE `githubId` = ?", [$user->id]);
+            $session->set("auth:provider", $args["provider"]);
+            $session->set("auth:identity", $identity);
+            $response->setHeader("location", "/sign-up");
+        }
 
-            if (yield $result->rowCount()) {
-                yield $this->db->prepare("UPDATE `users` SET `githubToken` = ? WHERE `githubId` = ?", [$api->getToken(), $user->id]);
-                yield $result->fetch();
-            } else {
-                $mail = yield $api->queryPrimaryMail();
+        $response->send("");
+    }
 
-                $result = yield $this->db->prepare("INSERT INTO `users` (`name`, `mail`, `githubToken`, `githubId`) VALUES (?, ?, ?, ?)", [
-                    $user->login, $mail, $api->getToken(), $user->id
-                ]);
-
-                if ($result) {
-                    yield [$result->insertId, $user->login, $mail, $user->id];
-                } else {
-                    error_log("Couldn't insert new user: {$user->login} / {$mail}");
-                }
-            }
+    private function getProviderFromString (string $provider) {
+        switch ($provider) {
+            case "github":
+                return new GitHub($this->artax, new GitHubApi($this->artax));
+            case "stackexchange":
+                return new StackExchange($this->artax);
+            default:
+                throw new LogicException("unknown provider: " . $provider);
         }
     }
 
-    public function handleLogout ($request) {
-        $sessionId = SessionManager::getSessionId($request);
+    /* public function doLogOut ($request) {
+        $session = yield from $this->sessionManager->get($request);
 
-        if ($sessionId === null) {
-            yield "status" => 302;
-            yield "header" => "Location: /login";
-            yield "body" => "";
+        $token = new CsrfToken($this->generator, $session);
+
+        if ($token->validate($request["FORM"]["csrf-token"] ?? "")) {
+            $sessionId = $session->getId();
+
+            yield $this->redis->publish("chat.session", json_encode([
+                "sessionId" => $sessionId,
+                "type" => "logout",
+                "payload" => "",
+            ]));
+
+            yield $this->redis->del("session.{$sessionId}");
+
+            return [
+                "status" => 302,
+                "header" => [
+                    "Location: /login",
+                    $session->getCookieHeader()
+                ],
+            ];
         }
 
-        $session = yield $this->sessionManager->getSession($sessionId);
-
-        if ($session && isset($request["FORM"]["csrf-token"])) {
-            $token = $request["FORM"]["csrf-token"];
-
-            if (is_string($token) && safe_compare($session->csrfToken, $token)) {
-                yield $this->redis->publish("chat.session", json_encode([
-                    "sessionId" => $sessionId,
-                    "type" => "logout",
-                    "payload" => "",
-                ]));
-                yield $this->redis->del("session.{$sessionId}");
-                yield "header" => ("Set-Cookie: aerys_sess=; PATH=/; httpOnly" . (DEPLOY_HTTPS ? "; secure" : "") . "; EXPIRES=" . gmdate("D, d M Y H:i:s T", 0));
-                yield "status" => 302;
-                yield "header" => "Location: /login";
-                yield "body" => "";
-                return;
-            }
-        }
-
-        yield "status" => 401;
-        yield "body" => "";
-    }
+        return [
+            "status" => 401
+        ];
+    } */
 }

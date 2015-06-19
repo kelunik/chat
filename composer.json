@@ -1,8 +1,10 @@
 {
   "name": "kelunik/aerys-chat",
   "description": "",
-  "keywords": ["chat"],
-  "homepage": "http://aerys.chat",
+  "keywords": [
+    "chat"
+  ],
+  "homepage": "https://dev.kelunik.com",
   "authors": [
     {
       "name": "Niklas Keller",
@@ -14,29 +16,21 @@
     "issues": "https://github.com/kelunik/aerys-chat"
   },
   "require": {
-    "amphp/aerys": "dev-master#954fd499d79f3452aede975af8af7ccb263aff09",
-    "amphp/mysql": "dev-master#efddc156b2e5f0a8adf98bfa6d249b4132f793e8",
-    "amphp/redis": "dev-master#4aaf93104984f874749177a1542b5104f43f1cdf",
-    "amphp/artax": "dev-master#0650526ebfa13d95477cf68a9a88a2bff31f3492",
-    "vladkens/autoprefixer": "dev-master",
-    "tubalmartin/cssmin": "dev-master",
-    "swiftmailer/swiftmailer": "5.3.*",
-    "erusev/parsedown": "dev-master",
-    "ircmaxell/random-lib": "1.0.0"
+    "amphp/aerys": "dev-wip",
+    "amphp/aerys-session": "dev-master",
+    "amphp/mysql": "dev-master",
+    "amphp/redis": "dev-master",
+    "amphp/artax": "2.x-dev",
+    "swiftmailer/swiftmailer": "5.3.*"
   },
   "repositories": [
     {
       "type": "git",
-      "url": "git@github.com:rdlowrey/aerys",
-      "vendor-alias": "amphp"
+      "url": "git@github.com:rdlowrey/aerys"
     },
     {
       "type": "git",
-      "url": "git@github.com:amphp/mysql"
-    },
-    {
-      "type": "git",
-      "url": "git@github.com:amphp/redis"
+      "url": "git@github.com:bwoebi/aerys-session"
     }
   ],
   "minimum-stability": "dev",

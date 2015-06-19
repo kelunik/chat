@@ -3,70 +3,33 @@
 namespace App;
 
 use Amp\Artax\Client;
-use Amp\Artax\FormBody;
 use Amp\Artax\Request;
-use Amp\Artax\Response;
-use Amp\Future;
 
 class GitHubApi {
-    const ACCESS_TOKEN_URI = "https://github.com/login/oauth/access_token";
-
     private $client;
 
     public function __construct (Client $client) {
         $this->client = $client;
     }
 
-    private function query ($path, $token = null) {
-        $token = $token ?: $this->token;
-
+    public function query ($path, $token = null) {
         $request = (new Request)
             ->setMethod("GET")
             ->setUri("https://api.github.com/{$path}")
-            ->setHeader("Authorization", "token {$token}")
             ->setHeader("Accept", "application/vnd.github.v3+json");
 
-        $future = new Future;
+        if ($token) {
+            $request->setHeader("Authorization", "token {$token}");
+        }
 
-        $this->client->request($request)->when(function ($error, Response $response = null) use ($future) {
-            if ($error) {
-                $future->fail($error);
-            } else {
-                if ($response->getStatus() !== 200) {
-                    $future->fail(new GithubApiException(sprintf(
-                        "bad status code: %s %s", $response->getStatus(), $response->getReason()
-                    )));
-                } else {
-                    $future->succeed(json_decode($response->getBody()));
-                }
-            }
-        });
+        $response = yield $this->client->request($request);
 
-        return $future;
-    }
+        if($response->getStatus() !== 200) {
+            throw new GitHubApiException(sprintf(
+                "bad status code: %s %s", $response->getStatus(), $response->getReason()
+            ));
+        }
 
-    public function queryPrimaryMail ($token = null) {
-        $future = new Future;
-
-        $this->query("user/emails", $token)->when(function ($error, $data) use ($future) {
-            if ($error) {
-                $future->fail($error);
-            } else {
-                foreach ($data as $entry) {
-                    if ($entry->primary) {
-                        $future->succeed($entry->email);
-                        return;
-                    }
-                }
-
-                $future->fail(new GithubApiException("user without primary email"));
-            }
-        });
-
-        return $future;
-    }
-
-    public function queryUser ($token = null) {
-        return $this->query("user", $token);
+        return json_decode($response->getBody(), true);
     }
 }

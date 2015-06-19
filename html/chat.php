@@ -37,7 +37,7 @@
         </label>
 
         <a class="ac-header-button ac-header-app" href="/">
-            <img class="ac-header-app-logo" src="/img/logo_40x40x2.png" width="40" height="40">
+            <img class="ac-header-app-logo" src="/img/logo_40x40x2.png" width="36" height="36">
         </a>
 
         <span class="ac-header-button ac-header-title" id="header-title"></span>
