@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb66516e8e8aaa03f2769a09586403a2",
+    "hash": "e37f984eb2446794517379a83a47c014",
     "packages": [
         {
             "name": "amphp/aerys",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys",
-                "reference": "e2f0f0312a4d3fc19ea86214d8d2c80b0db3cfbf"
+                "reference": "d3f68701d84f337be7bbcad1f3429db7adeeab35"
             },
             "require": {
                 "amphp/amp": "1.0.x-dev",
@@ -70,7 +70,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-06-18 19:21:45"
+            "time": "2015-06-19 15:25:18"
         },
         {
             "name": "amphp/aerys-session",
@@ -78,7 +78,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:bwoebi/aerys-session",
-                "reference": "ffdc4d9308e029b27654ea5fbfcc054513df1e7d"
+                "reference": "823cef28d70c01350edb89ee323dc51e98c4997a"
             },
             "require": {
                 "amphp/aerys": "dev-wip",
@@ -112,7 +112,7 @@
             ],
             "description": "Session management for Aerys server",
             "homepage": "https://github.com/amphp/aerys-session",
-            "time": "2015-06-18 18:13:25"
+            "time": "2015-06-18 19:35:21"
         },
         {
             "name": "amphp/amp",
@@ -285,12 +285,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/mysql.git",
-                "reference": "f5c630d94d13dc974da3014d119ccd9332c49927"
+                "reference": "f24d1fcb5ebb4331e3ba4e0bd3267f357d956bac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/mysql/zipball/f5c630d94d13dc974da3014d119ccd9332c49927",
-                "reference": "f5c630d94d13dc974da3014d119ccd9332c49927",
+                "url": "https://api.github.com/repos/amphp/mysql/zipball/f24d1fcb5ebb4331e3ba4e0bd3267f357d956bac",
+                "reference": "f24d1fcb5ebb4331e3ba4e0bd3267f357d956bac",
                 "shasum": ""
             },
             "require": {
@@ -314,7 +314,7 @@
                 }
             ],
             "description": "Asynchronous parallel Mysql client built on the Amp concurrency framework",
-            "time": "2015-06-15 16:25:43"
+            "time": "2015-06-21 11:28:30"
         },
         {
             "name": "amphp/redis",
@@ -540,6 +540,39 @@
                 }
             ],
             "time": "2015-06-13 14:59:57"
+        },
+        {
+            "name": "kelunik/template",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kelunik/template.git",
+                "reference": "d3af0a7865e98854ff97c2ff749a6e7066d15ec4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kelunik/template/zipball/d3af0a7865e98854ff97c2ff749a6e7066d15ec4",
+                "reference": "d3af0a7865e98854ff97c2ff749a6e7066d15ec4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kelunik\\Template\\": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                }
+            ],
+            "description": "Easy PHP templates.",
+            "time": "2015-06-21 09:38:25"
         },
         {
             "name": "league/climate",
@@ -843,7 +876,8 @@
         "amphp/aerys-session": 20,
         "amphp/mysql": 20,
         "amphp/redis": 20,
-        "amphp/artax": 20
+        "amphp/artax": 20,
+        "kelunik/template": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

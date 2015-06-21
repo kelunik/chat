@@ -22,6 +22,14 @@ class GitHub extends Provider {
 
     public function getIdentity (string $token) {
         $response = yield from $this->api->query("user", $token);
-        return $response["login"] ?? null;
+
+        if (isset($response["id"], $response["login"])) {
+            return [
+                "id" => $response["id"],
+                "name" => $response["login"],
+            ];
+        } else {
+            return null;
+        }
     }
 }

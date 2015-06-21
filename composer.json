@@ -21,6 +21,7 @@
     "amphp/mysql": "dev-master",
     "amphp/redis": "dev-master",
     "amphp/artax": "2.x-dev",
+    "kelunik/template": "dev-master",
     "swiftmailer/swiftmailer": "5.3.*"
   },
   "repositories": [

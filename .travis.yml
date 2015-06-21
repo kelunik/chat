@@ -1,8 +1,3 @@
 language: php
 php:
-  - 5.6
-env:
-  - TESTS=php
-  - TESTS=js
-script:
-  - bash travis/run.sh
+  - 7.0

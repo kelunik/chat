@@ -12,21 +12,23 @@ use App\Auth\OAuth\GitHub;
 use App\Auth\OAuth\OAuthException;
 use App\Auth\OAuth\StackExchange;
 use App\GitHubApi;
+use Kelunik\Template\TemplateService;
 use LogicException;
 
 class Auth {
     private $db;
     private $artax;
     private $redis;
+    private $templateService;
 
-    public function __construct (Pool $db, Redis $redis, Artax $artax) {
+    public function __construct (Pool $db, Redis $redis, Artax $artax, TemplateService $templateService) {
         $this->db = $db;
         $this->artax = $artax;
         $this->redis = $redis;
+        $this->templateService = $templateService;
     }
 
     public function logIn (Request $request, Response $response) {
-        /** @var Session $session */
         $session = yield (new Session($request))->read();
 
         if ($session->get("login")) {
@@ -37,7 +39,8 @@ class Auth {
             return;
         }
 
-        $response->send("<h2>Login</h2><form action='/sign-in/github' method='post'><button type='submit'>github</button></form>");
+        $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/auth.php");
+        $response->send($template->render());
     }
 
     public function doLogInRedirect (Request $request, Response $response, array $args) {
@@ -96,7 +99,7 @@ class Auth {
         }
 
         $query = yield $this->db->prepare("SELECT userId FROM oauth WHERE provider = ? AND identity = ?", [
-            $args["provider"], $identity
+            $args["provider"], $identity["id"]
         ]);
 
         $response->setStatus(302);
@@ -109,11 +112,66 @@ class Auth {
             $response->setHeader("location", "/");
         } else {
             $session->set("auth:provider", $args["provider"]);
-            $session->set("auth:identity", $identity);
+            $session->set("auth:identity:id", $identity["id"]);
+            $session->set("auth:identity:name", $identity["name"]);
             $response->setHeader("location", "/sign-up");
         }
 
         $response->send("");
+        yield $session->save();
+    }
+
+    public function signUp (Request $request, Response $response) {
+        $session = yield (new Session($request))->read();
+        $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/sign-up.php");
+        $template->set("hint", $session->get("auth:identity:name") ?? "");
+        $response->send($template->render());
+    }
+
+    public function doSignUp (Request $request, Response $response) {
+        $session = yield (new Session($request))->open();
+        parse_str(yield $request->getBody(), $post);
+
+        $username = isset($post["username"]) && is_string($post["username"]) ? $post["username"] : "";
+        $provider = $session->get("auth:provider");
+
+        if (!$provider) {
+            $response->setStatus(400);
+            $response->setHeader("aerys-generic-response", "enable");
+            $response->send("");
+
+            return;
+        }
+
+        if (!preg_match("~^[a-z][a-z0-9-]+[a-z0-9]$~i", $username)) {
+            $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/sign-up.php");
+            $template->set("hint", $username);
+            $template->set("error", "username begin with a-z and only contain a-z, 0-9 or dashes afterwards");
+            $response->send($template->render());
+
+            return;
+        }
+
+        $query = yield $this->db->prepare("INSERT IGNORE INTO users (username) VALUES (?)", [
+            $username
+        ]);
+
+        if ($query->affectedRows) {
+            yield $this->db->prepare("INSERT INTO oauth (userId, provider, identity, label) VALUES (?, ?, ?, ?)", [
+                $query->insertId, $provider, $session->get("auth:identity:id"), $session->get("auth:identity:name")
+            ]);
+
+            $response->setStatus(302);
+            $response->setHeader("location", "/");
+            $response->send("");
+        } else {
+            $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/sign-up.php");
+            $template->set("hint", $username);
+            $template->set("error", "username already taken");
+            $response->send($template->render());
+        }
+
+        yield $session->save();
     }
 
     private function getProviderFromString (string $provider) {

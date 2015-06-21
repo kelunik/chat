@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title><?= htmlspecialchars(APP_NAME) ?></title>
 
-    <?php require TEMPLATE_DIR . "head_meta.php"; ?>
-
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Pacifico|Lato">
     <link rel="stylesheet" href="/css/all.min.css">
 
@@ -246,8 +244,6 @@
             }
         }
     </style>
-
-    <?php require TEMPLATE_DIR . "google_analytics.php"; ?>
 </head>
 <body>
 <div id="page">
@@ -270,6 +266,8 @@
 
     <div id="content">
         <div id="content-inner">
+            <h2>Login</h2><form action='/sign-in/github' method='post'><button type='submit'>github</button></form>
+
             <div class="text-center">
                 <a href="/login/github" id="login">
                     <i class="fa fa-github"></i>&nbsp;&nbsp;&nbsp;<span class="text">Sign in with GitHub</span>

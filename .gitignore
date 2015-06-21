@@ -1,17 +1,5 @@
 /.idea
 /vendor
 
-/root/css/all.min.css
-/root/css/all.min.css.map
-/root/js/all.min.js
-/root/js/all.min.js.map
-
-/root/all.min.js.map
-
-/root/manifest.appcache
-
 *.pid
 *.log
-node_modules
-
-/php
