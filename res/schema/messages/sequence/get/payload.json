@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "relation": {
+      "id": "relation",
+      "type": "enum",
+      "enum": [
+        "older",
+        "newer"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "relation"
+  ]
+}

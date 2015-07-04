@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e37f984eb2446794517379a83a47c014",
+    "hash": "82a614e0cb31144025a70c09b41e7f4e",
     "packages": [
         {
             "name": "amphp/aerys",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:rdlowrey/aerys",
-                "reference": "d3f68701d84f337be7bbcad1f3429db7adeeab35"
+                "reference": "e007f395768fd00368138d7d224fd654f486b16b"
             },
             "require": {
                 "amphp/amp": "1.0.x-dev",
@@ -70,7 +70,7 @@
                 "server",
                 "websocket"
             ],
-            "time": "2015-06-19 15:25:18"
+            "time": "2015-07-02 19:08:46"
         },
         {
             "name": "amphp/aerys-session",
@@ -78,7 +78,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:bwoebi/aerys-session",
-                "reference": "823cef28d70c01350edb89ee323dc51e98c4997a"
+                "reference": "8761f61633fbc2bff0c40d2a081139d2424da1d2"
             },
             "require": {
                 "amphp/aerys": "dev-wip",
@@ -112,7 +112,7 @@
             ],
             "description": "Session management for Aerys server",
             "homepage": "https://github.com/amphp/aerys-session",
-            "time": "2015-06-18 19:35:21"
+            "time": "2015-06-28 15:45:56"
         },
         {
             "name": "amphp/amp",
@@ -285,12 +285,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/mysql.git",
-                "reference": "f24d1fcb5ebb4331e3ba4e0bd3267f357d956bac"
+                "reference": "521c5257744a1e86811a5133b464c797ea99cb59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/mysql/zipball/f24d1fcb5ebb4331e3ba4e0bd3267f357d956bac",
-                "reference": "f24d1fcb5ebb4331e3ba4e0bd3267f357d956bac",
+                "url": "https://api.github.com/repos/amphp/mysql/zipball/521c5257744a1e86811a5133b464c797ea99cb59",
+                "reference": "521c5257744a1e86811a5133b464c797ea99cb59",
                 "shasum": ""
             },
             "require": {
@@ -314,7 +314,7 @@
                 }
             ],
             "description": "Asynchronous parallel Mysql client built on the Amp concurrency framework",
-            "time": "2015-06-21 11:28:30"
+            "time": "2015-06-21 12:11:16"
         },
         {
             "name": "amphp/redis",
@@ -322,12 +322,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/redis.git",
-                "reference": "f8e6901773c1c09f0954c579eec1ed4d5a46b9a7"
+                "reference": "22a5d3b863e0e55c303076e13eec293ef31cf658"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/redis/zipball/f8e6901773c1c09f0954c579eec1ed4d5a46b9a7",
-                "reference": "f8e6901773c1c09f0954c579eec1ed4d5a46b9a7",
+                "url": "https://api.github.com/repos/amphp/redis/zipball/22a5d3b863e0e55c303076e13eec293ef31cf658",
+                "reference": "22a5d3b863e0e55c303076e13eec293ef31cf658",
                 "shasum": ""
             },
             "require": {
@@ -363,7 +363,7 @@
                 "client",
                 "redis"
             ],
-            "time": "2015-06-09 14:08:12"
+            "time": "2015-06-30 20:11:44"
         },
         {
             "name": "daverandom/libdns",
@@ -468,7 +468,7 @@
             },
             "require": {
                 "doctrine/lexer": "~1.0,>=1.0.1",
-                "php": ">= 5.3.3"
+                "php": ">= 5.5"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.4",
@@ -504,17 +504,83 @@
             "time": "2015-05-18 21:32:19"
         },
         {
+            "name": "justinrainbow/json-schema",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/justinrainbow/json-schema.git",
+                "reference": "8cd1dbe6963a84d5155d77dd782d286613e570ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/8cd1dbe6963a84d5155d77dd782d286613e570ac",
+                "reference": "8cd1dbe6963a84d5155d77dd782d286613e570ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "json-schema/json-schema-test-suite": "1.1.0",
+                "phpdocumentor/phpdocumentor": "~2",
+                "phpunit/phpunit": "~3.7"
+            },
+            "bin": [
+                "bin/validate-json"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "JsonSchema": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Bruno Prieto Reis",
+                    "email": "bruno.p.reis@gmail.com"
+                },
+                {
+                    "name": "Justin Rainbow",
+                    "email": "justin.rainbow@gmail.com"
+                },
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch"
+                },
+                {
+                    "name": "Robert Schönthal",
+                    "email": "seroscho@googlemail.com"
+                }
+            ],
+            "description": "A library to validate a json schema.",
+            "homepage": "https://github.com/justinrainbow/json-schema",
+            "keywords": [
+                "json",
+                "schema"
+            ],
+            "time": "2015-07-01 15:25:33"
+        },
+        {
             "name": "kelunik/redis-mutex",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kelunik/redis-mutex.git",
-                "reference": "b60c26f1293cced9e99c218f0d44186591d195c2"
+                "reference": "4be00f387165500a15af35d69a897f6eab1df339"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kelunik/redis-mutex/zipball/b60c26f1293cced9e99c218f0d44186591d195c2",
-                "reference": "b60c26f1293cced9e99c218f0d44186591d195c2",
+                "url": "https://api.github.com/repos/kelunik/redis-mutex/zipball/4be00f387165500a15af35d69a897f6eab1df339",
+                "reference": "4be00f387165500a15af35d69a897f6eab1df339",
                 "shasum": ""
             },
             "require": {
@@ -539,7 +605,7 @@
                     "email": "me@kelunik.com"
                 }
             ],
-            "time": "2015-06-13 14:59:57"
+            "time": "2015-06-30 20:14:12"
         },
         {
             "name": "kelunik/template",
@@ -547,13 +613,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kelunik/template.git",
-                "reference": "d3af0a7865e98854ff97c2ff749a6e7066d15ec4"
+                "reference": "b8a81b8f1abc5ace30099d075be89e8bae2c247a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kelunik/template/zipball/d3af0a7865e98854ff97c2ff749a6e7066d15ec4",
-                "reference": "d3af0a7865e98854ff97c2ff749a6e7066d15ec4",
+                "url": "https://api.github.com/repos/kelunik/template/zipball/b8a81b8f1abc5ace30099d075be89e8bae2c247a",
+                "reference": "b8a81b8f1abc5ace30099d075be89e8bae2c247a",
                 "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -572,7 +641,7 @@
                 }
             ],
             "description": "Easy PHP templates.",
-            "time": "2015-06-21 09:38:25"
+            "time": "2015-06-23 23:03:44"
         },
         {
             "name": "league/climate",
@@ -713,6 +782,65 @@
                 "psr-3"
             ],
             "time": "2015-06-02 13:48:41"
+        },
+        {
+            "name": "rdlowrey/auryn",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rdlowrey/Auryn.git",
+                "reference": "b57a5046cfcefb0cde7fc86f9915e54aa7196cba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rdlowrey/Auryn/zipball/b57a5046cfcefb0cde7fc86f9915e54aa7196cba",
+                "reference": "b57a5046cfcefb0cde7fc86f9915e54aa7196cba",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "athletic/athletic": "~0.1",
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Auryn\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dan Ackroyd",
+                    "email": "Danack@basereality.com",
+                    "homepage": "http://www.basereality.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Daniel Lowrey",
+                    "email": "rdlowrey@gmail.com",
+                    "role": "Creator / Main Developer"
+                },
+                {
+                    "name": "Levi Morrison",
+                    "email": "levim@php.net",
+                    "homepage": "http://morrisonlevi.github.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Auryn is a dependency injector for bootstrapping object-oriented PHP applications.",
+            "homepage": "https://github.com/rdlowrey/Auryn",
+            "keywords": [
+                "dependency injection",
+                "dic",
+                "ioc"
+            ],
+            "time": "2015-05-27 12:47:19"
         },
         {
             "name": "rdlowrey/nbsock",
@@ -873,11 +1001,13 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "amphp/aerys": 20,
+        "rdlowrey/auryn": 20,
         "amphp/aerys-session": 20,
         "amphp/mysql": 20,
         "amphp/redis": 20,
         "amphp/artax": 20,
-        "kelunik/template": 20
+        "kelunik/template": 20,
+        "justinrainbow/json-schema": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

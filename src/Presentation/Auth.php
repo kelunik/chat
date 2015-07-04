@@ -6,12 +6,13 @@ use Aerys\Request;
 use Aerys\Response;
 use Aerys\Session;
 use Amp\Artax\Client as Artax;
+use Amp\Artax\DnsException;
+use Amp\Dns\ResolutionException;
 use Amp\Mysql\Pool;
 use Amp\Redis\Client as Redis;
 use App\Auth\OAuth\GitHub;
 use App\Auth\OAuth\OAuthException;
 use App\Auth\OAuth\StackExchange;
-use App\GitHubApi;
 use Kelunik\Template\TemplateService;
 use LogicException;
 
@@ -33,13 +34,13 @@ class Auth {
 
         if ($session->get("login")) {
             $response->setStatus(302);
-            $response->setHeader("location", "/rooms");
+            $response->setHeader("location", "/");
             $response->send("");
 
             return;
         }
 
-        $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/auth.php");
+        $template = $this->templateService->load("auth.php");
         $response->send($template->render());
     }
 
@@ -81,7 +82,15 @@ class Auth {
         try {
             $accessToken = yield from $provider->getAccessTokenFromCode($code);
         } catch (OAuthException $e) {
+            // TODO pretty error page
             $response->setStatus(403);
+            $response->setHeader("aerys-generic-response", "enable");
+            $response->send("");
+
+            return;
+        } catch (ResolutionException $e) {
+            // TODO pretty error page
+            $response->setStatus(503);
             $response->setHeader("aerys-generic-response", "enable");
             $response->send("");
 
@@ -108,27 +117,27 @@ class Auth {
 
         if ($user) {
             $session->set("login", $user->userId);
-            $session->set("loginTime", time());
+            $session->set("login:time", time());
             $response->setHeader("location", "/");
         } else {
             $session->set("auth:provider", $args["provider"]);
             $session->set("auth:identity:id", $identity["id"]);
             $session->set("auth:identity:name", $identity["name"]);
-            $response->setHeader("location", "/sign-up");
+            $response->setHeader("location", "/join");
         }
 
         $response->send("");
         yield $session->save();
     }
 
-    public function signUp (Request $request, Response $response) {
+    public function join (Request $request, Response $response) {
         $session = yield (new Session($request))->read();
-        $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/sign-up.php");
+        $template = $this->templateService->load("sign-up.php");
         $template->set("hint", $session->get("auth:identity:name") ?? "");
         $response->send($template->render());
     }
 
-    public function doSignUp (Request $request, Response $response) {
+    public function doJoin (Request $request, Response $response) {
         $session = yield (new Session($request))->open();
         parse_str(yield $request->getBody(), $post);
 
@@ -144,7 +153,7 @@ class Auth {
         }
 
         if (!preg_match("~^[a-z][a-z0-9-]+[a-z0-9]$~i", $username)) {
-            $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/sign-up.php");
+            $template = $this->templateService->load("sign-up.php");
             $template->set("hint", $username);
             $template->set("error", "username begin with a-z and only contain a-z, 0-9 or dashes afterwards");
             $response->send($template->render());
@@ -161,11 +170,14 @@ class Auth {
                 $query->insertId, $provider, $session->get("auth:identity:id"), $session->get("auth:identity:name")
             ]);
 
+            $session->set("login", $query->insertId);
+            $session->set("login:time", time());
+
             $response->setStatus(302);
             $response->setHeader("location", "/");
             $response->send("");
         } else {
-            $template = $this->templateService->load(PHP_TEMPLATE_DIR . "/sign-up.php");
+            $template = $this->templateService->load("sign-up.php");
             $template->set("hint", $username);
             $template->set("error", "username already taken");
             $response->send($template->render());
@@ -177,41 +189,22 @@ class Auth {
     private function getProviderFromString (string $provider) {
         switch ($provider) {
             case "github":
-                return new GitHub($this->artax, new GitHubApi($this->artax));
-            case "stackexchange":
-                return new StackExchange($this->artax);
+                return new GitHub($this->artax, new \App\Api\GitHub($this->artax));
+            case "stack-exchange":
+                return new StackExchange($this->artax, new \App\Api\StackExchange($this->artax));
             default:
                 throw new LogicException("unknown provider: " . $provider);
         }
     }
 
-    /* public function doLogOut ($request) {
-        $session = yield from $this->sessionManager->get($request);
+    public function doLogOut (Request $request, Response $response) {
+        $session = new Session($request);
 
-        $token = new CsrfToken($this->generator, $session);
+        yield $session->open();
+        yield $session->destroy();
 
-        if ($token->validate($request["FORM"]["csrf-token"] ?? "")) {
-            $sessionId = $session->getId();
-
-            yield $this->redis->publish("chat.session", json_encode([
-                "sessionId" => $sessionId,
-                "type" => "logout",
-                "payload" => "",
-            ]));
-
-            yield $this->redis->del("session.{$sessionId}");
-
-            return [
-                "status" => 302,
-                "header" => [
-                    "Location: /login",
-                    $session->getCookieHeader()
-                ],
-            ];
-        }
-
-        return [
-            "status" => 401
-        ];
-    } */
+        $response->setStatus(302);
+        $response->setHeader("location", "/");
+        $response->send("");
+    }
 }

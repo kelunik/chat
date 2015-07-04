@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "message_id": {
+      "id": "message_id",
+      "type": "integer"
+    },
+    "room_id": {
+      "id": "room_id",
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "message_id",
+    "room_id"
+  ]
+}

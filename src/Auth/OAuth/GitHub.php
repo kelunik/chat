@@ -3,12 +3,12 @@
 namespace App\Auth\OAuth;
 
 use Amp\Artax\Client;
-use App\GitHubApi;
+use App\Api\GitHub as Api;
 
 class GitHub extends Provider {
     private $api;
 
-    public function __construct (Client $client, GitHubApi $api, string $scope = "") {
+    public function __construct (Client $client, Api $api, string $scope = "") {
         parent::__construct($client, $scope);
         $this->api = $api;
 

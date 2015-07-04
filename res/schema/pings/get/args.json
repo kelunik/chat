@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "messageId": {
+      "id": "messageId",
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "messageId"
+  ]
+}

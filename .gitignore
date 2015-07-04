@@ -1,5 +1,6 @@
 /.idea
 /vendor
+/public
 
 *.pid
 *.log

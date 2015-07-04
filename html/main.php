@@ -1,7 +1,5 @@
 <?= $this->inline("header.php") ?>
 <div style="width: 300px">
-    <h1 style="text-align: center; font-weight: normal; padding: 50px 0;">Login</h1>
-
     <style scoped>
         button {
             width: 100%;
@@ -22,15 +20,9 @@
         }
     </style>
 
-    <form action="/login/github" method="post">
-        <button type="submit" style="background-color: #555">
-            <i class="fa fa-github"></i> Sign in with GitHub
-        </button>
-    </form>
-
-    <form action="/login/stack-exchange" method="post">
-        <button type="submit" style="background-color: #195398">
-            <i class="fa fa-stack-exchange"></i> Sign in with Stack Exchange
+    <form action="/login" method="get">
+        <button type="submit" style="background-color: #4CAF50">
+            <i class="fa fa-sign-in"></i> Sign in
         </button>
     </form>
 </div>

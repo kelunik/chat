@@ -22,8 +22,10 @@ class SecurityMiddleware implements Middleware {
         $headers["x-content-type-options"] = ["nosniff"];
         $headers["content-security-policy"] = [
             "default-src 'self'; " .
-            "img-src 'self' data: *.github.com *.gravatar.com *.google-analytics.com; " .
-            "connect-src: 'self' {$this->webSocketSrc} *.google-analytics.com; " .
+            "style-src 'self' 'unsafe-inline' fonts.googleapis.com maxcdn.bootstrapcdn.com; " .
+            "font-src 'self' fonts.gstatic.com maxcdn.bootstrapcdn.com; " .
+            "img-src 'self' data: avatars.githubusercontent.com avatars0.githubusercontent.com *.gravatar.com *.google-analytics.com; " .
+            "connect-src 'self' {$this->webSocketSrc} *.google-analytics.com; " .
             "frame-ancestors 'self'; " .
             "object-src 'none'"
         ];

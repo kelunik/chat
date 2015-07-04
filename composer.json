@@ -17,12 +17,14 @@
   },
   "require": {
     "amphp/aerys": "dev-wip",
+    "rdlowrey/auryn": "dev-master",
     "amphp/aerys-session": "dev-master",
     "amphp/mysql": "dev-master",
     "amphp/redis": "dev-master",
     "amphp/artax": "2.x-dev",
     "kelunik/template": "dev-master",
-    "swiftmailer/swiftmailer": "5.3.*"
+    "swiftmailer/swiftmailer": "5.3.*",
+    "justinrainbow/json-schema": "^1.4@dev"
   },
   "repositories": [
     {
@@ -38,9 +40,6 @@
   "autoload": {
     "psr-4": {
       "App\\": "src/"
-    },
-    "psr-0": {
-      "": "lib/"
     },
     "files": [
       "functions.php"

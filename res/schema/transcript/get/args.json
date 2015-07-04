@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "since": {
+      "id": "since",
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "since"
+  ]
+}
