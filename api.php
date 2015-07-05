@@ -18,9 +18,17 @@ return (function () use ($mysql, $redis) {
                 }
             }
 
+            foreach ($request->getQueryVars() as $key => $value) {
+                if (is_numeric($value)) {
+                    $args[$key] = (int) $value;
+                } else {
+                    $args[$key] = $value;
+                }
+            }
+
             $session = yield (new Session($request))->read();
             $payload = json_decode(yield $request->getBody());
-            $args = (object) ($args ?: null);
+            $args = $args ? (object) $args : null;
 
             $response->setHeader("content-type", "application/json");
             $command = $api->getCommand($endpoint);
@@ -73,21 +81,16 @@ return (function () use ($mysql, $redis) {
     return router()
         ->get("me", $apiCallable("me"))
         ->get("me/rooms", $apiCallable("me/rooms"))
-
         ->put("messages", $apiCallable("messages/new"))
         ->get("messages/{message_id:\\d+}", $apiCallable("messages/get"))
         ->patch("messages/{message_id:\\d+}", $apiCallable("messages/edit"))
         ->delete("messages/{message_id:\\d+}", $apiCallable("messages/delete"))
-
         ->get("rooms", $apiCallable("rooms"))
-
         ->get("rooms/{room_id:\\d+}", $apiCallable("rooms/get"))
         ->patch("rooms/{room_id:\\d+}", $apiCallable("rooms/edit"))
         ->delete("rooms/{room_id:\\d+}", $apiCallable("rooms/delete"))
-
         ->get("rooms/{room_id:\\d+}/messages", $apiCallable("rooms/messages/get"))
         ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms/users/get"))
-
         ->get("users", $apiCallable("users"))
         ->get("users/{user_id:\\d+}", $apiCallable("users/get"));
 })();

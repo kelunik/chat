@@ -7,7 +7,7 @@ use App\Chat\Command;
 use JsonSchema\Validator;
 
 class Rooms extends Command {
-    const COUNT = 50;
+    const COUNT = 10;
 
     private $mysql;
 
@@ -17,7 +17,11 @@ class Rooms extends Command {
     }
 
     public function execute ($args, $payload) {
-        $start = ($args->page ?? 0) * self::COUNT;
+        $start = ($args->page - 1 ?? 0) * self::COUNT;
+
+        if ($start < 0) {
+            return null;
+        }
 
         $result = yield $this->mysql->prepare(
             "SELECT r.id, r.name, r.description FROM `rooms` r ORDER BY r.id ASC LIMIT ?, ?",
