@@ -12,6 +12,8 @@ return (function () use ($mysql, $redis) {
 
     $apiCallable = function ($endpoint) use ($api) {
         return function (Request $request, Response $response, array $args) use ($endpoint, $api) {
+            $response->setHeader("content-type", "application/json");
+
             foreach ($args as $key => $arg) {
                 if (is_numeric($arg)) {
                     $args[$key] = (int) $arg;
@@ -19,18 +21,30 @@ return (function () use ($mysql, $redis) {
             }
 
             foreach ($request->getQueryVars() as $key => $value) {
+                // Don't allow overriding URL parameters
+                if (isset($args[$key])) {
+                    continue;
+                }
+
                 if (is_numeric($value)) {
                     $args[$key] = (int) $value;
-                } else {
+                } else if (is_string($value)) {
                     $args[$key] = $value;
+                } else {
+                    $response->setStatus(400);
+                    $response->send(json_encode([
+                        "error" => [
+                            "code" => "bad_query_parameters"
+                        ]
+                    ]));
+
+                    return;
                 }
             }
 
             $session = yield (new Session($request))->read();
             $payload = json_decode(yield $request->getBody());
             $args = $args ? (object) $args : null;
-
-            $response->setHeader("content-type", "application/json");
             $command = $api->getCommand($endpoint);
 
             if (!$command || !$command->isValid($args, $payload)) {
