@@ -159,5 +159,6 @@ return (function () use ($mysql, $redis) {
         ->get("rooms", $apiCallable("rooms"))
         ->get("rooms/{room_id:\\d+}", $apiCallable("rooms:get"))
         ->patch("rooms/{room_id:\\d+}", $apiCallable("rooms:edit"))
-        ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms:users:get"));
+        ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms:users:get"))
+        ->get("users", $apiCallable("users"));
 })();
