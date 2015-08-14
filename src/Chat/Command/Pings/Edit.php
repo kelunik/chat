@@ -25,15 +25,14 @@ class Edit extends Command {
             $args->user_id, $args->message_id
         ]);
 
-        $ping = yield $stmt->fetchRow();
+        $ping = yield $stmt->fetch();
 
         if (isset($ping["seen"])) {
-            if (!$ping["seen"]) {
-                $stmt = yield $this->mysql->prepare("UPDATE ping SET seen = ? WHERE user_id = ? && message_id = ?", [
-                    $payload->seen, $args->user_id, $args->message_id
-                ]);
+            $stmt = yield $this->mysql->prepare("UPDATE ping SET seen = ? WHERE user_id = ? && message_id = ?", [
+                $payload->seen, $args->user_id, $args->message_id
+            ]);
 
-                if ($stmt->affectedRows === 1)
+            if ($stmt->affectedRows === 1) {
                 yield $this->redis->publish("chat:user:{$args->user_id}", json_encode([
                     "type" => $payload->seen ? "ping:remove" : "ping:add",
                     "payload" => [
@@ -41,7 +40,9 @@ class Edit extends Command {
                     ]
                 ]));
 
-                return new Data(null, 204); // no content
+                return new Data([
+                    "seen" => $payload->seen
+                ]);
             } else {
                 return new Data(null, 304); // not modified
             }
