@@ -158,5 +158,7 @@ return (function () use ($mysql, $redis) {
         ->patch("messages/{message_id:\\d+}", $apiCallable("messages:edit"))
         ->patch("pings/{message_id:\\d+}", $apiCallable("pings:edit"))
         ->get("pings/{message_id:\\d+}", $apiCallable("pings:get"))
+        ->get("rooms/{room_id:\\d+}", $apiCallable("rooms:get"))
+        ->patch("rooms/{room_id:\\d+}", $apiCallable("rooms:edit"))
         ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms:users:get"));
 })();

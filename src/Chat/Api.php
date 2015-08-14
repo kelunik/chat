@@ -36,6 +36,8 @@ class Api {
             "messages:edit" => "Messages\\Edit",
             "pings:edit" => "Pings\\Edit",
             "pings:get" => "Pings\\Get",
+            "rooms:get" => "Rooms\\Get",
+            "rooms:edit" => "Rooms\\Edit",
             "rooms:users:get" => "Rooms\\Users\\Get",
         ];
 
