@@ -10,7 +10,7 @@ use App\Chat\Response\Error;
 use JsonSchema\Validator;
 use stdClass;
 
-class Clear extends Command {
+class Edit extends Command {
     private $mysql;
     private $redis;
 
@@ -29,12 +29,13 @@ class Clear extends Command {
 
         if (isset($ping["seen"])) {
             if (!$ping["seen"]) {
-                $stmt = yield $this->mysql->prepare("UPDATE ping SET seen = 1 WHERE user_id = ? && message_id = ?", [
-                    $args->user_id, $args->message_id
+                $stmt = yield $this->mysql->prepare("UPDATE ping SET seen = ? WHERE user_id = ? && message_id = ?", [
+                    $payload->seen, $args->user_id, $args->message_id
                 ]);
 
+                if ($stmt->affectedRows === 1)
                 yield $this->redis->publish("chat:user:{$args->user_id}", json_encode([
-                    "type" => "ping:clear",
+                    "type" => $payload->seen ? "ping:remove" : "ping:add",
                     "payload" => [
                         "message_id" => $args->message_id,
                     ]

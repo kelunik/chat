@@ -34,7 +34,7 @@ class Api {
             "messages:get" => "Messages\\Get",
             "messages:create" => "Messages\\Create",
             "messages:edit" => "Messages\\Edit",
-            "pings:clear" => "Pings\\Clear",
+            "pings:edit" => "Pings\\Edit",
             "pings:get" => "Pings\\Get",
         ];
 

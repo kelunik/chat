@@ -140,6 +140,6 @@ return (function () use ($mysql, $redis) {
         ->put("messages", $apiCallable("messages:create"))
         ->get("messages/{message_id:\\d+}", $apiCallable("messages:get"))
         ->patch("messages/{message_id:\\d+}", $apiCallable("messages:edit"))
-        ->patch("pings/{message_id:\\d+}", $apiCallable("pings:clear"))
-        ->patch("pings/{message_id:\\d+}", $apiCallable("pings:get"));
+        ->patch("pings/{message_id:\\d+}", $apiCallable("pings:edit"))
+        ->get("pings/{message_id:\\d+}", $apiCallable("pings:get"));
 })();
