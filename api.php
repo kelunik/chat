@@ -148,18 +148,12 @@ return (function () use ($mysql, $redis) {
         };
     };
 
-    return router()
-        ->get("me", $apiCallable("me"))
-        ->get("me/rooms", $apiCallable("me:rooms"))
-        ->put("messages", $apiCallable("messages:create"))
-        ->get("messages/{message_id:\\d+}", $apiCallable("messages:get"))
-        ->patch("messages/{message_id:\\d+}", $apiCallable("messages:edit"))
-        ->patch("pings/{message_id:\\d+}", $apiCallable("pings:edit"))
-        ->get("pings/{message_id:\\d+}", $apiCallable("pings:get"))
-        ->get("rooms", $apiCallable("rooms"))
-        ->get("rooms/{room_id:\\d+}", $apiCallable("rooms:get"))
-        ->patch("rooms/{room_id:\\d+}", $apiCallable("rooms:edit"))
-        ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms:users:get"))
-        ->get("users", $apiCallable("users"))
-        ->get("users/{id:\\d+}", $apiCallable("users:get"));
+    $router = router();
+    $routes = json_decode(file_get_contents(__DIR__ . "/res/routes.json"));
+
+    foreach ($routes as $route) {
+        $router->route($route->method, $route->uri, $apiCallable($route->endpoint));
+    }
+
+    return $router;
 })();

@@ -28,27 +28,18 @@ class Api {
 
         $namespace = __NAMESPACE__ . "\\Command\\";
 
-        $commands = [
-            "me" => "Me",
-            "me:rooms" => "Me\\Rooms",
-            "messages:get" => "Messages\\Get",
-            "messages:create" => "Messages\\Create",
-            "messages:edit" => "Messages\\Edit",
-            "pings:edit" => "Pings\\Edit",
-            "pings:get" => "Pings\\Get",
-            "rooms" => "Rooms",
-            "rooms:get" => "Rooms\\Get",
-            "rooms:edit" => "Rooms\\Edit",
-            "rooms:users:get" => "Rooms\\Users\\Get",
-            "users" => "Users",
-            "users:get" => "Users\\Get",
-        ];
+        $routes = json_decode(file_get_contents(__DIR__ . "/../../res/routes.json"));
 
-        foreach ($commands as $endpoint => $class) {
+        foreach ($routes as $route) {
+            // convert rooms:users:get to Rooms\Users\Get
+            $class = implode("\\", array_map(function($class) {
+                return ucfirst($class);
+            }, explode(":", $route->endpoint)));
+
             $command = $injector->make($namespace . $class);
             $this->prepare($command);
 
-            $this->commands[$endpoint] = $command;
+            $this->commands[$route->endpoint] = $command;
         }
     }
 
