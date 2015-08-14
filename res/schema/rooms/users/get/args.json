@@ -7,14 +7,20 @@
       "id": "room_id",
       "type": "integer"
     },
-    "text": {
-      "id": "text",
-      "type": "string"
+    "start": {
+      "id": "start",
+      "type": "integer"
+    },
+    "rel": {
+      "id": "rel",
+      "enum": [
+        "next",
+        "prev"
+      ]
     }
   },
   "additionalProperties": false,
   "required": [
-    "room_id",
-    "text"
+    "room_id"
   ]
 }

@@ -15,7 +15,7 @@ class MessageCrud {
         $this->mysql = $mysql;
     }
 
-    public function create (stdClass $user, int $roomId, string $text) {
+    public function create (stdClass $user, int $roomId, string $text, string $type) {
         $replyTo = $this->findReplyTo($text);
         $pings = [];
 
@@ -32,8 +32,8 @@ class MessageCrud {
             }
         }
 
-        $query = yield $this->mysql->prepare("INSERT INTO messages (`roomId`, `userId`, `text`, `replyTo`, `time`) VALUES (?, ?, ?, ?, ?)", [
-            $roomId, $user->id, $text, $replyTo, $time = time()
+        $query = yield $this->mysql->prepare("INSERT INTO message (`room_id`, `user_id`, `text`, `reply_to`, `type`, `time`) VALUES (?, ?, ?, ?, ?, ?)", [
+            $roomId, $user->id, $text, $replyTo, $type, $time = time()
         ]);
 
         $pings = array_unique(array_merge($pings, yield from $this->extractPings($text)));
@@ -53,12 +53,13 @@ class MessageCrud {
                 "avatar" => $user->avatar,
             ],
             "reply" => $reply ?? null,
+            "type" => $type,
             "edit_time" => null,
             "time" => $time
         ];
 
         yield $this->redis->publish("chat:rooms:{$roomId}", json_encode([
-            "type" => "message:new",
+            "type" => "message:create",
             "payload" => $payload,
         ]));
 
@@ -70,9 +71,9 @@ class MessageCrud {
     public function read (int $messageId, bool $expandReply = false) {
         $result = yield $this->mysql->prepare(
             <<<SQL
-    SELECT m.`id`, m.`roomId`, u.`id` userId, u.`name` userName, u.`avatar` userAvatar, m.`type`, m.`text`, m.`data`, m.`replyTo`, m.`editTime`, m.`time`
-    FROM messages m, users u
-    WHERE u.id = m.userId && m.id = ?
+    SELECT m.`id`, m.`room_id`, u.`id` userId, u.`name` userName, u.`avatar` userAvatar, m.`type`, m.`text`, m.`data`, m.`reply_to`, m.`edit_time`, m.`time`
+    FROM `message` m, `user` u
+    WHERE u.id = m.user_id && m.id = ?
 SQL
             , [$messageId]
         );
@@ -135,7 +136,7 @@ SQL
             }
         }
 
-        yield $this->mysql->prepare("UPDATE messages SET `text` = ?, `data` = NULL, `replyTo` = ?, `editTime` = ? WHERE `id` = ?", [
+        yield $this->mysql->prepare("UPDATE message SET `text` = ?, `data` = NULL, `reply_to` = ?, `edit_time` = ? WHERE `id` = ?", [
             $text, $replyTo, $time = time(), $messageId
         ]);
 
@@ -170,10 +171,6 @@ SQL
         return $payload;
     }
 
-    public function delete (int $id, int $authorId) {
-        // TODO implement
-    }
-
     private function extractPings (string $text) {
         $pattern = "~\\b@([a-z][a-z0-9-]*)\\b~i";
         $users = [];
@@ -190,8 +187,8 @@ SQL
         if ($count = count($users)) {
             $pings = [];
 
-            $where = str_repeat(" || u.name = ?", $count);
-            $result = yield $this->mysql->prepare("SELECT u.id FROM users u, room_users ru WHERE u.id = ru.userId AND ru.roomId = ? AND (0 {$where})",
+            $where = substr(str_repeat(" || u.name = ?", $count), 4);
+            $result = yield $this->mysql->prepare("SELECT u.id FROM `user` u, `room_user` ru WHERE u.id = ru.user_id AND ru.room_id = ? AND {$where}",
                 array_merge([$roomId], array_keys($users))
             );
 
@@ -225,7 +222,7 @@ SQL
             }
 
             $where = substr(str_repeat(", (?, ?)", count($pings)), 2);
-            yield $this->mysql->prepare("INSERT IGNORE INTO `pings` (`messageId`, `userId`) VALUES {$where}", $data);
+            yield $this->mysql->prepare("INSERT IGNORE INTO `ping` (`message_id`, `user_id`) VALUES {$where}", $data);
 
             foreach ($pings as $ping) {
                 yield $this->redis->publish("chat.user", json_encode([

@@ -17,28 +17,40 @@ abstract class Command {
 
     public function isValid ($args, $payload) {
         if ($this->argsSchema === null) {
-            $valid = $args === null;
+            if ($args !== null) {
+                $this->validator->addError("args", "There must not be any parameters in the query string");
+                return false;
+            }
         } else {
             $this->validator->check($args, $this->argsSchema);
-            $valid = $this->validator->isValid();
-        }
 
-        if (!$valid) {
-            var_dump($this->validator->getErrors());
+            if (!$this->validator->isValid()) {
+                return false;
+            }
         }
 
         if ($this->payloadSchema === null) {
-            $valid = $valid && $payload === null;
+            if ($payload !== null) {
+                $this->validator->addError("payload", "There must not be any payload");
+                return false;
+            }
         } else {
             $this->validator->check($payload, $this->payloadSchema);
-            $valid = $valid && $this->validator->isValid();
+
+            if (!$this->validator->isValid()) {
+                return false;
+            }
         }
 
-        if (!$valid) {
-            var_dump($this->validator->getErrors());
-        }
+        return true;
+    }
 
-        return $valid;
+    public function getValidationErrors () {
+        return $this->validator->getErrors();
+    }
+
+    public function resetValidation () {
+        $this->validator->reset();
     }
 
     public function setArgsSchema (stdClass $schema) {
@@ -56,5 +68,7 @@ abstract class Command {
         return strtolower(str_replace("\\", "/", $sub));
     }
 
-    public abstract function execute ($args, $payload);
+    public abstract function execute (stdClass $args, $payload);
+
+    public abstract function getPermissions (): array;
 }

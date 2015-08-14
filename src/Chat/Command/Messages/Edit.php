@@ -6,15 +6,18 @@ use App\Chat\Command;
 use App\Chat\MessageCrud;
 use App\Chat\Response\Data;
 use App\Chat\Response\Error;
+use App\ChatAuthorization;
 use JsonSchema\Validator;
 use stdClass;
 
-class Get extends Command {
+class Edit extends Command {
     private $messageCrud;
+    private $authorization;
 
-    public function __construct (Validator $validator, MessageCrud $messageCrud) {
+    public function __construct (Validator $validator, MessageCrud $messageCrud, ChatAuthorization $authorization) {
         parent::__construct($validator);
         $this->messageCrud = $messageCrud;
+        $this->authorization = $authorization;
     }
 
     public function execute (stdClass $args, $payload) {
@@ -23,16 +26,16 @@ class Get extends Command {
         $user->name = $args->user_name;
         $user->avatar = $args->user_avatar;
 
-        $message = yield from $this->messageCrud->read($args->message_id, true);
+        try {
+            $editedMessage = yield from $this->messageCrud->update($user, $args->message_id, $payload->text);
 
-        if ($message === null) {
-            return Error::make("not_found");
+            return new Data($editedMessage);
+        } catch (Command\Exception $e) {
+            return Error::make("bad_request");
         }
-
-        return new Data($message);
     }
 
     public function getPermissions () : array {
-        return ["read"];
+        return ["write"];
     }
 }

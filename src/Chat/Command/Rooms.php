@@ -5,9 +5,10 @@ namespace App\Chat\Command;
 use Amp\Mysql\Pool;
 use App\Chat\Command;
 use JsonSchema\Validator;
+use stdClass;
 
 class Rooms extends Command {
-    const COUNT = 10;
+    const COUNT = 5;
 
     private $mysql;
 
@@ -16,18 +17,20 @@ class Rooms extends Command {
         $this->mysql = $mysql;
     }
 
-    public function execute ($args, $payload) {
-        $start = ($args->page - 1 ?? 0) * self::COUNT;
-
-        if ($start < 0) {
-            return null;
-        }
+    public function execute (stdClass $args, $payload) {
+        $rel = $args->rel ?? "next";
 
         $result = yield $this->mysql->prepare(
-            "SELECT r.id, r.name, r.description FROM `rooms` r ORDER BY r.id ASC LIMIT ?, ?",
+            "SELECT r.id, r.name, r.description FROM `room` r ORDER BY r.id ASC LIMIT ?, ?",
             [$start, self::COUNT]
         );
 
-        return yield $result->fetchObjects();
+        $rooms = yield $result->fetchObjects();
+
+        return new Data($rooms);
+    }
+
+    public function getPermissions () : array {
+        return [];
     }
 }

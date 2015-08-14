@@ -30,18 +30,12 @@ class Api {
 
         $commands = [
             "me" => "Me",
-            "me/rooms" => "Me\\Rooms",
-            "messages/get" => "Messages\\Get",
-            "messages/new" => "Messages\\Put",
-            "messages/edit" => "Messages\\Patch",
-            "rooms" => "Rooms",
-            "rooms/get" => "Rooms\\Get",
-            "rooms/edit" => "Rooms\\Patch",
-            "rooms/delete" => "Rooms\\Delete",
-            "rooms/users/get" => "Rooms\\Users\\Get",
-            "rooms/messages/get" => "Rooms\\Messages\\Get",
-            "users" => "Users",
-            "users/get" => "Users\\Get",
+            "me:rooms" => "Me\\Rooms",
+            "messages:get" => "Messages\\Get",
+            "messages:create" => "Messages\\Create",
+            "messages:edit" => "Messages\\Edit",
+            "pings:clear" => "Pings\\Clear",
+            "pings:get" => "Pings\\Get",
         ];
 
         foreach ($commands as $endpoint => $class) {

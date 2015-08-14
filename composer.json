@@ -16,7 +16,7 @@
     "issues": "https://github.com/kelunik/aerys-chat"
   },
   "require": {
-    "amphp/aerys": "dev-wip",
+    "amphp/aerys": "dev-master",
     "rdlowrey/auryn": "dev-master",
     "amphp/aerys-session": "dev-master",
     "amphp/mysql": "dev-master",

@@ -11,9 +11,11 @@
 <body>
 
 <header id="top">
-    <form action="/logout" method="post">
-        <button type="submit"><i class="fa fa-sign-out"></i></button>
-    </form>
+    <?php if (isset($login)): ?>
+        <form action="/logout" method="post">
+            <button type="submit"><i class="fa fa-sign-out"></i></button>
+        </form>
+    <?php endif; ?>
 </header>
 
 <main>

@@ -81,6 +81,8 @@ class Auth {
 
         try {
             $accessToken = yield from $provider->getAccessTokenFromCode($code);
+
+            var_dump($accessToken);
         } catch (OAuthException $e) {
             // TODO pretty error page
             $response->setStatus(403);
@@ -107,7 +109,7 @@ class Auth {
             return;
         }
 
-        $query = yield $this->db->prepare("SELECT userId FROM oauth WHERE provider = ? AND identity = ?", [
+        $query = yield $this->db->prepare("SELECT user_id FROM oauth WHERE provider = ? AND identity = ?", [
             $args["provider"], $identity["id"]
         ]);
 
@@ -126,8 +128,8 @@ class Auth {
             $response->setHeader("location", "/join");
         }
 
-        $response->send("");
         yield $session->save();
+        $response->send("");
     }
 
     public function join (Request $request, Response $response) {
@@ -161,12 +163,12 @@ class Auth {
             return;
         }
 
-        $query = yield $this->db->prepare("INSERT IGNORE INTO users (username) VALUES (?)", [
+        $query = yield $this->db->prepare("INSERT IGNORE INTO user (`name`) VALUES (?)", [
             $username
         ]);
 
         if ($query->affectedRows) {
-            yield $this->db->prepare("INSERT INTO oauth (userId, provider, identity, label) VALUES (?, ?, ?, ?)", [
+            yield $this->db->prepare("INSERT INTO oauth (user_id, provider, identity, label) VALUES (?, ?, ?, ?)", [
                 $query->insertId, $provider, $session->get("auth:identity:id"), $session->get("auth:identity:name")
             ]);
 

@@ -5,16 +5,18 @@ namespace App\Chat\Command\Messages;
 use App\Chat\Command;
 use App\Chat\MessageCrud;
 use App\Chat\Response\Data;
-use App\Chat\Response\Error;
+use App\ChatAuthorization;
 use JsonSchema\Validator;
 use stdClass;
 
-class Get extends Command {
+class Create extends Command {
     private $messageCrud;
+    private $authorization;
 
-    public function __construct (Validator $validator, MessageCrud $messageCrud) {
+    public function __construct (Validator $validator, MessageCrud $messageCrud, ChatAuthorization $authorization) {
         parent::__construct($validator);
         $this->messageCrud = $messageCrud;
+        $this->authorization = $authorization;
     }
 
     public function execute (stdClass $args, $payload) {
@@ -23,16 +25,18 @@ class Get extends Command {
         $user->name = $args->user_name;
         $user->avatar = $args->user_avatar;
 
-        $message = yield from $this->messageCrud->read($args->message_id, true);
-
-        if ($message === null) {
-            return Error::make("not_found");
+        if ($args->user_id < 0) {
+            $type = $payload->type ?? "text";
+        } else {
+            $type = "text";
         }
 
-        return new Data($message);
+        $insertedMessage = yield from $this->messageCrud->create($user, $payload->room_id, $payload->text, $type);
+
+        return new Data($insertedMessage);
     }
 
     public function getPermissions () : array {
-        return ["read"];
+        return ["write"];
     }
 }

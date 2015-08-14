@@ -4,14 +4,17 @@ use Aerys\Request;
 use Aerys\Response;
 use Aerys\Session;
 use App\Chat\Api;
+use App\Chat\Response\Error;
 use JsonSchema\Uri\UriRetriever;
 use function Aerys\router;
 
 return (function () use ($mysql, $redis) {
     $api = new Api(new UriRetriever, $mysql, $redis);
+    $authentication = new \App\Authentication($mysql);
+    $authorization = new \App\ChatAuthorization($mysql);
 
-    $apiCallable = function ($endpoint) use ($api) {
-        return function (Request $request, Response $response, array $args) use ($endpoint, $api) {
+    $apiCallable = function ($endpoint) use ($api, $mysql, $authentication, $authorization) {
+        return function (Request $request, Response $response, array $args) use ($endpoint, $api, $mysql, $authentication, $authorization) {
             $response->setHeader("content-type", "application/json");
 
             foreach ($args as $key => $arg) {
@@ -42,27 +45,75 @@ return (function () use ($mysql, $redis) {
                 }
             }
 
-            $session = yield (new Session($request))->read();
-            $payload = json_decode(yield $request->getBody());
-            $args = $args ? (object) $args : null;
-            $command = $api->getCommand($endpoint);
+            $auth = $request->getHeader("authentication");
+            $auth = explode(" ", $auth);
 
-            if (!$command || !$command->isValid($args, $payload)) {
-                $response->setStatus(422);
+            if (count($auth) !== 2 || $auth[0] !== "token") {
+                $response->setStatus(400);
                 $response->send(json_encode([
                     "error" => [
-                        "code" => "invalid_request"
+                        "code" => "bad_authentication_header"
                     ]
-                ], JSON_PRETTY_PRINT));
+                ]));
 
                 return;
             }
 
+            $user = yield from $authentication->authenticateWithToken($auth[1]);
+
+            $payload = json_decode(yield $request->getBody());
+            $args = $args ? (object) $args : null;
+            $command = $api->getCommand($endpoint);
+
+            if (!$command) {
+                $response->setStatus(404);
+                $response->send(json_encode([], JSON_PRETTY_PRINT));
+
+                return;
+            }
+
+            if (!$command->isValid($args, $payload)) {
+                $response->setStatus(422);
+                $response->send(json_encode([
+                    "code" => "invalid_request",
+                    "message" => "The provided request data wasn't in the right format",
+                    "errors" => $command->getValidationErrors()
+                ], JSON_PRETTY_PRINT));
+
+                $command->resetValidation();
+
+                return;
+            }
+
+            $command->resetValidation();
+
+            $requiredPermissions = $command->getPermissions();
+
+            if ($user->id < 0) {
+                $permissions = $authorization->getBotPermissions($user->id);
+            } elseif (isset($payload->room_id)) {
+                $permissions = yield from $authorization->getRoomPermissions($user->id, $payload->room_id);
+            } else {
+                $permissions = [];
+            }
+
+            foreach ($requiredPermissions as $permission) {
+                if (!isset($permissions[$permission])) {
+                    $response->setStatus(403);
+                    $response->send(json_encode([
+                        "code" => "forbidden",
+                        "message" => "access to resource not granted"
+                    ], JSON_PRETTY_PRINT));
+
+                    return;
+                }
+            }
+
             /** @var stdClass $args */
             $args = $args ?? new stdClass;
-            $args->user_id = $session->get("login") ?? 0;
-            $args->user_name = $session->get("login:name") ?? "";
-            $args->user_avatar = $session->get("login:avatar") ?? "";
+            $args->user_id = $user->id;
+            $args->user_name = $user->name;
+            $args->user_avatar = $user->avatar;
 
             try {
                 $result = $command->execute($args, $payload);
@@ -70,41 +121,25 @@ return (function () use ($mysql, $redis) {
                 if ($result instanceof Generator) {
                     $result = yield from $result;
                 }
-            } catch (Exception $e) {
-                $response->setStatus(400);
-                $result = [
-                    "error" => [
-                        "code" => $e->getMessage()
-                    ]
-                ];
+            } catch (App\Chat\Command\Exception $e) {
+                $result = Error::make("bad_request");
             }
 
             if ($result === null) {
-                $response->setStatus(404);
-                $result = [
-                    "error" => [
-                        "code" => "not_found"
-                    ]
-                ];
+                $result = Error::make("not_found");
             }
 
-            $response->send(json_encode($result, JSON_PRETTY_PRINT));
+            $response->setStatus($result->getStatus());
+            $response->send(json_encode($result->getData(), JSON_PRETTY_PRINT));
         };
     };
 
     return router()
         ->get("me", $apiCallable("me"))
-        ->get("me/rooms", $apiCallable("me/rooms"))
-        ->put("messages", $apiCallable("messages/new"))
-        ->get("messages/{message_id:\\d+}", $apiCallable("messages/get"))
-        ->patch("messages/{message_id:\\d+}", $apiCallable("messages/edit"))
-        ->delete("messages/{message_id:\\d+}", $apiCallable("messages/delete"))
-        ->get("rooms", $apiCallable("rooms"))
-        ->get("rooms/{room_id:\\d+}", $apiCallable("rooms/get"))
-        ->patch("rooms/{room_id:\\d+}", $apiCallable("rooms/edit"))
-        ->delete("rooms/{room_id:\\d+}", $apiCallable("rooms/delete"))
-        ->get("rooms/{room_id:\\d+}/messages", $apiCallable("rooms/messages/get"))
-        ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms/users/get"))
-        ->get("users", $apiCallable("users"))
-        ->get("users/{user_id:\\d+}", $apiCallable("users/get"));
+        ->get("me/rooms", $apiCallable("me:rooms"))
+        ->put("messages", $apiCallable("messages:create"))
+        ->get("messages/{message_id:\\d+}", $apiCallable("messages:get"))
+        ->patch("messages/{message_id:\\d+}", $apiCallable("messages:edit"))
+        ->patch("pings/{message_id:\\d+}", $apiCallable("pings:clear"))
+        ->patch("pings/{message_id:\\d+}", $apiCallable("pings:get"));
 })();
