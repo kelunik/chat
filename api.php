@@ -62,7 +62,7 @@ return (function () use ($mysql, $redis) {
             $user = yield from $authentication->authenticateWithToken($auth[1]);
 
             $payload = json_decode(yield $request->getBody());
-            $args = $args ? (object) $args : null;
+            $args = $args ? (object) $args : new stdClass;
             $command = $api->getCommand($endpoint);
 
             if (!$command) {
@@ -110,8 +110,6 @@ return (function () use ($mysql, $redis) {
                 }
             }
 
-            /** @var stdClass $args */
-            $args = $args ?? new stdClass;
             $args->user_id = $user->id;
             $args->user_name = $user->name;
             $args->user_avatar = $user->avatar;
@@ -158,6 +156,7 @@ return (function () use ($mysql, $redis) {
         ->patch("messages/{message_id:\\d+}", $apiCallable("messages:edit"))
         ->patch("pings/{message_id:\\d+}", $apiCallable("pings:edit"))
         ->get("pings/{message_id:\\d+}", $apiCallable("pings:get"))
+        ->get("rooms", $apiCallable("rooms"))
         ->get("rooms/{room_id:\\d+}", $apiCallable("rooms:get"))
         ->patch("rooms/{room_id:\\d+}", $apiCallable("rooms:edit"))
         ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms:users:get"));

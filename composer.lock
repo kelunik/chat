@@ -116,16 +116,16 @@
         },
         {
             "name": "amphp/amp",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "6612bb84dfb56d795a0ad0dc6c21ac90af7f3060"
+                "reference": "3d1fde0812b6ddc30d73e784d4b2bd18ead25efb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/6612bb84dfb56d795a0ad0dc6c21ac90af7f3060",
-                "reference": "6612bb84dfb56d795a0ad0dc6c21ac90af7f3060",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/3d1fde0812b6ddc30d73e784d4b2bd18ead25efb",
+                "reference": "3d1fde0812b6ddc30d73e784d4b2bd18ead25efb",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2015-08-08 15:50:22"
+            "time": "2015-08-12 00:01:25"
         },
         {
             "name": "amphp/artax",
@@ -339,16 +339,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/file.git",
-                "reference": "8be0e9d8e7b63b9fcfda587ec78443515cb8f46b"
+                "reference": "4bda31dd5f2087716e527c96fd9dc871df8c5d53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/file/zipball/8be0e9d8e7b63b9fcfda587ec78443515cb8f46b",
-                "reference": "8be0e9d8e7b63b9fcfda587ec78443515cb8f46b",
+                "url": "https://api.github.com/repos/amphp/file/zipball/4bda31dd5f2087716e527c96fd9dc871df8c5d53",
+                "reference": "4bda31dd5f2087716e527c96fd9dc871df8c5d53",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "v1",
+                "amphp/amp": "^1",
                 "php": ">=5.5"
             },
             "require-dev": {
@@ -390,7 +390,7 @@
                 "non-blocking",
                 "static"
             ],
-            "time": "2015-08-13 15:31:28"
+            "time": "2015-08-14 12:40:58"
         },
         {
             "name": "amphp/filesystem",

@@ -3,9 +3,16 @@
   "id": "/",
   "type": "object",
   "properties": {
-    "page": {
-      "id": "page",
+    "start": {
+      "id": "start",
       "type": "integer"
+    },
+    "rel": {
+      "id": "rel",
+      "enum": [
+        "next",
+        "prev"
+      ]
     }
   },
   "additionalProperties": false,
