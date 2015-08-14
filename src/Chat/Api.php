@@ -41,6 +41,7 @@ class Api {
             "rooms:edit" => "Rooms\\Edit",
             "rooms:users:get" => "Rooms\\Users\\Get",
             "users" => "Users",
+            "users:get" => "Users\\Get",
         ];
 
         foreach ($commands as $endpoint => $class) {
