@@ -25,10 +25,12 @@ class Get extends Command {
             $args->user_id, $args->message_id
         ]);
 
-        $ping = yield $stmt->fetchRow();
+        $ping = yield $stmt->fetchObject();
 
         if ($ping) {
-            return new Data($ping);
+            return new Data([
+                "seen" => (bool) $ping->seen
+            ]);
         }
 
         return Error::make("not_found");
