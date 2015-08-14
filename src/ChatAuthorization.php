@@ -12,11 +12,11 @@ class ChatAuthorization {
     }
 
     public function getRoomPermissions (int $userId, int $roomId) {
-        $query = yield $this->mysql->prepare("SELECT `permissions` FROM `room_users` WHERE `userId` = ? && `roomId` = ?", [
+        $query = yield $this->mysql->prepare("SELECT `permissions` FROM `room_user` WHERE `user_id` = ? && `room_id` = ?", [
             $userId, $roomId
         ]);
 
-        $result = yield $query->fetchRow();
+        $result = yield $query->fetch();
 
         if ($result) {
             $permissions = json_decode($result["permissions"]);

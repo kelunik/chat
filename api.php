@@ -91,8 +91,9 @@ return (function () use ($mysql, $redis) {
 
             if ($user->id < 0) {
                 $permissions = $authorization->getBotPermissions($user->id);
-            } elseif (isset($payload->room_id)) {
-                $permissions = yield from $authorization->getRoomPermissions($user->id, $payload->room_id);
+            } elseif (isset($args->room_id) || isset($payload->room_id)) {
+                $roomId = $args->room_id ?? $payload->room_id;
+                $permissions = yield from $authorization->getRoomPermissions($user->id, $roomId);
             } else {
                 $permissions = [];
             }
@@ -129,7 +130,22 @@ return (function () use ($mysql, $redis) {
                 $result = Error::make("not_found");
             }
 
+            $links = $result->getLinks();
+
             $response->setStatus($result->getStatus());
+
+            if ($links) {
+                $elements = [];
+
+                foreach ($links as $rel => $params) {
+                    $uri = strtok($request->getUri(), "?");
+                    $uri .= "?" . http_build_query($params);
+                    $elements[] = "<{$uri}>; rel=\"{$rel}\"";
+                }
+
+                $response->addHeader("link", implode(", ", $elements));
+            }
+
             $response->send(json_encode($result->getData(), JSON_PRETTY_PRINT));
         };
     };
@@ -141,5 +157,6 @@ return (function () use ($mysql, $redis) {
         ->get("messages/{message_id:\\d+}", $apiCallable("messages:get"))
         ->patch("messages/{message_id:\\d+}", $apiCallable("messages:edit"))
         ->patch("pings/{message_id:\\d+}", $apiCallable("pings:edit"))
-        ->get("pings/{message_id:\\d+}", $apiCallable("pings:get"));
+        ->get("pings/{message_id:\\d+}", $apiCallable("pings:get"))
+        ->get("rooms/{room_id:\\d+}/users", $apiCallable("rooms:users:get"));
 })();

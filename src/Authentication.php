@@ -7,11 +7,11 @@ use Amp\Mysql\Pool;
 class Authentication {
     private $mysql;
 
-    public function __construct (Pool $mysql) {
+    public function __construct(Pool $mysql) {
         $this->mysql = $mysql;
     }
 
-    public function authenticateWithToken (string $token) {
+    public function authenticateWithToken(string $token) {
         $auth = explode(":", $token, 2);
 
         if (count($auth) !== 2) {
@@ -37,6 +37,10 @@ class Authentication {
             throw new RecordNotFoundException("User had a valid token, but does not exist");
         }
 
-        return $user;
+        return (object) [
+            "id" => (int) $user->id,
+            "name" => $user->name,
+            "avatar" => $user->avatar,
+        ];
     }
 }

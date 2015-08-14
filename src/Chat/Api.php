@@ -36,6 +36,7 @@ class Api {
             "messages:edit" => "Messages\\Edit",
             "pings:edit" => "Pings\\Edit",
             "pings:get" => "Pings\\Get",
+            "rooms:users:get" => "Rooms\\Users\\Get",
         ];
 
         foreach ($commands as $endpoint => $class) {
