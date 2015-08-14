@@ -28,7 +28,7 @@ $mysql = new MySQL(sprintf(
 ));
 
 $redis = new Redis(REDIS_URI);
-$redisSubscribe = new SubscribeClient("tcp://127.0.0.1:6380");
+$redisSubscribe = new SubscribeClient(REDIS_URI);
 
 $auth = new Auth($mysql, $redis, $artax, $templateService);
 
