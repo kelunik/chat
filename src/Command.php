@@ -6,7 +6,7 @@ use stdClass;
 
 abstract class Command {
     public function getName(): string {
-        $base = self::class . "\\";
+        $base = self::class . "s\\";
         $sub = str_replace($base, "", get_class($this));
         return strtolower(str_replace("\\", "/", $sub));
     }

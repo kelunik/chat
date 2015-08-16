@@ -54,7 +54,7 @@ class RequestValidator {
         $argsSchema = $this->argsSchema[$uri] ?? null;
 
         if ($argsSchema === null) {
-            if (!empty($args)) {
+            if (!empty((array) $args)) {
                 $this->validator->addError("args", "there must not be any args");
                 return false;
             }

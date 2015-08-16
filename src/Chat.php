@@ -9,6 +9,11 @@ use JsonSchema\Uri\UriRetriever;
 use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\Response;
+use Kelunik\Chat\Boundaries\User;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use RegexIterator;
 
 class Chat {
     private $retriever;
@@ -17,7 +22,7 @@ class Chat {
     private $redis;
     private $commands;
 
-    public function __construct (UriRetriever $retriever, RequestValidator $validator, Pool $mysql, Client $redis) {
+    public function __construct(UriRetriever $retriever, RequestValidator $validator, Pool $mysql, Client $redis) {
         $this->retriever = $retriever;
         $this->validator = $validator;
         $this->mysql = $mysql;
@@ -26,15 +31,20 @@ class Chat {
         $this->initialize();
     }
 
-    private function initialize () {
+    private function initialize() {
         $injector = new Injector;
         $injector->share($this->mysql);
         $injector->share($this->redis);
 
-        $namespace = __NAMESPACE__ . "\\Commands\\";
+        $namespace = __NAMESPACE__;
 
-        foreach (glob(__DIR__ . "/Commands/*") as $file) {
-            $class = str_replace("/", "\\", $file);
+        $dir = new RecursiveDirectoryIterator(__DIR__ . "/Commands");
+        $iterator = new RecursiveIteratorIterator($dir);
+        $regex = new RegexIterator($iterator, "~.+.php$~", RecursiveRegexIterator::GET_MATCH);
+
+        foreach ($regex as list($file)) {
+            $item = str_replace([".php", __DIR__], "", $file);
+            $class = str_replace("/", "\\", $item);
             $command = $injector->make($namespace . $class);
             $this->commands[$command->getName()] = $command;
 
@@ -42,7 +52,7 @@ class Chat {
         }
     }
 
-    private function prepare (Command $command) {
+    private function prepare(Command $command) {
         $basePath = $basePath = __DIR__ . "/../res/schema/";
         $uri = $command->getName();
         $uri = $basePath . $uri . "/";
@@ -58,7 +68,7 @@ class Chat {
         }
     }
 
-    public function process (Request $request): Response {
+    public function process(Request $request, User $user): Response {
         $uri = $request->getUri();
 
         if (!isset($this->commands[$uri])) {
@@ -71,9 +81,14 @@ class Chat {
             return new Error("bad_request", "invalid input parameters", 422);
         }
 
+        $args = $request->getArgs();
+        $args->user_id = $user->id;
+        $args->user_name = $user->name;
+        $args->user_avatar = $user->avatar;
+
         // TODO add permission checks
 
         $command = $this->commands[$uri];
-        return $command->execute($request->getArgs(), $request->getPayload());
+        return $command->execute($args, $request->getPayload());
     }
 }
