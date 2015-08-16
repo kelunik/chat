@@ -1,8 +1,0 @@
-# don't display the copyright page
-startup_message off
-# visable bell
-vbell_msg "beep"
-# enable multiple users
-multiuser on
-# add users
-acladd root

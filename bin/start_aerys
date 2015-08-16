@@ -1,7 +1,0 @@
-#!/bin/bash
-
-hardpath=`readlink $0`
-if [ -z "$hardpath" ]; then
-	hardpath="$0"
-fi
-sudo screen -m -c `dirname $hardpath`/../config/screenrc.txt `dirname $hardpath`/init_aerys
