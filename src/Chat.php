@@ -16,10 +16,29 @@ use RecursiveRegexIterator;
 use RegexIterator;
 
 class Chat {
+    /**
+     * @var UriRetriever
+     */
     private $retriever;
+
+    /**
+     * @var RequestValidator
+     */
     private $validator;
+
+    /**
+     * @var Pool
+     */
     private $mysql;
+
+    /**
+     * @var Client
+     */
     private $redis;
+
+    /**
+     * @var Command[]
+     */
     private $commands;
 
     public function __construct(UriRetriever $retriever, RequestValidator $validator, Pool $mysql, Client $redis) {
@@ -81,14 +100,9 @@ class Chat {
             return new Error("bad_request", "invalid input parameters", 422);
         }
 
-        $args = $request->getArgs();
-        $args->user_id = $user->id;
-        $args->user_name = $user->name;
-        $args->user_avatar = $user->avatar;
-
         // TODO add permission checks
 
         $command = $this->commands[$uri];
-        return $command->execute($args, $request->getPayload());
+        return $command->execute($request, $user);
     }
 }

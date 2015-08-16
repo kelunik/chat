@@ -2,6 +2,9 @@
 
 namespace Kelunik\Chat\Commands\Messages;
 
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\Response;
+use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 use Kelunik\Chat\MessageCrud;
 use Kelunik\Chat\Boundaries\Data;
@@ -14,13 +17,10 @@ class Create extends Command {
         $this->messageCrud = $messageCrud;
     }
 
-    public function execute(stdClass $args, $payload) {
-        $user = new stdClass;
-        $user->id = $args->user_id;
-        $user->name = $args->user_name;
-        $user->avatar = $args->user_avatar;
+    public function execute(Request $request, User $user): Response {
+        $payload = $request->getPayload();
 
-        if ($args->user_id < 0) {
+        if ($user->id < 0) {
             $type = $payload->type ?? "text";
         } else {
             $type = "text";

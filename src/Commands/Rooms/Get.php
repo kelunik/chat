@@ -3,6 +3,9 @@
 namespace Kelunik\Chat\Commands\Rooms;
 
 use Amp\Mysql\Pool;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\Response;
+use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
@@ -15,7 +18,9 @@ class Get extends Command {
         $this->mysql = $mysql;
     }
 
-    public function execute (stdClass $args, $payload) {
+    public function execute(Request $request, User $user): Response {
+        $args = $request->getArgs();
+
         $stmt = yield $this->mysql->prepare("SELECT `id`, `name`, `description` FROM `room` WHERE `id` = ?", [
             $args->room_id
         ]);

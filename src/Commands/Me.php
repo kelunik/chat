@@ -2,20 +2,22 @@
 
 namespace Kelunik\Chat\Commands;
 
-use Kelunik\Chat\Command;
 use Kelunik\Chat\Boundaries\Data;
-use stdClass;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\Response;
+use Kelunik\Chat\Boundaries\User;
+use Kelunik\Chat\Command;
 
 class Me extends Command {
-    public function execute (stdClass $args, $payload) {
+    public function execute(Request $request, User $user): Response {
         return new Data([
-            "id" => $args->user_id,
-            "name" => $args->user_name,
-            "avatar" => $args->user_avatar,
+            "id" => $user->id,
+            "name" => $user->name,
+            "avatar" => $user->avatar,
         ]);
     }
 
-    public function getPermissions () : array {
+    public function getPermissions() : array {
         return [];
     }
 }

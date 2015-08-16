@@ -2,11 +2,13 @@
 
 namespace Kelunik\Chat\Commands\Messages;
 
-use Kelunik\Chat\Command;
-use Kelunik\Chat\MessageCrud;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
-use stdClass;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\Response;
+use Kelunik\Chat\Boundaries\User;
+use Kelunik\Chat\Command;
+use Kelunik\Chat\MessageCrud;
 
 class Get extends Command {
     private $messageCrud;
@@ -15,11 +17,8 @@ class Get extends Command {
         $this->messageCrud = $messageCrud;
     }
 
-    public function execute(stdClass $args, $payload) {
-        $user = new stdClass;
-        $user->id = $args->user_id;
-        $user->name = $args->user_name;
-        $user->avatar = $args->user_avatar;
+    public function execute(Request $request, User $user): Response {
+        $args = $request->getArgs();
 
         $message = yield \Amp\resolve($this->messageCrud->read($args->message_id, true));
 

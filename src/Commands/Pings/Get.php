@@ -4,6 +4,9 @@ namespace Kelunik\Chat\Commands\Pings;
 
 use Amp\Mysql\Pool;
 use Amp\Redis\Client;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\Response;
+use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
@@ -18,9 +21,11 @@ class Get extends Command {
         $this->redis = $redis;
     }
 
-    public function execute(stdClass $args, $payload) {
+    public function execute(Request $request, User $user): Response {
+        $args = $request->getArgs();
+
         $stmt = yield $this->mysql->prepare("SELECT seen FROM ping WHERE user_id = ? && message_id = ?", [
-            $args->user_id, $args->message_id
+            $user->id, $args->message_id
         ]);
 
         $ping = yield $stmt->fetchObject();

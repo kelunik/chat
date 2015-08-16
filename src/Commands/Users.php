@@ -3,6 +3,9 @@
 namespace Kelunik\Chat\Commands;
 
 use Amp\Mysql\Pool;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\Response;
+use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
@@ -17,7 +20,9 @@ class Users extends Command {
         $this->mysql = $mysql;
     }
 
-    public function execute(stdClass $args, $payload) {
+    public function execute(Request $request, User $user): Response {
+        $args = $request->getArgs();
+
         // set default values, because there's no support for them in our JSON schema library currently.
         $args->rel = $args->rel ?? "next";
         $args->start = $args->start ?? 0;

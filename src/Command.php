@@ -2,7 +2,8 @@
 
 namespace Kelunik\Chat;
 
-use stdClass;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\User;
 
 abstract class Command {
     public function getName(): string {
@@ -11,7 +12,7 @@ abstract class Command {
         return strtolower(str_replace("\\", "/", $sub));
     }
 
-    public abstract function execute(stdClass $args, $payload);
+    public abstract function execute(Request $request, User $user): Response;
 
     public abstract function getPermissions(): array;
 }
