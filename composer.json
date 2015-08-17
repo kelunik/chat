@@ -13,10 +13,16 @@
     "amphp/redis": "dev-master",
     "justinrainbow/json-schema": "^1.4@dev"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^5"
+  },
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "Kelunik\\Chat\\": "src/"
-    }
+    },
+    "files": [
+      "src/functions.php"
+    ]
   }
 }

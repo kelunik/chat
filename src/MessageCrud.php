@@ -176,17 +176,7 @@ SQL
     }
 
     private function extractPings (string $text) {
-        $pattern = "~\\b@([a-z][a-z0-9-]*)\\b~i";
-        $users = [];
-
-        // remove code blocks, we don't want code to ping people
-        $text = preg_replace("~(`(?:``)?)([^`]+?)(\1)~", "", $text);
-
-        if (preg_match_all($pattern, $text, $matches, PREG_SET_ORDER)) {
-            foreach ($matches as $match) {
-                $users[$match[1]] = true;
-            }
-        }
+        $users = getPingedNames($text);
 
         if ($count = count($users)) {
             $pings = [];
@@ -204,16 +194,6 @@ SQL
         }
 
         return [];
-    }
-
-    private function findReplyTo ($text): int {
-        if (preg_match("~^:(\\d+)\\b~", $text, $match)) {
-            return (int) $match[1];
-        }
-
-        // use 0 as no-reply value, because it's no valid ID
-        // and works nicely with if ($replyTo) { ... }
-        return 0;
     }
 
     private function sendPingNotifications (stdClass $user, int $messageId, int $roomId, array $pings) {
