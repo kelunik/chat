@@ -2,19 +2,19 @@
 
 namespace Kelunik\Chat;
 
+use Amp\Promise;
 use Auryn\Injector;
+use Generator;
 use JsonSchema\Uri\UriRetriever;
 use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
-use Kelunik\Chat\Storage\MessageStorage;
-use Kelunik\Chat\Storage\PingStorage;
-use Kelunik\Chat\Storage\RoomStorage;
-use Kelunik\Chat\Storage\UserStorage;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
+use Success;
+use function Amp\resolve;
 
 class Chat {
     /**
@@ -78,7 +78,7 @@ class Chat {
         }
     }
 
-    public function process(Request $request, User $user) {
+    public function process(Request $request, User $user): Promise {
         $uri = $request->getUri();
 
         if (!isset($this->commands[$uri])) {
@@ -94,7 +94,14 @@ class Chat {
         // TODO add permission checks
 
         $command = $this->commands[$uri];
+        $result = $command->execute($request, $user);
 
-        return $command->execute($request, $user);
+        if ($result instanceof Generator) {
+            return resolve($result);
+        } elseif ($result instanceof Promise) {
+            return $result;
+        } else {
+            return new Success($result);
+        }
     }
 }
