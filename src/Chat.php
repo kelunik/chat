@@ -2,14 +2,15 @@
 
 namespace Kelunik\Chat;
 
-use Amp\Mysql\Pool;
-use Amp\Redis\Client;
 use Auryn\Injector;
 use JsonSchema\Uri\UriRetriever;
 use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
-use Kelunik\Chat\Boundaries\Response;
 use Kelunik\Chat\Boundaries\User;
+use Kelunik\Chat\Storage\MessageStorage;
+use Kelunik\Chat\Storage\PingStorage;
+use Kelunik\Chat\Storage\RoomStorage;
+use Kelunik\Chat\Storage\UserStorage;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
@@ -27,33 +28,47 @@ class Chat {
     private $validator;
 
     /**
-     * @var Pool
+     * @var RoomStorage
      */
-    private $mysql;
+    private $roomStorage;
 
     /**
-     * @var Client
+     * @var MessageStorage
      */
-    private $redis;
+    private $messageStorage;
+
+    /**
+     * @var UserStorage
+     */
+    private $userStorage;
+
+    /**
+     * @var PingStorage
+     */
+    private $pingStorage;
 
     /**
      * @var Command[]
      */
     private $commands;
 
-    public function __construct(UriRetriever $retriever, RequestValidator $validator, Pool $mysql, Client $redis) {
+    public function __construct(UriRetriever $retriever, RequestValidator $validator, UserStorage $userStorage, RoomStorage $roomStorage, MessageStorage $messageStorage, PingStorage $pingStorage) {
         $this->retriever = $retriever;
         $this->validator = $validator;
-        $this->mysql = $mysql;
-        $this->redis = $redis;
+        $this->roomStorage = $roomStorage;
+        $this->messageStorage = $messageStorage;
+        $this->pingStorage = $pingStorage;
+        $this->userStorage = $userStorage;
         $this->commands = [];
         $this->initialize();
     }
 
     private function initialize() {
         $injector = new Injector;
-        $injector->share($this->mysql);
-        $injector->share($this->redis);
+        $injector->share($this->pingStorage);
+        $injector->share($this->userStorage);
+        $injector->share($this->roomStorage);
+        $injector->share($this->messageStorage);
 
         $namespace = __NAMESPACE__;
 
@@ -103,6 +118,7 @@ class Chat {
         // TODO add permission checks
 
         $command = $this->commands[$uri];
+
         return $command->execute($request, $user);
     }
 }

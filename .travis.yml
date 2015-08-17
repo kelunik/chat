@@ -9,4 +9,4 @@ install:
   - composer install
 
 script:
-  - vendor/bin/phpunit
+  - phpdbg -qrr vendor/bin/phpunit --coverage-text
