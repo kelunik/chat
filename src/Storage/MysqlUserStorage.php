@@ -45,4 +45,14 @@ class MysqlUserStorage implements UserStorage {
             return $stmt->fetchObjects();
         });
     }
+
+    public function getAll(int $cursor = 0, bool $asc = true, int $limit = 51): Promise {
+        $order = $asc ? "ASC" : "DESC";
+
+        $sql = "SELECT id, name, avatar FROM user WHERE id >= ? ORDER BY id {$order} LIMIT {$limit}";
+
+        return pipe($this->mysql->prepare($sql, [$cursor]), function (ResultSet $stmt): Promise {
+            return $stmt->fetchObjects();
+        });
+    }
 }

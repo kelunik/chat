@@ -2,53 +2,29 @@
 
 namespace Kelunik\Chat\Commands;
 
-use Amp\Mysql\Pool;
-use Kelunik\Chat\Boundaries\Data;
-use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
+use Kelunik\Chat\Storage\UserStorage;
+use function Kelunik\Chat\createPaginationResult;
 
 class Users extends Command {
-    const LIMIT = 50;
+    private $userStorage;
 
-    private $mysql;
-
-    public function __construct(Pool $mysql) {
-        $this->mysql = $mysql;
+    public function __construct(UserStorage $userStorage) {
+        $this->userStorage = $userStorage;
     }
 
     public function execute(Request $request, User $user) {
         $args = $request->getArgs();
 
         // set default values, because there's no support for them in our JSON schema library currently.
-        $args->rel = $args->rel ?? "next";
-        $args->start = $args->start ?? 0;
+        $args->asc = $args->asc ?? true;
+        $args->cursor = $args->cursor ?? 0;
 
-        $rel = $args->rel === "next" ? ">=" : "<=";
-        $offset = max($args->start, 0);
+        $data = yield $this->userStorage->getAll($args->cursor, $args->asc);
 
-        $query = yield $this->mysql->prepare("SELECT u.id, u.name, u.avatar FROM user u WHERE u.id >= ? LIMIT " . (self::LIMIT + 1), [
-            $offset
-        ]);
-
-        $data = yield $query->fetchObjects();
-        $next = isset($data[self::LIMIT]) ? $data[self::LIMIT]->id : false;
-        unset($data[self::LIMIT]);
-
-        if (!$data) {
-            return Error::make("not_found");
-        }
-
-        $response = new Data($data);
-
-        if ($next) {
-            $response->addLink("next", [
-                "start" => $next,
-            ]);
-        }
-
-        return $response;
+        return createPaginationResult($data);
     }
 
     public function getPermissions() : array {
