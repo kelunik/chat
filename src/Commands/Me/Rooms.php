@@ -5,7 +5,6 @@ namespace Kelunik\Chat\Commands\Me;
 use Amp\Mysql\Pool;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Request;
-use Kelunik\Chat\Boundaries\Response;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 
@@ -16,7 +15,7 @@ class Rooms extends Command {
         $this->mysql = $mysql;
     }
 
-    public function execute(Request $request, User $user): Response {
+    public function execute(Request $request, User $user) {
         // unauthenticated and special users can't join rooms
         if ($user->id <= 0) {
             return new Data([]);

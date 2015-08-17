@@ -12,7 +12,7 @@ abstract class Command {
         return strtolower(str_replace("\\", "/", $sub));
     }
 
-    public abstract function execute(Request $request, User $user): Response;
+    public abstract function execute(Request $request, User $user);
 
     public abstract function getPermissions(): array;
 }

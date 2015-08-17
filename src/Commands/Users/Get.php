@@ -3,13 +3,11 @@
 namespace Kelunik\Chat\Commands\Users;
 
 use Amp\Mysql\Pool;
-use Kelunik\Chat\Boundaries\Request;
-use Kelunik\Chat\Boundaries\Response;
-use Kelunik\Chat\Boundaries\User;
-use Kelunik\Chat\Command;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
-use stdClass;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\User;
+use Kelunik\Chat\Command;
 
 class Get extends Command {
     private $mysql;
@@ -18,7 +16,7 @@ class Get extends Command {
         $this->mysql = $mysql;
     }
 
-    public function execute(Request $request, User $user): Response {
+    public function execute(Request $request, User $user) {
         $args = $request->getArgs();
 
         $stmt = yield $this->mysql->prepare("SELECT `id`, `name`, `avatar` FROM `user` WHERE `id` = ?", [

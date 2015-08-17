@@ -2,13 +2,11 @@
 
 namespace Kelunik\Chat\Commands\Messages;
 
+use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Request;
-use Kelunik\Chat\Boundaries\Response;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 use Kelunik\Chat\MessageCrud;
-use Kelunik\Chat\Boundaries\Data;
-use stdClass;
 
 class Create extends Command {
     private $messageCrud;
@@ -17,7 +15,7 @@ class Create extends Command {
         $this->messageCrud = $messageCrud;
     }
 
-    public function execute(Request $request, User $user): Response {
+    public function execute(Request $request, User $user) {
         $payload = $request->getPayload();
 
         if ($user->id < 0) {

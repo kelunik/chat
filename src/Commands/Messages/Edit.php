@@ -4,7 +4,6 @@ namespace Kelunik\Chat\Commands\Messages;
 
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Request;
-use Kelunik\Chat\Boundaries\Response;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 use Kelunik\Chat\MessageCrud;
@@ -16,7 +15,7 @@ class Edit extends Command {
         $this->messageCrud = $messageCrud;
     }
 
-    public function execute(Request $request, User $user): Response {
+    public function execute(Request $request, User $user) {
         $args = $request->getArgs();
         $payload = $request->getPayload();
 

@@ -3,12 +3,10 @@
 namespace Kelunik\Chat\Commands\Rooms\Users;
 
 use Amp\Mysql\Pool;
+use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Request;
-use Kelunik\Chat\Boundaries\Response;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
-use Kelunik\Chat\Boundaries\Data;
-use stdClass;
 
 class Get extends Command {
     const LIMIT = 50;
@@ -19,7 +17,7 @@ class Get extends Command {
         $this->mysql = $mysql;
     }
 
-    public function execute(Request $request, User $user): Response {
+    public function execute(Request $request, User $user) {
         $args = $request->getArgs();
 
         // set default values, because there's no support for them in our JSON schema library currently.

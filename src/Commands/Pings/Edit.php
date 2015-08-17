@@ -4,13 +4,11 @@ namespace Kelunik\Chat\Commands\Pings;
 
 use Amp\Mysql\Pool;
 use Amp\Redis\Client;
-use Kelunik\Chat\Boundaries\Request;
-use Kelunik\Chat\Boundaries\Response;
-use Kelunik\Chat\Boundaries\User;
-use Kelunik\Chat\Command;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
-use stdClass;
+use Kelunik\Chat\Boundaries\Request;
+use Kelunik\Chat\Boundaries\User;
+use Kelunik\Chat\Command;
 
 class Edit extends Command {
     private $mysql;
@@ -21,7 +19,7 @@ class Edit extends Command {
         $this->redis = $redis;
     }
 
-    public function execute(Request $request, User $user): Response {
+    public function execute(Request $request, User $user) {
         $args = $request->getArgs();
         $payload = $request->getPayload();
 

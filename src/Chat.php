@@ -87,7 +87,7 @@ class Chat {
         }
     }
 
-    public function process(Request $request, User $user): Response {
+    public function process(Request $request, User $user) {
         $uri = $request->getUri();
 
         if (!isset($this->commands[$uri])) {
