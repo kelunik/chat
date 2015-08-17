@@ -28,48 +28,24 @@ class Chat {
     private $validator;
 
     /**
-     * @var RoomStorage
+     * @var Injector
      */
-    private $roomStorage;
-
-    /**
-     * @var MessageStorage
-     */
-    private $messageStorage;
-
-    /**
-     * @var UserStorage
-     */
-    private $userStorage;
-
-    /**
-     * @var PingStorage
-     */
-    private $pingStorage;
+    private $injector;
 
     /**
      * @var Command[]
      */
     private $commands;
 
-    public function __construct(UriRetriever $retriever, RequestValidator $validator, UserStorage $userStorage, RoomStorage $roomStorage, MessageStorage $messageStorage, PingStorage $pingStorage) {
+    public function __construct(UriRetriever $retriever, RequestValidator $validator, Injector $injector) {
         $this->retriever = $retriever;
         $this->validator = $validator;
-        $this->roomStorage = $roomStorage;
-        $this->messageStorage = $messageStorage;
-        $this->pingStorage = $pingStorage;
-        $this->userStorage = $userStorage;
+        $this->injector = $injector;
         $this->commands = [];
         $this->initialize();
     }
 
     private function initialize() {
-        $injector = new Injector;
-        $injector->share($this->pingStorage);
-        $injector->share($this->userStorage);
-        $injector->share($this->roomStorage);
-        $injector->share($this->messageStorage);
-
         $namespace = __NAMESPACE__;
 
         $dir = new RecursiveDirectoryIterator(__DIR__ . "/Commands");
@@ -79,7 +55,7 @@ class Chat {
         foreach ($regex as list($file)) {
             $item = str_replace([".php", __DIR__], "", $file);
             $class = str_replace("/", "\\", $item);
-            $command = $injector->make($namespace . $class);
+            $command = $this->injector->make($namespace . $class);
             $this->commands[$command->getName()] = $command;
 
             $this->prepare($command);
