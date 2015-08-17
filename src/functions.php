@@ -5,7 +5,6 @@ namespace Kelunik\Chat;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Response;
-use RuntimeException;
 
 function getReplyId($text): int {
     if (preg_match("~^:(\\d+) ~", $text, $match)) {
@@ -22,16 +21,16 @@ function getPingedNames(string $text): array {
     $users = [];
 
     // remove code blocks, we don't want code to ping people
-    $text = preg_replace("~(`|```)([^`]+?)(\\1)~", "", $text);
+    $textWithoutCode = preg_replace("~(`|```)([^`]+?)(\\1)~", "", $text);
 
-    if ($text === false) {
-        throw new RuntimeException("preg_replace failed");
+    if ($textWithoutCode === null) {
+        $textWithoutCode = $text;
     }
 
-    $count = preg_match_all($pattern, $text, $matches, PREG_SET_ORDER);
+    $count = preg_match_all($pattern, $textWithoutCode, $matches, PREG_SET_ORDER);
 
     if ($count === false) {
-        throw new RuntimeException("preg_match_all failed");
+        return [];
     }
 
     if ($count) {

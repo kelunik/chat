@@ -4,7 +4,6 @@ namespace Kelunik\Chat;
 
 use Kelunik\Chat\Boundaries\Response;
 use PHPUnit_Framework_TestCase;
-use RuntimeException;
 
 class FunctionsTest extends PHPUnit_Framework_TestCase {
     /**
@@ -35,10 +34,10 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @expectedException RuntimeException
      */
     public function getPingedNamesException() {
-        getPingedNames("@" . str_repeat("a", 10000000));
+        // regex stack limit
+        $this->assertEquals([], getPingedNames("@" . str_repeat("a", 1000000)));
     }
 
     /**
