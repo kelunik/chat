@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "rdlowrey/auryn": "dev-master",
+    "rdlowrey/auryn": "^1",
     "amphp/mysql": "dev-master",
     "amphp/redis": "dev-master",
     "justinrainbow/json-schema": "^1.4@dev"
