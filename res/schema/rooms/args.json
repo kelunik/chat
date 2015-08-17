@@ -3,16 +3,14 @@
   "id": "/",
   "type": "object",
   "properties": {
-    "start": {
-      "id": "start",
-      "type": "integer"
+    "cursor": {
+      "id": "cursor",
+      "type": "integer",
+      "minimum": 0
     },
-    "rel": {
-      "id": "rel",
-      "enum": [
-        "next",
-        "prev"
-      ]
+    "asc": {
+      "id": "asc",
+      "type": "boolean"
     }
   },
   "additionalProperties": false,

@@ -2,18 +2,18 @@
 
 namespace Kelunik\Chat\Commands\Rooms;
 
-use Amp\Mysql\Pool;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
+use Kelunik\Chat\Storage\RoomStorage;
 
 class Edit extends Command {
-    private $mysql;
+    private $roomStorage;
 
-    public function __construct(Pool $mysql) {
-        $this->mysql = $mysql;
+    public function __construct(RoomStorage $roomStorage) {
+        $this->roomStorage = $roomStorage;
     }
 
     public function execute(Request $request, User $user) {
@@ -24,28 +24,22 @@ class Edit extends Command {
             return new Error("bad_request", "either name or description must be set", 400);
         }
 
-        $stmt = yield $this->mysql->prepare("SELECT `id`, `name`, `description` FROM `room` WHERE `id` = ?", [
-            $args->room_id
-        ]);
+        $room = yield $this->roomStorage->get($args->id);
 
-        $room = yield $stmt->fetchObject();
-
-        if ($room) {
-            $name = $payload->name ?? $room->name;
-            $description = $payload->description ?? $room->description;
-
-            $stmt = yield $this->mysql->prepare("UPDATE `room` SET `name` = ?, `description` = ? WHERE `id` = ?", [
-                $name, $description, $args->room_id
-            ]);
-
-            return new Data([
-                "id" => $args->room_id,
-                "name" => $name,
-                "description" => $description,
-            ]);
+        if (!$room) {
+            return Error::make("not_found");
         }
 
-        return Error::make("not_found");
+        $name = $payload->name ?? $room->name;
+        $description = $payload->description ?? $room->description;
+
+        yield $this->roomStorage->update($args->id, $name, $description);
+
+        return new Data([
+            "id" => $args->id,
+            "name" => $name,
+            "description" => $description,
+        ]);
     }
 
     public function getPermissions() : array {

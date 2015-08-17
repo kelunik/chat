@@ -2,35 +2,28 @@
 
 namespace Kelunik\Chat\Commands\Pings;
 
-use Amp\Mysql\Pool;
-use Amp\Redis\Client;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
+use Kelunik\Chat\Storage\PingStorage;
 
 class Get extends Command {
-    private $mysql;
-    private $redis;
+    private $pingStorage;
 
-    public function __construct(Pool $mysql, Client $redis) {
-        $this->mysql = $mysql;
-        $this->redis = $redis;
+    public function __construct(PingStorage $pingStorage) {
+        $this->pingStorage = $pingStorage;
     }
 
     public function execute(Request $request, User $user) {
         $args = $request->getArgs();
 
-        $stmt = yield $this->mysql->prepare("SELECT seen FROM ping WHERE user_id = ? && message_id = ?", [
-            $user->id, $args->message_id
-        ]);
-
-        $ping = yield $stmt->fetchObject();
+        $ping = yield $this->pingStorage->get($user->id, $args->id);
 
         if ($ping) {
             return new Data([
-                "seen" => (bool) $ping->seen
+                "seen" => (bool) $ping->seen,
             ]);
         }
 

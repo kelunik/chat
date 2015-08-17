@@ -3,20 +3,18 @@
   "id": "/",
   "type": "object",
   "properties": {
-    "room_id": {
-      "id": "room_id",
+    "id": {
+      "id": "id",
       "type": "integer"
     },
-    "start": {
-      "id": "start",
-      "type": "integer"
+    "cursor": {
+      "id": "cursor",
+      "type": "integer",
+      "minimum": 0
     },
-    "rel": {
-      "id": "rel",
-      "enum": [
-        "next",
-        "prev"
-      ]
+    "asc": {
+      "id": "asc",
+      "type": "boolean"
     }
   },
   "additionalProperties": false,

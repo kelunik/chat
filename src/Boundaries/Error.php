@@ -17,6 +17,7 @@ class Error implements Response {
                 "bad_request" => new self("bad_request", "there was a problem with your request, but we can't tell you more", 400),
                 "forbidden" => new self("forbidden", "access to the requested resource was not granted", 403),
                 "not_found" => new self("not_found", "the requested resource does not exist", 404),
+                "locked" => new self("locked", "the requested resource is locked and cannot be changed", 423),
             ];
         }
 
@@ -46,7 +47,7 @@ class Error implements Response {
     public function getData() {
         return [
             "code" => $this->code,
-            "message" => $this->message
+            "message" => $this->message,
         ];
     }
 

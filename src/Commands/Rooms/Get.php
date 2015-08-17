@@ -2,28 +2,24 @@
 
 namespace Kelunik\Chat\Commands\Rooms;
 
-use Amp\Mysql\Pool;
 use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
+use Kelunik\Chat\Storage\RoomStorage;
 
 class Get extends Command {
-    private $mysql;
+    private $roomStorage;
 
-    public function __construct(Pool $mysql) {
-        $this->mysql = $mysql;
+    public function __construct(RoomStorage $roomStorage) {
+        $this->roomStorage = $roomStorage;
     }
 
     public function execute(Request $request, User $user) {
         $args = $request->getArgs();
 
-        $stmt = yield $this->mysql->prepare("SELECT `id`, `name`, `description` FROM `room` WHERE `id` = ?", [
-            $args->room_id
-        ]);
-
-        $room = yield $stmt->fetchObject();
+        $room = yield $this->roomStorage->get($args->id);
 
         if ($room) {
             return new Data($room);

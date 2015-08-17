@@ -2,6 +2,9 @@
 
 namespace Kelunik\Chat;
 
+use Kelunik\Chat\Boundaries\Data;
+use Kelunik\Chat\Boundaries\Error;
+use Kelunik\Chat\Boundaries\Response;
 use RuntimeException;
 
 function getReplyId($text): int {
@@ -37,5 +40,42 @@ function getPingedNames(string $text): array {
         }
     }
 
-    return $users;
+    return array_keys($users);
+}
+
+function createPaginationResult(array $data, string $cursorProperty = "id", int $limit = 50): Response {
+    if (isset($data[$limit])) {
+        $next = is_array($data[$limit])
+            ? $data[$limit][$cursorProperty]
+            : $data[$limit]->$cursorProperty;
+
+        unset($data[$limit]);
+    } else {
+        $next = false;
+    }
+
+    if (empty($data)) {
+        return Error::make("not_found");
+    }
+
+    $response = new Data($data);
+
+    if ($next) {
+        $response->addLink("next", [
+            "cursor" => $next,
+        ]);
+    }
+
+    $first = is_array($data[0])
+        ? $data[0][$cursorProperty]
+        : $data[0]->$cursorProperty;
+
+    if ($first > 1) {
+        // This may result in a 404, but it's cheaper than a second query every time!
+        $response->addLink("previous", [
+            "cursor" => $first - 1,
+        ]);
+    }
+
+    return $response;
 }

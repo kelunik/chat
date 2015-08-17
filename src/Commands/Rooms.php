@@ -2,54 +2,29 @@
 
 namespace Kelunik\Chat\Commands;
 
-use Amp\Mysql\Pool;
-use Kelunik\Chat\Boundaries\Data;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
+use Kelunik\Chat\Storage\RoomStorage;
+use function Kelunik\Chat\createPaginationResult;
 
 class Rooms extends Command {
-    const LIMIT = 50;
+    private $roomStorage;
 
-    private $mysql;
-
-    public function __construct(Pool $mysql) {
-        $this->mysql = $mysql;
+    public function __construct(RoomStorage $roomStorage) {
+        $this->roomStorage = $roomStorage;
     }
 
     public function execute(Request $request, User $user) {
         $args = $request->getArgs();
 
         // set default values, because there's no support for them in our JSON schema library currently.
-        $args->rel = $args->rel ?? "next";
-        $args->start = $args->start ?? 0;
+        $args->asc = $args->asc ?? true;
+        $args->cursor = $args->cursor ?? 0;
 
-        $rel = $args->rel === "next" ? ">=" : "<=";
-        $offset = max($args->start, 0);
+        $rooms = yield $this->roomStorage->getAll($user->id, $args->cursor, $args->asc);
 
-        if ($user->id > 0) {
-            $query = yield $this->mysql->prepare("SELECT r.id, r.name, r.description, r.visibility FROM room r LEFT JOIN room_user ru ON (ru.room_id = r.id && ru.user_id = ?) WHERE (ru.user_id IS NOT NULL || r.visibility != 'secret') && r.id >= ? LIMIT " . (self::LIMIT + 1), [
-                $user->id, $offset
-            ]);
-        } else {
-            $query = yield $this->mysql->prepare("SELECT r.id, r.name, r.description, r.visibility FROM room r WHERE r.visibility != 'secret' && r.id >= ? LIMIT " . (self::LIMIT + 1), [
-                $offset
-            ]);
-        }
-
-        $data = yield $query->fetchObjects();
-        $next = isset($data[self::LIMIT]) ? $data[self::LIMIT]->id : false;
-        unset($data[self::LIMIT]);
-
-        $response = new Data($data);
-
-        if ($next) {
-            $response->addLink("next", [
-                "start" => $next,
-            ]);
-        }
-
-        return $response;
+        return createPaginationResult($rooms);
     }
 
     public function getPermissions() : array {
