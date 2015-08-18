@@ -15,13 +15,13 @@ class Redis implements RateLimit {
     }
 
     public function get(string $id) {
-        $count = yield $this->redis->get($key);
+        $count = yield $this->redis->get($id);
 
         return (int) $count;
     }
 
     public function increment(string $id) {
-        $count = yield $this->redis->incr($key);
+        $count = yield $this->redis->incr($id);
 
         if ($count === 1) {
             yield $this->redis->expire($id, $this->ttl);
