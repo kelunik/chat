@@ -3,6 +3,7 @@
 namespace Kelunik\Chat;
 
 use Amp\Promise;
+use Amp\Success;
 use Auryn\Injector;
 use Generator;
 use JsonSchema\Uri\UriRetriever;
@@ -13,7 +14,6 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
-use Amp\Success;
 use function Amp\resolve;
 
 class Chat {
