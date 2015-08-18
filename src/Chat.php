@@ -82,13 +82,13 @@ class Chat {
         $uri = $request->getUri();
 
         if (!isset($this->commands[$uri])) {
-            return Error::make("not_found");
+            return new Success(Error::make("not_found"));
         }
 
         $errors = $this->validator->validate($request);
 
         if ($errors) {
-            return new Error("bad_request", "invalid input parameters", 422);
+            return new Success(new Error("bad_request", "invalid input parameters", 422));
         }
 
         // TODO add permission checks
