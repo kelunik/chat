@@ -13,7 +13,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
-use Success;
+use Amp\Success;
 use function Amp\resolve;
 
 class Chat {
