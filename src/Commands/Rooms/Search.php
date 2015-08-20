@@ -40,7 +40,7 @@ class Search extends Command {
             $searchResult = yield $this->search->query(new MessageQuery($args->room_id, $args->q, $userId), $args->start ?? 0);
             $hits = $searchResult->getHits();
 
-            $messages = yield $this->messageStore->getByIds(array_keys($hits));
+            $messages = yield $this->messageStorage->getByIds(array_keys($hits));
             $userIds = array_column($messages, "user_id");
             $users = [];
 
