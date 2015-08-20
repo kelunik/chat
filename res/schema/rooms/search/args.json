@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "room_id": {
+      "id": "room_id",
+      "type": "integer"
+    },
+    "q": {
+      "id": "q",
+      "type": "string"
+    },
+    "start": {
+      "id": "start",
+      "type": "integer",
+      "minimum": 0
+    },
+    "author": {
+      "id": "author",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "room_id",
+    "q"
+  ]
+}
