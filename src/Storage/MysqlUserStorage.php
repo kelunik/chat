@@ -16,7 +16,13 @@ class MysqlUserStorage implements UserStorage {
     }
 
     public function get(int $id): Promise {
-        return pipe($this->mysql->prepare("SELECT `id`, `name`, `avatar` FROM `user` WHERE id = ? LIMIT 1", [$id]), function (ResultSet $stmt): Promise {
+        return pipe($this->mysql->prepare("SELECT `id`, `name`, `avatar` FROM `user` WHERE `id` = ? LIMIT 1", [$id]), function (ResultSet $stmt): Promise {
+            return $stmt->fetchObject();
+        });
+    }
+
+    public function getByName(string $name): Promise {
+        return pipe($this->mysql->prepare("SELECT `id`, `name`, `avatar` FROM `user` WHERE `name` = ? LIMIT 1", [$name]), function (ResultSet $stmt): Promise {
             return $stmt->fetchObject();
         });
     }
