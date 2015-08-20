@@ -62,7 +62,7 @@ class Search extends Command {
             }
 
             return new Data([
-                "total" => $searchResult->getTotalCount(),
+                "total" => $searchResult->getTotal(),
                 "hits" => $messages,
             ]);
         } catch (SearchException $e) {
