@@ -19,6 +19,6 @@
   },
   "additionalProperties": false,
   "required": [
-    "room_id"
+    "id"
   ]
 }
