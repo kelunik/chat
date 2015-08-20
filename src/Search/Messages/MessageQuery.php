@@ -22,6 +22,6 @@ class MessageQuery {
     }
 
     public function getUser(): int {
-        return $this->room;
+        return $this->user;
     }
 }
