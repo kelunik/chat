@@ -21,7 +21,7 @@ class MysqlUserStorage implements UserStorage {
         });
     }
 
-    public function getFromNames(array $names): Promise {
+    public function getByNames(array $names): Promise {
         if (empty($names)) {
             return new Success([]);
         }
@@ -33,7 +33,7 @@ class MysqlUserStorage implements UserStorage {
         });
     }
 
-    public function getFromIds(array $ids, bool $asc = true): Promise {
+    public function getByIds(array $ids, bool $asc = true): Promise {
         if (empty($ids)) {
             return new Success([]);
         }
@@ -41,7 +41,7 @@ class MysqlUserStorage implements UserStorage {
         $in = substr(str_repeat(",?", count($ids)), 1);
         $order = $asc ? "ASC" : "DESC";
 
-        return pipe($this->mysql->prepare("SELECT `id`, `name`, `avatar` FROM `user` WHERE `id` IN ({$in}) ORDER BY id {$order}", [$ids]), function (ResultSet $stmt): Promise {
+        return pipe($this->mysql->prepare("SELECT `id`, `name`, `avatar` FROM `user` WHERE `id` IN ({$in}) ORDER BY id {$order}", $ids), function (ResultSet $stmt): Promise {
             return $stmt->fetchObjects();
         });
     }

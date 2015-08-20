@@ -26,7 +26,7 @@ class Get extends Command {
         $args->cursor = $args->cursor ?? 0;
 
         $data = yield $this->roomStorage->getMembers($args->id, $args->cursor, $args->asc);
-        $users = yield $this->userStorage->getFromIds($data, $args->asc);
+        $users = yield $this->userStorage->getByIds($data, $args->asc);
 
         return createPaginationResult($users);
     }

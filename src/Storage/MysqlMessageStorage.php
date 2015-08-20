@@ -42,7 +42,7 @@ class MysqlMessageStorage implements MessageStorage {
         });
     }
 
-    public function getList(array $messageIds): Promise {
+    public function getByIds(array $messageIds): Promise {
         if (empty($messageIds)) {
             return new Success([]);
         }
@@ -50,7 +50,7 @@ class MysqlMessageStorage implements MessageStorage {
         $in = substr(str_repeat(",?", count($messageIds)), 1);
 
         return pipe($this->mysql->prepare("SELECT `id`, `room_id`, `user_id`, `type`, `text`, `data`, `reply_to`, `edit_time`, `time` FROM `message` WHERE `id` IN ({$in})", $messageIds), function (ResultSet $stmt): Promise {
-            return $stmt->fetchObject();
+            return $stmt->fetchObjects();
         });
     }
 }

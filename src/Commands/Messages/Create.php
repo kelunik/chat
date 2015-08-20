@@ -58,7 +58,7 @@ class Create extends Command {
         $pingNames = getPingedNames($payload->text);
         $pingIds = array_map(function ($user): int {
             return $user->id;
-        }, yield $this->userStorage->getFromNames($pingNames));
+        }, yield $this->userStorage->getByNames($pingNames));
 
         $pings = array_unique(array_merge($pings, $pingIds));
 

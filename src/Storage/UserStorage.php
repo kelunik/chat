@@ -9,7 +9,7 @@ interface UserStorage {
 
     public function getAll (int $cursor = 0, bool $asc = true, int $limit = 51): Promise;
 
-    public function getFromNames(array $names): Promise;
+    public function getByNames(array $names): Promise;
 
-    public function getFromIds(array $ids, bool $asc = true): Promise;
+    public function getByIds(array $ids, bool $asc = true): Promise;
 }

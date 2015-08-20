@@ -13,5 +13,5 @@ interface MessageStorage {
 
     public function get(int $messageId): Promise;
 
-    public function getList(array $messageIds): Promise;
+    public function getByIds(array $messageIds): Promise;
 }
