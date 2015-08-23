@@ -18,10 +18,7 @@ class MeTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test() {
-        $user = new User;
-        $user->id = 0;
-        $user->name = "System";
-        $user->avatar = null;
+        $user = new User(0, "System", null);
 
         $request = new StandardRequest("me", new stdClass, null);
         $response = $this->command->execute($request, $user);
