@@ -14,4 +14,8 @@ class RedisEventSub implements EventSub {
     public function subscribe(string $channel): Subscription {
         return new RedisSubscription($this->client, $channel);
     }
+
+    public function getConnectionState(): int {
+        return $this->client->getConnectionState();
+    }
 }
