@@ -14,4 +14,6 @@ interface MessageStorage {
     public function get(int $messageId): Promise;
 
     public function getByIds(array $messageIds): Promise;
+
+    public function getHistory(int $room, int $cursor = -1, bool $asc = false, int $limit = 51): Promise;
 }

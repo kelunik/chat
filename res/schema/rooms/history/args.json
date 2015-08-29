@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "properties": {
+    "id": {
+      "id": "id",
+      "type": "integer"
+    },
+    "cursor": {
+      "id": "cursor",
+      "type": "integer",
+      "minimum": 0
+    },
+    "asc": {
+      "id": "desc",
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "id"
+  ]
+}
