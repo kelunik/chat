@@ -34,8 +34,15 @@ class History extends Command {
             $users[$user->id] = $user;
         }
 
+        $defaultUser = (object) [
+            "id" => 0,
+            "name" => "anonymous",
+            "avatar" => null,
+        ];
+
         foreach ($messages as &$message) {
-            $message->user = $users[$message->user_id] ?? null;
+            $message->user = $users[$message->user_id] ?? $defaultUser;
+
             unset($message->user_id);
         }
 
