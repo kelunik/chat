@@ -25,11 +25,13 @@ class FunctionsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(["foo"], getPingedNames("@foo"));
         $this->assertEquals(["foo", "bar"], getPingedNames("@foo @bar"));
 
-        // FIXME Should actually ping @foo and @bar
-        $this->assertEquals(["foo"], getPingedNames("@foo@bar"));
+        $this->assertEquals([], getPingedNames("@foo@bar"));
 
         $this->assertEquals([], getPingedNames("me@example.com"));
         $this->assertEquals([], getPingedNames("`@foo`"));
+
+        $this->assertEquals(["foo"], getPingedNames("bla blah @foo, true?"));
+        $this->assertEquals(["foo"], getPingedNames("..@foo..."));
     }
 
     /**

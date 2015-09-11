@@ -17,8 +17,14 @@ class MeTest extends PHPUnit_Framework_TestCase {
         $this->command = new Me;
     }
 
-    public function test() {
-        $user = new User(0, "System", null);
+    /**
+     * @dataProvider provideArgs
+     * @param int $id
+     * @param string $name
+     * @param string|null $avatar
+     */
+    public function test($id, $name, $avatar) {
+        $user = new User($id, $name, $avatar);
 
         $request = new StandardRequest("me", new stdClass, null);
         $response = $this->command->execute($request, $user);
@@ -26,11 +32,20 @@ class MeTest extends PHPUnit_Framework_TestCase {
         $response = $response instanceof Generator ? wait(resolve($response)) : $response;
 
         $this->assertEquals([
-            "id" => 0,
-            "name" => "System",
-            "avatar" => null,
+            "id" => $id,
+            "name" => $name,
+            "avatar" => $avatar,
         ], $response->getData());
 
         $this->assertSame(200, $response->getStatus());
+    }
+
+    public function provideArgs() {
+        return [
+            [0, "System", null],
+            [1, "User", null],
+            [-1, "Notifications", null],
+            [3, "Foobar", "http://example.com/avatar.png"],
+        ];
     }
 }

@@ -17,7 +17,7 @@ function getReplyId($text): int {
 }
 
 function getPingedNames(string $text): array {
-    $pattern = "~\\B@([a-z][a-z0-9-]*?)\\b~i";
+    $pattern = "~\\B@([a-z][a-z0-9-]*?)(?!@)\\b~i";
     $users = [];
 
     // remove code blocks, we don't want code to ping people
