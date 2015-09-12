@@ -46,10 +46,10 @@ class MysqlRoomStorage implements RoomStorage {
         $order = $asc ? "ASC" : "DESC";
 
         if ($userId > 0) {
-            $sql = "SELECT r.id, r.name, r.description, r.visibility FROM room r LEFT JOIN room_user ru ON (ru.room_id = r.id && ru.user_id = ?) WHERE (ru.user_id IS NOT NULL || r.visibility != 'secret') && r.id >= ? ORDER BY r.id {$order} LIMIT {$limit}";
+            $sql = "SELECT r.id, r.name, r.description, r.public FROM room r LEFT JOIN room_user ru ON (ru.room_id = r.id && ru.user_id = ?) WHERE (ru.user_id IS NOT NULL || r.public = 1) && r.id >= ? ORDER BY r.id {$order} LIMIT {$limit}";
             $args = [$userId, $cursor];
         } else {
-            $sql = "SELECT id, name, description, visibility FROM room WHERE visibility != 'secret' && id >= ? ORDER BY id {$order} LIMIT {$limit}";
+            $sql = "SELECT id, name, description, public FROM room WHERE public = 1 && id >= ? ORDER BY id {$order} LIMIT {$limit}";
             $args = [$cursor];
         }
 
