@@ -32,7 +32,7 @@ class Edit extends Command {
 
         if (!$message) {
             return Error::make("not_found");
-        } elseif ($user->id != $message->user_id) {
+        } elseif ($user->id !== $message->user_id) {
             return Error::make("forbidden");
         } elseif ($message->time < time() - 300) {
             return Error::make("locked");
@@ -91,9 +91,5 @@ class Edit extends Command {
         $this->eventHub->publish("chat:rooms:{$message->room_id}", "message/update", $message);
 
         return new Data($message);
-    }
-
-    public function getPermissions() : array {
-        return ["write"];
     }
 }

@@ -15,8 +15,4 @@ class Me extends Command {
             "avatar" => $user->avatar,
         ]);
     }
-
-    public function getPermissions() : array {
-        return [];
-    }
 }

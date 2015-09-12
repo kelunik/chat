@@ -29,8 +29,4 @@ class Get extends Command {
 
         return Error::make("not_found");
     }
-
-    public function getPermissions() : array {
-        return [];
-    }
 }

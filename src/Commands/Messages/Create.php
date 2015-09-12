@@ -3,12 +3,16 @@
 namespace Kelunik\Chat\Commands\Messages;
 
 use Kelunik\Chat\Boundaries\Data;
+use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
 use Kelunik\Chat\Events\EventHub;
+use Kelunik\Chat\Permission;
 use Kelunik\Chat\Storage\MessageStorage;
+use Kelunik\Chat\Storage\RoomPermissionStorage;
 use Kelunik\Chat\Storage\UserStorage;
+use function Amp\resolve;
 use function Kelunik\Chat\getPingedNames;
 use function Kelunik\Chat\getReplyId;
 
@@ -16,15 +20,23 @@ class Create extends Command {
     private $messageStorage;
     private $userStorage;
     private $eventHub;
+    private $roomPermissionStorage;
 
-    public function __construct(MessageStorage $messageStorage, UserStorage $userStorage, EventHub $eventHub) {
+    public function __construct(MessageStorage $messageStorage, UserStorage $userStorage, EventHub $eventHub, RoomPermissionStorage $roomPermissionStorage) {
         $this->messageStorage = $messageStorage;
         $this->userStorage = $userStorage;
         $this->eventHub = $eventHub;
+        $this->roomPermissionStorage = $roomPermissionStorage;
     }
 
     public function execute(Request $request, User $user) {
         $payload = $request->getPayload();
+
+        $permissions = yield resolve($this->roomPermissionStorage->getPermissions($user->id, $payload->room_id));
+
+        if (!isset($permissions[Permission::WRITE])) {
+            return Error::make("forbidden");
+        }
 
         if ($user->id < 0) {
             $type = $payload->type ?? "text";
@@ -86,9 +98,5 @@ class Create extends Command {
         $this->eventHub->publish("chat:rooms:{$payload->room_id}", "message/create", $payload);
 
         return new Data($payload);
-    }
-
-    public function getPermissions() : array {
-        return ["write"];
     }
 }

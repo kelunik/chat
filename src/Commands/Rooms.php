@@ -26,8 +26,4 @@ class Rooms extends Command {
 
         return createPaginationResult($rooms);
     }
-
-    public function getPermissions() : array {
-        return [];
-    }
 }

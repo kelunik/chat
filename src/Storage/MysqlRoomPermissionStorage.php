@@ -1,19 +1,21 @@
 <?php
 
-namespace Kelunik\Chat;
+namespace App\Storage;
 
 use Amp\Mysql\Pool;
+use Kelunik\Chat\Storage\int;
+use Kelunik\Chat\Storage\RoomPermissionStorage;
 
-class ChatAuthorization {
+class MysqlRoomPermissionStorage implements RoomPermissionStorage {
     private $mysql;
 
-    public function __construct (Pool $mysql) {
+    public function __construct(Pool $mysql) {
         $this->mysql = $mysql;
     }
 
-    public function getRoomPermissions (int $userId, int $roomId) {
+    public function getPermissions(int $user, int $room) {
         $query = yield $this->mysql->prepare("SELECT `permissions` FROM `room_user` WHERE `user_id` = ? && `room_id` = ?", [
-            $userId, $roomId
+            $user, $room
         ]);
 
         $result = yield $query->fetch();
@@ -21,14 +23,6 @@ class ChatAuthorization {
         if ($result) {
             $permissions = json_decode($result["permissions"]);
             return array_flip($permissions);
-        }
-
-        return [];
-    }
-
-    public function getBotPermissions (int $userId) {
-        if ($userId === -1) {
-            return ["write" => true];
         }
 
         return [];

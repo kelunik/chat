@@ -25,8 +25,4 @@ class Rooms extends Command {
 
         return new Data($rooms);
     }
-
-    public function getPermissions() : array {
-        return [];
-    }
 }

@@ -7,25 +7,37 @@ use Kelunik\Chat\Boundaries\Error;
 use Kelunik\Chat\Boundaries\Request;
 use Kelunik\Chat\Boundaries\User;
 use Kelunik\Chat\Command;
+use Kelunik\Chat\Permission;
 use Kelunik\Chat\Search\Messages\MessageQuery;
 use Kelunik\Chat\Search\Messages\MessageSearch;
 use Kelunik\Chat\Search\SearchException;
 use Kelunik\Chat\Storage\MessageStorage;
+use Kelunik\Chat\Storage\RoomPermissionStorage;
 use Kelunik\Chat\Storage\UserStorage;
+use function Amp\resolve;
 
 class Search extends Command {
     private $search;
     private $userStorage;
     private $messageStorage;
+    private $roomPermissionStorage;
 
-    public function __construct(MessageSearch $search, UserStorage $userStorage, MessageStorage $messageStorage) {
+    public function __construct(MessageSearch $search, UserStorage $userStorage, MessageStorage $messageStorage, RoomPermissionStorage $roomPermissionStorage) {
         $this->search = $search;
         $this->userStorage = $userStorage;
         $this->messageStorage = $messageStorage;
+        $this->roomPermissionStorage = $roomPermissionStorage;
     }
 
     public function execute(Request $request, User $user) {
         $args = $request->getArgs();
+
+        $permissions = yield resolve($this->roomPermissionStorage->getPermissions($user->id, $args->room_id));
+
+        if (!isset($permissions[Permission::READ])) {
+            return Error::make("forbidden");
+        }
+
         $userId = 0;
 
         if (isset($args->author)) {
@@ -68,9 +80,5 @@ class Search extends Command {
         } catch (SearchException $e) {
             return new Error("internal_error", "your search could not be completed", 500);
         }
-    }
-
-    public function getPermissions(): array {
-        return ["read"];
     }
 }

@@ -26,8 +26,4 @@ class Users extends Command {
 
         return createPaginationResult($data);
     }
-
-    public function getPermissions() : array {
-        return [];
-    }
 }

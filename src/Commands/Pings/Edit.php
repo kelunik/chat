@@ -41,8 +41,4 @@ class Edit extends Command {
             return new Data(null, 304); // not modified
         }
     }
-
-    public function getPermissions() : array {
-        return [];
-    }
 }
