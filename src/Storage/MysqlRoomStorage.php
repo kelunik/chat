@@ -16,7 +16,7 @@ class MysqlRoomStorage implements RoomStorage {
     }
 
     public function getByUser(int $userId): Promise {
-        $sql = "SELECT r.id, r.name, r.description, ru.permissions FROM `room` AS r, `room_user` AS ru WHERE r.id = ru.room_id && ru.user_id = ? ORDER BY r.name ASC";
+        $sql = "SELECT r.id, r.name, r.description, r.public, ru.permissions FROM `room` AS r, `room_user` AS ru WHERE r.id = ru.room_id && ru.user_id = ? ORDER BY r.name ASC";
 
         return pipe($this->mysql->prepare($sql, [$userId]), function (ResultSet $stmt): Promise {
             return $stmt->fetchObjects();
@@ -35,7 +35,7 @@ class MysqlRoomStorage implements RoomStorage {
     }
 
     public function get(int $roomId): Promise {
-        $sql = "SELECT `id`, `name`, `description` FROM `room` WHERE `id` = ?";
+        $sql = "SELECT `id`, `name`, `description`, `public` FROM `room` WHERE `id` = ?";
 
         return pipe($this->mysql->prepare($sql, [$roomId]), function (ResultSet $stmt): Promise {
             return $stmt->fetchObject();

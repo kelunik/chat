@@ -10,6 +10,7 @@ class MysqlRoomPermissionStorage implements RoomPermissionStorage {
 
     public function __construct(Pool $mysql, RoomStorage $roomStorage) {
         $this->mysql = $mysql;
+        $this->roomStorage = $roomStorage;
     }
 
     public function getPermissions(int $user, int $room) {
