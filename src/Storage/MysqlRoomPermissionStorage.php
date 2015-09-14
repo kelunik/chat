@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Storage;
+namespace Kelunik\Chat\Storage;
 
 use Amp\Mysql\Pool;
-use Kelunik\Chat\Storage\RoomPermissionStorage;
-use Kelunik\Chat\Storage\RoomStorage;
 
 class MysqlRoomPermissionStorage implements RoomPermissionStorage {
     private $mysql;
