@@ -10,3 +10,4 @@ install:
 
 script:
   - phpdbg -qrr vendor/bin/phpunit --coverage-text
+  - php vendor/bin/php-cs-fixer --diff --dry-run -v fix

@@ -1,6 +1,7 @@
 {
   "name": "kelunik/chat",
   "description": "",
+  "license": "MIT",
   "authors": [
     {
       "name": "Niklas Keller",
@@ -15,7 +16,8 @@
     "amphp/artax": "^2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5"
+    "phpunit/phpunit": "^5",
+    "fabpot/php-cs-fixer": "^1.9"
   },
   "minimum-stability": "dev",
   "autoload": {
