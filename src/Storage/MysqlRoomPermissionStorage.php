@@ -3,7 +3,6 @@
 namespace App\Storage;
 
 use Amp\Mysql\Pool;
-use Kelunik\Chat\Storage\int;
 use Kelunik\Chat\Storage\RoomPermissionStorage;
 use Kelunik\Chat\Storage\RoomStorage;
 
